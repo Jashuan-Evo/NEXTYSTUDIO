@@ -4,20 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NEXTYSTUDIO - Gaming Marketplace & MIDMAN Platform</title>
+  <!-- FontAwesome Icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
     body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; padding-bottom: 50px; line-height: 1.5; }
     
+    /* Navbar */
     .navbar { display: flex; justify-content: space-between; align-items: center; background-color: #1e293b; padding: 15px 20px; border-bottom: 2px solid #334155; position: sticky; top: 0; z-index: 1000; flex-wrap: wrap; gap: 10px; }
     .logo { font-size: 1.4rem; font-weight: 800; color: #38bdf8; text-decoration: none; cursor: pointer; user-select: none; }
     .logo span { color: #f43f5e; }
     .nav-links { display: flex; list-style: none; gap: 6px; flex-wrap: wrap; }
     .nav-links a { color: #94a3b8; text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 6px; font-size: 0.88rem; transition: all 0.2s; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; user-select: none; }
     .nav-links a:hover, .nav-links a.active { color: #ffffff; background-color: #334155; }
-    .auth-buttons { display: flex; gap: 8px; align-items: center; }
+    .auth-buttons { display: flex; gap: 8px; }
     
+    /* Buttons */
     .btn { padding: 8px 16px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; user-select: none; }
     .btn-primary { background-color: #2563eb; color: white; }
     .btn-primary:hover { background-color: #1d4ed8; }
@@ -25,18 +28,20 @@
     .btn-outline:hover { background: #334155; }
     .btn-block { width: 100%; display: block; margin-top: 10px; }
     .btn-lg { padding: 12px 24px; font-size: 1rem; }
-    .btn-sm { padding: 4px 10px; font-size: 0.82rem; }
     
+    /* Layout & Tabs */
     .container { max-width: 1100px; margin: 25px auto; padding: 0 15px; }
     .tab-content { display: none; }
     .tab-content.active { display: block !important; }
     
+    /* Hero Banner */
     .hero-banner { background: linear-gradient(135deg, #1e1b4b, #0f172a); border: 1px solid #312e81; border-radius: 12px; padding: 35px 20px; text-align: center; margin-bottom: 30px; }
     .hero-banner h1 { font-size: 1.8rem; margin-bottom: 12px; }
     .hero-banner h1 span { color: #f43f5e; }
     .hero-banner p { color: #94a3b8; margin-bottom: 20px; font-size: 0.95rem; }
     .hero-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
     
+    /* Section & Cards */
     .section-title { margin-bottom: 20px; border-left: 4px solid #2563eb; padding-left: 10px; }
     .grid-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
     .card-product { background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 18px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
@@ -45,10 +50,12 @@
     .card-product .price { color: #4ade80; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px; }
     .card-product .seller { color: #94a3b8; font-size: 0.8rem; margin-bottom: 12px; }
     
+    /* Form inputs */
     .search-bar-container { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
     .search-bar-container input, .search-bar-container select, .form-group input, .form-group textarea { width: 100%; padding: 10px 12px; background-color: #1e293b; border: 1px solid #334155; border-radius: 6px; color: white; font-size: 0.9rem; }
     .search-bar-container input:focus, .search-bar-container select:focus, .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #38bdf8; }
 
+    /* Chat Section */
     .chat-container { display: flex; background: #1e293b; border-radius: 8px; border: 1px solid #334155; height: 420px; overflow: hidden; flex-direction: row; }
     .chat-sidebar { width: 30%; border-right: 1px solid #334155; padding: 12px; background: #0f172a; }
     .chat-user-item { padding: 8px 12px; border-radius: 6px; background: #1e293b; cursor: pointer; border-left: 3px solid #2563eb; }
@@ -61,6 +68,7 @@
     .msg.midman { background: #831843; align-self: flex-end; border: 1px solid #f43f5e; }
     .chat-footer { padding: 10px; display: flex; gap: 8px; background: #0f172a; }
     
+    /* Workflow Steps & Table */
     .midman-workflow { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 25px; }
     .step-card { background: #1e293b; border: 1px solid #334155; padding: 15px; border-radius: 8px; text-align: center; }
     .step-number { width: 35px; height: 35px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin: 0 auto 10px auto; }
@@ -69,6 +77,7 @@
     .data-table th { background: #0f172a; color: #94a3b8; }
     .badge-status { padding: 3px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; background: #854d0e; color: #fef08a; }
     
+    /* Modal Dialog */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 9999; padding: 15px; }
     .modal-box { background: #1e293b; padding: 25px; border-radius: 10px; width: 100%; max-width: 380px; border: 1px solid #334155; position: relative; }
     .close-btn { position: absolute; top: 12px; right: 15px; font-size: 1.4rem; cursor: pointer; color: #94a3b8; }
@@ -87,6 +96,7 @@
   </style>
 
   <script>
+    // Pure inline Vanilla JavaScript - Executed immediately, zero external dependencies needed!
     var currentAuthMode = 'login';
     var supabaseClient = null;
 
@@ -168,17 +178,10 @@
     function updateUILoggedIn(email) {
       var container = document.getElementById('authContainer');
       if (container) {
-        container.innerHTML = '<span style="color:#4ade80; font-size:0.85rem; align-self:center;"><i class="fa-solid fa-user-check"></i> ' + email + '</span><button type="button" class="btn btn-outline btn-sm" onclick="handleLogout()">Keluar</button>';
+        container.innerHTML = '<span style="color:#4ade80; font-size:0.85rem; align-self:center;"><i class="fa-solid fa-user-check"></i> ' + email + '</span><button class="btn btn-outline" onclick="location.reload()">Keluar</button>';
       }
       var prof = document.getElementById('profUsername');
       if (prof) prof.innerText = email;
-    }
-
-    async function handleLogout() {
-      if (supabaseClient) {
-        try { await supabaseClient.auth.signOut(); } catch(e){}
-      }
-      location.reload();
     }
 
     async function handleAuthSubmit(e) {
@@ -203,9 +206,8 @@
         if (res.error) {
           alert("Gagal Daftar: " + res.error.message);
         } else {
-          alert("Pendaftaran Berhasil! Silakan masuk menggunakan akun tersebut.");
+          alert("Pendaftaran Berhasil! Silakan cek email kamu atau langsung login.");
           closeAuthModal();
-          openAuthModal('login');
         }
       } else {
         var res = await supabaseClient.auth.signInWithPassword({
@@ -389,6 +391,4 @@
         <form onsubmit="submitSellerForm(event)">
           <div class="form-group">
             <label>Nama Toko</label>
-            <input type="text" required placeholder="Contoh: Nexty Gaming Store">
-          </div>
-   
+            <input type="text" required placeholder="Contoh: 
