@@ -5,148 +5,153 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NEXTYSTUDIO - Gaming Marketplace & MIDMAN Platform</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; }
-    .navbar { display: flex; justify-content: space-between; align-items: center; background-color: #1e293b; padding: 15px 30px; border-bottom: 2px solid #334155; position: sticky; top: 0; z-index: 100; }
-    .logo { font-size: 1.4rem; font-weight: bold; color: #38bdf8; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; padding-bottom: 50px; }
+    
+    /* Navbar */
+    .navbar { display: flex; justify-content: space-between; align-items: center; background-color: #1e293b; padding: 15px 20px; border-bottom: 2px solid #334155; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 10px; }
+    .logo { font-size: 1.4rem; font-weight: 800; color: #38bdf8; text-decoration: none; }
     .logo span { color: #f43f5e; }
-    .nav-links { display: flex; list-style: none; gap: 10px; }
-    .nav-links a { color: #94a3b8; text-decoration: none; font-weight: 500; padding: 8px 12px; border-radius: 6px; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
+    .nav-links { display: flex; list-style: none; gap: 8px; flex-wrap: wrap; }
+    .nav-links a { color: #94a3b8; text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 6px; font-size: 0.9rem; transition: all 0.2s; }
     .nav-links a:hover, .nav-links a.active { color: #ffffff; background-color: #334155; }
-    .auth-buttons { display: flex; gap: 10px; }
-    .btn { padding: 8px 16px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .auth-buttons { display: flex; gap: 8px; }
+    
+    /* Buttons */
+    .btn { padding: 8px 16px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
     .btn-primary { background-color: #2563eb; color: white; }
     .btn-primary:hover { background-color: #1d4ed8; }
     .btn-outline { background: transparent; border: 1px solid #475569; color: #e2e8f0; }
     .btn-outline:hover { background: #334155; }
     .btn-block { width: 100%; display: block; margin-top: 10px; }
     .btn-lg { padding: 12px 24px; font-size: 1rem; }
-    .btn-sm { padding: 6px 12px; font-size: 0.85rem; }
-    .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+    
+    /* Layout */
+    .container { max-width: 1100px; margin: 25px auto; padding: 0 15px; }
     .tab-content { display: none; }
-    .tab-content.active { display: block; }
-    .hero-banner { background: linear-gradient(135deg, #1e1b4b, #0f172a); border: 1px solid #312e81; border-radius: 12px; padding: 40px 20px; text-align: center; margin-bottom: 40px; }
-    .hero-banner h1 { font-size: 2rem; margin-bottom: 15px; }
+    
+    /* Hero */
+    .hero-banner { background: linear-gradient(135deg, #1e1b4b, #0f172a); border: 1px solid #312e81; border-radius: 12px; padding: 35px 20px; text-align: center; margin-bottom: 30px; }
+    .hero-banner h1 { font-size: 1.8rem; margin-bottom: 12px; }
     .hero-banner h1 span { color: #f43f5e; }
-    .hero-banner p { color: #94a3b8; margin-bottom: 25px; font-size: 1rem; }
-    .hero-actions { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-    .section-title { margin-bottom: 20px; border-left: 4px solid #2563eb; padding-left: 12px; }
-    .grid-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-    .card-product { background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 20px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
-    .badge-cat { position: absolute; top: 12px; right: 12px; background-color: #0284c7; color: white; font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; }
-    .card-product h3 { font-size: 1.1rem; margin-top: 15px; margin-bottom: 10px; }
-    .card-product .price { color: #4ade80; font-size: 1.3rem; font-weight: bold; margin-bottom: 10px; }
-    .card-product .seller { color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px; }
-    .search-bar-container { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
-    .search-bar-container input, .search-bar-container select, .form-group input, .form-group textarea { width: 100%; padding: 10px 14px; background-color: #1e293b; border: 1px solid #334155; border-radius: 6px; color: white; }
-    .chat-container { display: flex; background: #1e293b; border-radius: 8px; border: 1px solid #334155; height: 480px; overflow: hidden; }
-    .chat-sidebar { width: 30%; border-right: 1px solid #334155; padding: 15px; background: #0f172a; }
-    .chat-user-item { padding: 10px; border-radius: 6px; background: #1e293b; cursor: pointer; border-left: 3px solid #2563eb; }
+    .hero-banner p { color: #94a3b8; margin-bottom: 20px; font-size: 0.95rem; }
+    .hero-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    
+    /* Section */
+    .section-title { margin-bottom: 20px; border-left: 4px solid #2563eb; padding-left: 10px; }
+    .grid-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+    .card-product { background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 18px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+    .badge-cat { position: absolute; top: 12px; right: 12px; background-color: #0284c7; color: white; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
+    .card-product h3 { font-size: 1rem; margin-top: 15px; margin-bottom: 8px; }
+    .card-product .price { color: #4ade80; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px; }
+    .card-product .seller { color: #94a3b8; font-size: 0.8rem; margin-bottom: 12px; }
+    
+    /* Search & Inputs */
+    .search-bar-container { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .search-bar-container input, .search-bar-container select, .form-group input, .form-group textarea { width: 100%; padding: 10px 12px; background-color: #1e293b; border: 1px solid #334155; border-radius: 6px; color: white; font-size: 0.9rem; }
+    
+    /* Chat */
+    .chat-container { display: flex; background: #1e293b; border-radius: 8px; border: 1px solid #334155; height: 420px; overflow: hidden; flex-direction: row; }
+    .chat-sidebar { width: 30%; border-right: 1px solid #334155; padding: 12px; background: #0f172a; }
+    .chat-user-item { padding: 8px 12px; border-radius: 6px; background: #1e293b; cursor: pointer; border-left: 3px solid #2563eb; }
     .chat-main { width: 70%; display: flex; flex-direction: column; }
-    .chat-header { padding: 15px; background: #1e293b; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
+    .chat-header { padding: 12px 15px; background: #1e293b; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
     .chat-body { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-    .msg { padding: 10px 14px; border-radius: 8px; max-width: 80%; font-size: 0.95rem; }
+    .msg { padding: 8px 12px; border-radius: 8px; max-width: 80%; font-size: 0.9rem; }
     .msg.system { background: #334155; text-align: center; max-width: 100%; color: #cbd5e1; }
     .msg.seller { background: #1e3a8a; align-self: flex-start; }
     .msg.midman { background: #831843; align-self: flex-end; border: 1px solid #f43f5e; }
-    .chat-footer { padding: 10px 15px; display: flex; gap: 10px; background: #0f172a; }
-    .midman-workflow { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
-    .step-card { background: #1e293b; border: 1px solid #334155; padding: 20px; border-radius: 8px; text-align: center; }
-    .step-number { width: 40px; height: 40px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin: 0 auto 15px auto; }
-    .data-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: #1e293b; border-radius: 8px; overflow: hidden; }
-    .data-table th, .data-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #334155; }
+    .chat-footer { padding: 10px; display: flex; gap: 8px; background: #0f172a; }
+    
+    /* Steps & Cards */
+    .midman-workflow { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 25px; }
+    .step-card { background: #1e293b; border: 1px solid #334155; padding: 15px; border-radius: 8px; text-align: center; }
+    .step-number { width: 35px; height: 35px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin: 0 auto 10px auto; }
+    
+    /* Table */
+    .data-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: #1e293b; border-radius: 8px; overflow: hidden; font-size: 0.85rem; }
+    .data-table th, .data-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #334155; }
     .data-table th { background: #0f172a; color: #94a3b8; }
-    .badge-status { padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
-    .status-escrow { background: #854d0e; color: #fef08a; }
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
-    .modal.active { display: flex !important; }
-    .modal-content { background: #1e293b; padding: 25px; border-radius: 10px; width: 100%; max-width: 400px; position: relative; border: 1px solid #334155; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-    .close-btn { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; cursor: pointer; color: #94a3b8; }
-    .close-btn:hover { color: white; }
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; margin-bottom: 6px; font-size: 0.9rem; color: #cbd5e1; }
-    .store-box, .profile-card { background: #1e293b; border: 1px solid #334155; padding: 30px; border-radius: 8px; }
-    .profile-header { display: flex; align-items: center; gap: 20px; }
-    .role-badge { background: #059669; padding: 3px 10px; border-radius: 12px; font-size: 0.85rem; }
-    @media (max-width: 768px) {
-      .navbar { flex-direction: column; gap: 15px; text-align: center; }
-      .nav-links { flex-wrap: wrap; justify-content: center; }
-      .chat-container { flex-direction: column; height: 500px; }
-      .chat-sidebar { width: 100%; height: 100px; }
+    .badge-status { padding: 3px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; background: #854d0e; color: #fef08a; }
+    
+    /* Modal Pop-up */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 9999; padding: 15px; }
+    .modal-box { background: #1e293b; padding: 25px; border-radius: 10px; width: 100%; max-width: 380px; border: 1px solid #334155; position: relative; }
+    .close-btn { position: absolute; top: 12px; right: 15px; font-size: 1.4rem; cursor: pointer; color: #94a3b8; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; color: #cbd5e1; }
+    
+    .store-box, .profile-card { background: #1e293b; border: 1px solid #334155; padding: 20px; border-radius: 8px; }
+    
+    @media (max-width: 600px) {
+      .navbar { flex-direction: column; text-align: center; }
+      .nav-links { justify-content: center; }
+      .chat-container { flex-direction: column; height: 480px; }
+      .chat-sidebar { width: 100%; height: 80px; }
       .chat-main { width: 100%; height: 400px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Navbar Navigation -->
+  <!-- Navigation -->
   <nav class="navbar">
-    <div class="logo">
-      <i class="fa-solid fa-gamepad"></i> NEXTY<span>STUDIO</span>
+    <div class="logo"><i class="fa-solid fa-gamepad"></i> NEXTY<span>STUDIO</span></div>
+    <div class="nav-links">
+      <a href="javascript:void(0)" id="nav-beranda" class="active" onclick="showTab('beranda')"><i class="fa-solid fa-house"></i> Beranda</a>
+      <a href="javascript:void(0)" id="nav-marketplace" onclick="showTab('marketplace')"><i class="fa-solid fa-store"></i> Marketplace</a>
+      <a href="javascript:void(0)" id="nav-pesan" onclick="showTab('pesan')"><i class="fa-solid fa-comments"></i> Pesan</a>
+      <a href="javascript:void(0)" id="nav-transaksi" onclick="showTab('transaksi')"><i class="fa-solid fa-shield-halved"></i> Transaksi MIDMAN</a>
+      <a href="javascript:void(0)" id="nav-toko" onclick="showTab('toko')"><i class="fa-solid fa-shop"></i> Toko Saya</a>
+      <a href="javascript:void(0)" id="nav-profil" onclick="showTab('profil')"><i class="fa-solid fa-user"></i> Profil</a>
     </div>
-    <ul class="nav-links">
-      <li><a href="#" id="nav-beranda" class="active" onclick="showTab('beranda', event)"><i class="fa-solid fa-house"></i> Beranda</a></li>
-      <li><a href="#" id="nav-marketplace" onclick="showTab('marketplace', event)"><i class="fa-solid fa-store"></i> Marketplace</a></li>
-      <li><a href="#" id="nav-pesan" onclick="showTab('pesan', event)"><i class="fa-solid fa-comments"></i> Pesan</a></li>
-      <li><a href="#" id="nav-transaksi" onclick="showTab('transaksi', event)"><i class="fa-solid fa-shield-halved"></i> Transaksi MIDMAN</a></li>
-      <li><a href="#" id="nav-toko" onclick="showTab('toko', event)"><i class="fa-solid fa-shop"></i> Toko Saya</a></li>
-      <li><a href="#" id="nav-profil" onclick="showTab('profil', event)"><i class="fa-solid fa-user"></i> Profil</a></li>
-    </ul>
     <div class="auth-buttons" id="authContainer">
-      <button class="btn btn-outline" onclick="openAuthModal('login', event)">Masuk</button>
-      <button class="btn btn-primary" onclick="openAuthModal('register', event)">Daftar</button>
+      <button class="btn btn-outline" onclick="openAuthModal('login')">Masuk</button>
+      <button class="btn btn-primary" onclick="openAuthModal('register')">Daftar</button>
     </div>
   </nav>
 
-  <!-- Container Utama -->
   <main class="container">
-
     <!-- Tab 1: Beranda -->
-    <section id="tab-beranda" class="tab-content active">
+    <div id="tab-beranda" class="tab-content" style="display: block;">
       <div class="hero-banner">
         <h1>Marketplace Gaming dengan Sistem <span>MIDMAN Wajib</span></h1>
         <p>Jual beli akun game, coin, dan item dengan aman 100% diawasi oleh MIDMAN terpercaya.</p>
         <div class="hero-actions">
-          <button class="btn btn-primary btn-lg" onclick="showTab('marketplace', event)">Jelajahi Produk</button>
-          <button class="btn btn-outline btn-lg" onclick="showTab('toko', event)">Buka Toko Gratis</button>
+          <button class="btn btn-primary btn-lg" onclick="showTab('marketplace')">Jelajahi Produk</button>
+          <button class="btn btn-outline btn-lg" onclick="showTab('toko')">Buka Toko Gratis</button>
         </div>
       </div>
-
-      <div class="section-title">
-        <h2><i class="fa-solid fa-fire"></i> Produk Terpopuler</h2>
-      </div>
+      <div class="section-title"><h2><i class="fa-solid fa-fire"></i> Produk Terpopuler</h2></div>
       <div class="grid-products">
         <div class="card-product">
-          <div class="badge-cat">Akun Game</div>
+          <span class="badge-cat">Akun Game</span>
           <h3>Akun Mobile Legends Mythical Glory</h3>
           <p class="price">Rp 750.000</p>
           <p class="seller"><i class="fa-solid fa-shop"></i> Nexty Gaming Store</p>
           <button class="btn btn-primary btn-block" onclick="createOrderDemo('MLBB Account')">Beli via MIDMAN</button>
         </div>
         <div class="card-product">
-          <div class="badge-cat">Mata Uang</div>
+          <span class="badge-cat">Mata Uang</span>
           <h3>1000 Diamond Pixel World</h3>
           <p class="price">Rp 50.000</p>
           <p class="seller"><i class="fa-solid fa-shop"></i> Coin Master Shop</p>
           <button class="btn btn-primary btn-block" onclick="createOrderDemo('Diamond Pixel World')">Beli via MIDMAN</button>
         </div>
         <div class="card-product">
-          <div class="badge-cat">Item Game</div>
+          <span class="badge-cat">Item Game</span>
           <h3>Item RPG Maker MV Pack Custom City</h3>
           <p class="price">Rp 120.000</p>
           <p class="seller"><i class="fa-solid fa-shop"></i> Nexty Studio Asset</p>
           <button class="btn btn-primary btn-block" onclick="createOrderDemo('Item RPG Maker')">Beli via MIDMAN</button>
         </div>
       </div>
-    </section>
+    </div>
 
     <!-- Tab 2: Marketplace -->
-    <section id="tab-marketplace" class="tab-content">
-      <div class="section-title">
-        <h2>Katalog Marketplace</h2>
-      </div>
+    <div id="tab-marketplace" class="tab-content">
+      <div class="section-title"><h2>Katalog Marketplace</h2></div>
       <div class="search-bar-container">
         <input type="text" placeholder="Cari akun, coin, item game...">
         <select>
@@ -158,25 +163,23 @@
       </div>
       <div class="grid-products">
         <div class="card-product">
-          <div class="badge-cat">Akun Game</div>
+          <span class="badge-cat">Akun Game</span>
           <h3>Akun Mobile Legends Mythical Glory</h3>
           <p class="price">Rp 750.000</p>
           <p class="seller"><i class="fa-solid fa-shop"></i> Nexty Gaming Store</p>
           <button class="btn btn-primary btn-block" onclick="createOrderDemo('MLBB Account')">Beli via MIDMAN</button>
         </div>
       </div>
-    </section>
+    </div>
 
     <!-- Tab 3: Pesan -->
-    <section id="tab-pesan" class="tab-content">
-      <div class="section-title">
-        <h2>Chat & Pesan Realtime MIDMAN</h2>
-      </div>
+    <div id="tab-pesan" class="tab-content">
+      <div class="section-title"><h2>Chat & Pesan Realtime MIDMAN</h2></div>
       <div class="chat-container">
         <div class="chat-sidebar">
-          <div class="chat-user-item active">
+          <div class="chat-user-item">
             <h4>MIDMAN Room #TX1029</h4>
-            <p>Buyer, Seller, & MIDMAN</p>
+            <p style="font-size: 0.75rem; color:#94a3b8;">Buyer, Seller, & MIDMAN</p>
           </div>
         </div>
         <div class="chat-main">
@@ -195,36 +198,34 @@
           </div>
         </div>
       </div>
-    </section>
+    </div>
 
     <!-- Tab 4: Transaksi MIDMAN -->
-    <section id="tab-transaksi" class="tab-content">
-      <div class="section-title">
-        <h2>Sistem Transaksi MIDMAN Wajib</h2>
-      </div>
+    <div id="tab-transaksi" class="tab-content">
+      <div class="section-title"><h2>Sistem Transaksi MIDMAN Wajib</h2></div>
       <div class="midman-workflow">
         <div class="step-card">
           <div class="step-number">1</div>
           <h4>Pesan & Buat Room</h4>
-          <p>Pembeli memilih barang, sistem otomatis membuat ruang khusus MIDMAN.</p>
+          <p style="font-size:0.8rem; color:#94a3b8; margin-top:5px;">Pembeli memilih barang, sistem otomatis membuat ruang khusus MIDMAN.</p>
         </div>
         <div class="step-card">
           <div class="step-number">2</div>
           <h4>Penitipan Dana</h4>
-          <p>Pembeli mentransfer dana ke mekanisme penitipan aman (Escrow MIDMAN).</p>
+          <p style="font-size:0.8rem; color:#94a3b8; margin-top:5px;">Pembeli mentransfer dana ke mekanisme penitipan aman (Escrow MIDMAN).</p>
         </div>
         <div class="step-card">
           <div class="step-number">3</div>
           <h4>Penyerahan Barang</h4>
-          <p>Penjual menyerahkan akun/coin/item dengan pengawasan MIDMAN.</p>
+          <p style="font-size:0.8rem; color:#94a3b8; margin-top:5px;">Penjual menyerahkan akun/coin/item dengan pengawasan MIDMAN.</p>
         </div>
         <div class="step-card">
           <div class="step-number">4</div>
           <h4>Pencairan Dana</h4>
-          <p>Setelah pembeli konfirmasi terima, MIDMAN mencairkan dana ke penjual.</p>
+          <p style="font-size:0.8rem; color:#94a3b8; margin-top:5px;">Setelah pembeli konfirmasi terima, MIDMAN mencairkan dana ke penjual.</p>
         </div>
       </div>
-      <div class="table-responsive">
+      <div style="overflow-x:auto;">
         <h3>Riwayat Transaksi Kamu</h3>
         <table class="data-table">
           <thead>
@@ -241,65 +242,55 @@
               <td>#TX1029</td>
               <td>Akun MLBB Mythical Glory</td>
               <td>Rp 750.000</td>
-              <td><span class="badge-status status-escrow">Penitipan Dana</span></td>
-              <td><button class="btn btn-sm btn-outline" onclick="showTab('pesan', event)">Buka Chat MIDMAN</button></td>
+              <td><span class="badge-status">Penitipan Dana</span></td>
+              <td><button class="btn btn-outline" style="padding:4px 8px; font-size:0.75rem;" onclick="showTab('pesan')">Buka Chat MIDMAN</button></td>
             </tr>
           </tbody>
         </table>
       </div>
-    </section>
+    </div>
 
     <!-- Tab 5: Toko Saya -->
-    <section id="tab-toko" class="tab-content">
-      <div class="section-title">
-        <h2>Kelola Toko Saya</h2>
-      </div>
+    <div id="tab-toko" class="tab-content">
+      <div class="section-title"><h2>Kelola Toko Saya</h2></div>
       <div class="store-box">
         <h3>Pengajuan Akses Seller</h3>
-        <p>Siapa pun boleh mendaftar, namun kamu wajib mengajukan verifikasi toko sebelum bisa berjualan.</p>
-        <form id="sellerForm" onsubmit="submitSellerForm(event)">
+        <p style="color:#94a3b8; margin-bottom:15px; font-size:0.9rem;">Siapa pun boleh mendaftar, namun kamu wajib mengajukan verifikasi toko sebelum bisa berjualan.</p>
+        <form onsubmit="submitSellerForm(event)">
           <div class="form-group">
             <label>Nama Toko</label>
             <input type="text" required placeholder="Contoh: Nexty Gaming Store">
           </div>
           <div class="form-group">
             <label>Deskripsi Barang yang Akan Dijual</label>
-            <textarea rows="4" required placeholder="Jelaskan akun game, coin, atau item yang akan kamu jual..."></textarea>
+            <textarea rows="3" required placeholder="Jelaskan akun game, coin, atau item yang akan kamu jual..."></textarea>
           </div>
           <div class="form-group">
-            <label><input type="checkbox" required> Saya menyetujui semua peraturan MIDMAN & Peraturan NEXTYSTUDIO</label>
+            <label style="font-size:0.8rem;"><input type="checkbox" required> Saya menyetujui semua peraturan MIDMAN & NEXTYSTUDIO</label>
           </div>
           <button type="submit" class="btn btn-primary">Kirim Pengajuan Toko</button>
         </form>
       </div>
-    </section>
+    </div>
 
     <!-- Tab 6: Profil -->
-    <section id="tab-profil" class="tab-content">
-      <div class="section-title">
-        <h2>Pengaturan Profil</h2>
-      </div>
+    <div id="tab-profil" class="tab-content">
+      <div class="section-title"><h2>Pengaturan Profil</h2></div>
       <div class="profile-card">
-        <div class="profile-header">
-          <i class="fa-solid fa-circle-user fa-4x"></i>
-          <div>
-            <h3 id="profUsername">Tamu / Belum Login</h3>
-            <span class="role-badge" id="profRole">Role: Buyer</span>
-          </div>
-        </div>
-        <hr style="margin: 20px 0; border:0; border-top:1px solid #334155;">
-        <p><strong>Database Status:</strong> Terhubung ke Supabase (`NextyStudioMarket`)</p>
+        <h3 id="profUsername" style="color:#38bdf8;">Tamu / Belum Login</h3>
+        <p style="margin-top:5px; font-size:0.85rem; color:#94a3b8;">Role Default: <strong>Buyer</strong></p>
+        <hr style="margin: 15px 0; border:0; border-top:1px solid #334155;">
+        <p style="font-size:0.9rem;"><strong>Database Status:</strong> Connected to Supabase (`NextyStudioMarket`)</p>
       </div>
-    </section>
-
+    </div>
   </main>
 
-  <!-- Modal Auth (Masuk & Daftar) -->
-  <div class="modal" id="authModal">
-    <div class="modal-content">
+  <!-- Pop-up Modal Auth -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-box">
       <span class="close-btn" onclick="closeAuthModal()">&times;</span>
-      <h3 id="modalTitle">Masuk ke NEXTYSTUDIO</h3>
-      <form id="authForm" onsubmit="handleAuthSubmit(event)">
+      <h3 id="modalTitle" style="margin-bottom:15px;">Masuk ke NEXTYSTUDIO</h3>
+      <form onsubmit="handleAuthSubmit(event)">
         <div class="form-group">
           <label>Email</label>
           <input type="email" id="authEmail" required placeholder="email@contoh.com">
@@ -317,30 +308,49 @@
     </div>
   </div>
 
-  <!-- Skrip Utama Website (Langsung Berjalan Tanpa Menunggu Jaringan) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    let currentAuthMode = 'login';
-    let supabaseClient = null;
+    const SUPABASE_URL = "https://weayjlimtpwhjihmmvjl.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlYXlqbGltdHB3aGppaG1tdmpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM4ODQyMjgsImV4cCI6MjEwOTQ2MDIyOH0.QZjSPfj9cT8vI0QxJvpajaHLADo6-FBY4KAOIRWhPUA";
 
-    function showTab(tabName, event) {
-      if (event) event.preventDefault();
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
-      
-      const targetTab = document.getElementById('tab-' + tabName);
-      if (targetTab) targetTab.classList.add('active');
-      const activeNav = document.getElementById('nav-' + tabName);
-      if (activeNav) activeNav.classList.add('active');
+    let supabaseClient = null;
+    try {
+      if (window.supabase) {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+    } catch (e) {
+      console.log("Supabase Init Warning:", e);
     }
 
-    function openAuthModal(mode, event) {
-      if (event) event.preventDefault();
+    let currentAuthMode = 'login';
+
+    function showTab(tabId) {
+      var tabs = document.querySelectorAll('.tab-content');
+      for (var i = 0; i < tabs.length; i++) {
+        tabs[i].style.display = 'none';
+      }
+      var links = document.querySelectorAll('.nav-links a');
+      for (var j = 0; j < links.length; j++) {
+        links[j].classList.remove('active');
+      }
+
+      var targetTab = document.getElementById('tab-' + tabId);
+      if (targetTab) {
+        targetTab.style.display = 'block';
+      }
+      var targetNav = document.getElementById('nav-' + tabId);
+      if (targetNav) {
+        targetNav.classList.add('active');
+      }
+    }
+
+    function openAuthModal(mode) {
       currentAuthMode = mode;
-      const modal = document.getElementById('authModal');
-      const title = document.getElementById('modalTitle');
-      const submitBtn = document.getElementById('modalSubmitBtn');
-      const usernameGroup = document.getElementById('usernameGroup');
-      
+      var modal = document.getElementById('authModal');
+      var title = document.getElementById('modalTitle');
+      var submitBtn = document.getElementById('modalSubmitBtn');
+      var usernameGroup = document.getElementById('usernameGroup');
+
       if (mode === 'login') {
         title.innerText = 'Masuk ke NEXTYSTUDIO';
         submitBtn.innerText = 'Masuk';
@@ -350,48 +360,27 @@
         submitBtn.innerText = 'Daftar Akun';
         usernameGroup.style.display = 'block';
       }
-      modal.classList.add('active');
+      modal.style.display = 'flex';
     }
 
     function closeAuthModal() {
-      const modal = document.getElementById('authModal');
-      modal.classList.remove('active');
-    }
-
-    // Klik di luar area modal untuk menutup
-    window.onclick = function(event) {
-      const modal = document.getElementById('authModal');
-      if (event.target === modal) closeAuthModal();
-    };
-
-    function sendMessage() {
-      const input = document.getElementById('msgInput');
-      const text = input.value.trim();
-      if (!text) return;
-      const body = document.getElementById('chatMessages');
-      const newMsg = document.createElement('div');
-      newMsg.className = 'msg seller';
-      newMsg.innerHTML = `<b>Kamu:</b> ${text}`;
-      body.appendChild(newMsg);
-      input.value = '';
-      body.scrollTop = body.scrollHeight;
-    }
-
-    function handleKeyPress(e) {
-      if (e.key === 'Enter') sendMessage();
-    }
-
-    function submitSellerForm(e) {
-      e.preventDefault();
-      alert("Pengajuan Toko berhasil dikirim ke Admin/Owner! Status toko kamu sekarang: PENDING.");
-      document.getElementById('sellerForm').reset();
-    }
-
-    function createOrderDemo(prodName) {
-      alert(`Pesanan untuk "${prodName}" dibuat! Kamu otomatis diarahkan ke Ruang Chat MIDMAN.`);
-      showTab('pesan');
+      document.getElementById('authModal').style.display = 'none';
     }
 
     async function handleAuthSubmit(e) {
       e.preventDefault();
-      const email = document.getElementByI
+      var email = document.getElementById('authEmail').value;
+      var password = document.getElementById('authPassword').value;
+      var username = document.getElementById('authUsername').value;
+
+      if (!supabaseClient) {
+        alert("Berhasil " + (currentAuthMode === 'login' ? 'Masuk' : 'Daftar') + "! (Mode Demo)");
+        closeAuthModal();
+        updateUILoggedIn(email);
+        return;
+      }
+
+      if (currentAuthMode === 'register') {
+        const { data, error } = await supabaseClient.auth.signUp({
+          email: email,
+          password
