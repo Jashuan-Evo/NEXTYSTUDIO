@@ -1,7 +1,7 @@
 const SUPABASE_URL = "https://weayjlimtpwhjihmmvjl.supabase.co";
 
 // Tempelkan Publishable Key (anon) milikmu di antara tanda petik di bawah ini:
-const SUPABASE_ANON_KEY = "PASTE_ANON_KEY_KAMU_DI_SINI";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlYXlqbGltdHB3aGppaG1tdmpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM4ODQyMjgsImV4cCI6MjEwOTQ2MDIyOH0.QZjSPfj9cT8vI0QxJvpajaHLADo6-FBY4KAOIRWhPUA";
 
 let supabase = null;
 
