@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXTYSTUDIO - Gaming Marketplace & MIDMAN Platform</title>
+  <title>NEXTYSTUDIO - MIDMAN Manual Escrow</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   
   <style>
@@ -47,15 +47,16 @@
     .filter-btn { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
     .filter-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
 
-    .chat-container { display: flex; background: #1e293b; border-radius: 8px; border: 1px solid #334155; height: 420px; overflow: hidden; }
+    .chat-container { display: flex; background: #1e293b; border-radius: 8px; border: 1px solid #334155; height: 440px; overflow: hidden; }
     .chat-sidebar { width: 32%; border-right: 1px solid #334155; padding: 12px; background: #0f172a; }
     .chat-room-item { padding: 10px; border-radius: 6px; background: #1e293b; cursor: pointer; margin-bottom: 8px; border-left: 3px solid #2563eb; }
     .chat-main { width: 68%; display: flex; flex-direction: column; }
     .chat-header { padding: 12px 15px; background: #1e293b; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
     .chat-body { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-    .msg { padding: 8px 12px; border-radius: 8px; max-width: 80%; font-size: 0.9rem; }
+    .msg { padding: 8px 12px; border-radius: 8px; max-width: 85%; font-size: 0.9rem; }
     .msg.system { background: #334155; text-align: center; max-width: 100%; color: #cbd5e1; font-size: 0.8rem; }
     .msg.buyer { background: #1e3a8a; align-self: flex-start; }
+    .msg.seller-msg { background: #065f46; align-self: flex-start; }
     .msg.owner { background: #831843; align-self: flex-end; border: 1px solid #f43f5e; }
     .chat-footer { padding: 10px; display: flex; gap: 8px; background: #0f172a; }
     .chat-footer input { flex: 1; padding: 8px 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: white; font-size: 0.9rem; }
@@ -88,9 +89,9 @@
     <div class="nav-links">
       <a id="nav-beranda" class="active" onclick="showTab('beranda')"><i class="fa-solid fa-house"></i> Beranda</a>
       <a id="nav-marketplace" onclick="showTab('marketplace')"><i class="fa-solid fa-store"></i> Marketplace</a>
-      <a id="nav-pesan" onclick="showTab('pesan')"><i class="fa-solid fa-comments"></i> Chat MIDMAN</a>
+      <a id="nav-pesan" onclick="showTab('pesan')"><i class="fa-solid fa-comments"></i> Chat Rekber Manual</a>
       <a id="nav-toko" onclick="showTab('toko')"><i class="fa-solid fa-shop"></i> Jual / Toko</a>
-      <a id="nav-owner" style="display:none; color:#f43f5e;" onclick="showTab('owner')"><i class="fa-solid fa-crown"></i> Panel Owner</a>
+      <a id="nav-owner" style="display:none; color:#f43f5e;" onclick="showTab('owner')"><i class="fa-solid fa-crown"></i> Panel Owner (MIDMAN)</a>
       <a id="nav-profil" onclick="showTab('profil')"><i class="fa-solid fa-user"></i> Profil</a>
     </div>
     <div class="auth-buttons" id="authContainer">
@@ -104,8 +105,8 @@
     <div id="tab-beranda" class="tab-content active">
       <div class="hero-banner">
         <h1>Marketplace Gaming <span>NEXTYSTUDIO</span></h1>
-        <p>Jual beli Akun, Diamond, & Jasa Joki aman dengan sistem Escrow MIDMAN.</p>
-        <button class="btn btn-primary btn-lg" onclick="showTab('marketplace')">Jelajahi Katalog G2G</button>
+        <p>Jual beli Akun & Item Aman dengan Sistem Rekber Manual ala WhatsApp (Dimediasi Owner).</p>
+        <button class="btn btn-primary btn-lg" onclick="showTab('marketplace')">Jelajahi Katalog</button>
       </div>
       <div class="section-title"><h2>Produk Unggulan</h2></div>
       <div class="grid-products" id="homeGrid"></div>
@@ -123,26 +124,26 @@
       <div class="grid-products" id="marketGrid"></div>
     </div>
 
-    <!-- Tab Pesan / Chat MIDMAN -->
+    <!-- Tab Pesan / Chat Rekber Manual -->
     <div id="tab-pesan" class="tab-content">
-      <div class="section-title"><h2>Ruang Transaksi & Chat MIDMAN</h2></div>
+      <div class="section-title"><h2>Ruang Diskusi & Rekber Manual</h2></div>
       <div class="chat-container">
         <div class="chat-sidebar">
           <div class="chat-room-item" onclick="selectRoom('TX1029', 'Akun MLBB Mythical Glory')">
             <strong>#TX1029</strong>
-            <p style="font-size:0.75rem; color:#94a3b8;">Akun MLBB Mythical Glory</p>
+            <p style="font-size:0.75rem; color:#94a3b8;">Akun MLBB (Rp 750k)</p>
           </div>
         </div>
         <div class="chat-main">
           <div class="chat-header">
-            <span id="roomTitle" style="font-size:0.9rem; font-weight:bold;">Pilih Ruang Transaksi</span>
-            <span style="font-size:0.75rem; color:#4ade80;"><i class="fa-solid fa-shield-halved"></i> Escrow Aktif</span>
+            <span id="roomTitle" style="font-size:0.9rem; font-weight:bold;">Pilih Transaksi</span>
+            <span style="font-size:0.75rem; color:#4ade80;"><i class="fa-solid fa-headset"></i> Manual Rekber</span>
           </div>
           <div class="chat-body" id="chatBody">
-            <div class="msg system">Silakan pilih transaksi di samping untuk mulai diskusi dengan MIDMAN.</div>
+            <div class="msg system">Alur Manual: Pembeli TF ke Rekening Owner -> Owner Konfirmasi -> Penjual Kirim Barang -> Owner Teruskan Dana ke Penjual.</div>
           </div>
           <div class="chat-footer">
-            <input type="text" id="chatInput" placeholder="Ketik pesan..." onkeypress="if(event.key==='Enter') sendChat()">
+            <input type="text" id="chatInput" placeholder="Ketik pesan atau info transfer..." onkeypress="if(event.key==='Enter') sendChat()">
             <button class="btn btn-primary" onclick="sendChat()"><i class="fa-solid fa-paper-plane"></i></button>
           </div>
         </div>
@@ -151,14 +152,14 @@
 
     <!-- Tab Toko Saya -->
     <div id="tab-toko" class="tab-content">
-      <div class="section-title"><h2>Dashboard Penjual (Seller Center)</h2></div>
+      <div class="section-title"><h2>Dashboard Penjual</h2></div>
       <div class="store-box">
-        <h3 style="margin-bottom:10px;"><i class="fa-solid fa-plus-circle"></i> Tambah Produk Jualan</h3>
-        <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:15px;">Pasang iklan akun atau diamond kamu di sini.</p>
+        <h3 style="margin-bottom:10px;"><i class="fa-solid fa-plus-circle"></i> Pasang Iklan Produk</h3>
+        <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:15px;">Daftarkan jualan kamu agar bisa dipesan pembeli.</p>
         <form onsubmit="postProduct(event)">
           <div class="form-group">
             <label>Judul Produk</label>
-            <input type="text" id="pTitle" required placeholder="Contoh: Akun ML Mythic / 1000 Diamond">
+            <input type="text" id="pTitle" required placeholder="Contoh: Akun ML Mythic">
           </div>
           <div class="form-group">
             <label>Kategori</label>
@@ -177,18 +178,19 @@
       </div>
     </div>
 
-    <!-- Tab Panel Owner -->
+    <!-- Tab Panel Owner / MIDMAN Manual -->
     <div id="tab-owner" class="tab-content">
-      <div class="section-title"><h2><i class="fa-solid fa-crown"></i> Panel Kontrol Owner & MIDMAN</h2></div>
+      <div class="section-title"><h2><i class="fa-solid fa-crown"></i> Panel Kontrol MIDMAN Manual (Owner)</h2></div>
       <div class="owner-panel">
-        <h3 style="margin-bottom: 10px; color: #f43f5e;">Kontrol Transaksi & Escrow</h3>
-        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Panel kontrol eksklusif owner untuk mencairkan atau menahan dana transaksi.</p>
-        <div style="background:#0f172a; padding:12px; border-radius:6px; margin-bottom:10px; border-left:3px solid #f43f5e;">
+        <h3 style="margin-bottom: 10px; color: #f43f5e;">Kontrol Transaksi Masuk (Manual Ala WA)</h3>
+        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Cek mutasi rekening / dana masuk dari pembeli secara manual, lalu klik konfirmasi di bawah.</p>
+        
+        <div style="background:#0f172a; padding:15px; border-radius:6px; margin-bottom:12px; border-left:4px solid #f43f5e;">
           <strong>Transaksi #TX1029</strong> - Akun MLBB (Rp 750.000)<br>
-          <span style="font-size:0.8rem; color:#4ade80;">Status: Dana Ditahan di MIDMAN</span>
-          <div style="margin-top:8px; display:flex; gap:8px;">
-            <button class="btn btn-primary btn-sm" onclick="alert('Dana berhasil dicairkan ke Seller!')">Cairkan Dana ke Seller</button>
-            <button class="btn btn-outline btn-sm" onclick="alert('Dana dikembalikan ke Buyer!')">Refund ke Buyer</button>
+          <span id="txStatus" style="font-size:0.85rem; color:#facc15;">Status: Menunggu Pembeli Transfer ke Owner</span>
+          <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" onclick="ownerAction('confirm_tf')">1. Confirm TF Masuk</button>
+            <button class="btn btn-primary btn-sm" onclick="ownerAction('release_funds')">2. Cairkan Dana ke Penjual</button>
           </div>
         </div>
       </div>
@@ -211,8 +213,8 @@
       <h3 id="modalTitle" style="margin-bottom:15px;">Masuk ke NEXTYSTUDIO</h3>
       <form onsubmit="handleAuthSubmit(event)">
         <div class="form-group">
-          <label>Email (Ketik 'owner' untuk akses panel admin)</label>
-          <input type="email" id="authEmail" required placeholder="email@contoh.com">
+          <label>Email (Ketik 'owner' untuk masuk sebagai MIDMAN)</label>
+          <input type="email" id="authEmail" required placeholder="owner@nextystudio.com">
         </div>
         <div class="form-group">
           <label>Password</label>
@@ -225,6 +227,7 @@
 
   <script>
     var currentAuthMode = 'login';
+    var currentUserEmail = '';
     var products = [
       { title: "Akun Mobile Legends Mythical Glory", cat: "Akun", price: 750000, seller: "NextyStore" },
       { title: "1000 Diamond Pixel World Instan", cat: "Diamond", price: 50000, seller: "PixelKing" },
@@ -252,7 +255,7 @@
           <h3>${p.title}</h3>
           <p class="price">Rp ${p.price.toLocaleString('id-ID')}</p>
           <p class="seller"><i class="fa-solid fa-shop"></i> ${p.seller}</p>
-          <button class="btn btn-primary btn-block" onclick="showTab('pesan')">Beli via MIDMAN</button>
+          <button class="btn btn-primary btn-block" onclick="showTab('pesan')">Beli via Rekber Manual</button>
         </div>
       `).join('');
     }
@@ -266,17 +269,40 @@
 
     function selectRoom(id, title) {
       document.getElementById('roomTitle').innerText = `#${id} - ${title}`;
-      document.getElementById('chatBody').innerHTML = `
-        <div class="msg system">Sistem Escrow: Dana diamankan oleh MIDMAN.</div>
-        <div class="msg owner"><b>Owner (MIDMAN):</b> Halo, silakan lanjutkan transaksi dengan aman.</div>
-      `;
     }
 
     function sendChat() {
       var input = document.getElementById('chatInput');
       if(!input.value.trim()) return;
-      document.getElementById('chatBody').innerHTML += `<div class="msg buyer"><b>Kamu:</b> ${input.value}</div>`;
+      var senderName = currentUserEmail ? currentUserEmail.split('@')[0] : 'Pembeli';
+      var msgClass = currentUserEmail.toLowerCase().includes('owner') ? 'owner' : 'buyer';
+      
+      document.getElementById('chatBody').innerHTML += `
+        <div class="msg ${msgClass}"><b>${senderName}:</b> ${input.value}</div>
+      `;
       input.value = '';
+    }
+
+    // Aksi manual Owner (Ala WhatsApp Rekber)
+    function ownerAction(action) {
+      if(!currentUserEmail.toLowerCase().includes('owner')) {
+        alert("Akses ditolak! Hanya Owner yang bisa mengonfirmasi.");
+        return;
+      }
+
+      if(action === 'confirm_tf') {
+        document.getElementById('txStatus').innerHTML = 'Status: <span style="color:#4ade80;">Dana TF Diterima Owner. Silakan Penjual Kirim Barang!</span>';
+        document.getElementById('chatBody').innerHTML += `
+          <div class="msg system">🔔 [MIDMAN MANUAL]: Pembayaran dari pembeli sudah dicek & masuk ke rekening Owner. Penjual dipersilakan mengirim data akun/item ke pembeli.</div>
+        `;
+        alert("Konfirmasi Berhasil: Dana dinyatakan masuk oleh Owner.");
+      } else if(action === 'release_funds') {
+        document.getElementById('txStatus').innerHTML = 'Status: <span style="color:#38bdf8;">Transaksi Selesai (Dana Dicairkan ke Penjual)</span>';
+        document.getElementById('chatBody').innerHTML += `
+          <div class="msg system">✅ [MIDMAN MANUAL]: Barang/Akun sudah diterima pembeli. Dana telah ditransfer manual oleh Owner ke Penjual. Transaksi Selesai!</div>
+        `;
+        alert("Dana Berhasil Dicairkan ke Penjual!");
+      }
     }
 
     function postProduct(e) {
@@ -284,7 +310,7 @@
       var title = document.getElementById('pTitle').value;
       var cat = document.getElementById('pCat').value;
       var price = Number(document.getElementById('pPrice').value);
-      products.unshift({ title, cat, price, seller: 'Toko Saya' });
+      products.unshift({ title, cat, price, seller: currentUserEmail ? currentUserEmail.split('@')[0] : 'Toko Saya' });
       alert("Produk berhasil dipublish ke marketplace!");
       showTab('marketplace');
     }
@@ -302,18 +328,18 @@
 
     function handleAuthSubmit(e) {
       e.preventDefault();
-      var email = document.getElementById('authEmail').value;
-      alert("Berhasil " + (currentAuthMode === 'login' ? 'Masuk' : 'Daftar') + " sebagai " + email);
+      currentUserEmail = document.getElementById('authEmail').value;
+      alert("Berhasil " + (currentAuthMode === 'login' ? 'Masuk' : 'Daftar') + " sebagai " + currentUserEmail);
       closeAuthModal();
 
       document.getElementById('authContainer').innerHTML = `
-        <span style="color:#4ade80; font-size:0.85rem;">${email}</span>
+        <span style="color:#4ade80; font-size:0.85rem;">${currentUserEmail}</span>
         <button class="btn btn-outline btn-sm" onclick="location.reload()">Keluar</button>
       `;
-      document.getElementById('profEmail').innerText = email;
+      document.getElementById('profEmail').innerText = currentUserEmail;
 
-      if(email.toLowerCase().includes('owner')) {
-        document.getElementById('profRole').innerText = 'Role: OWNER (MIDMAN)';
+      if(currentUserEmail.toLowerCase().includes('owner')) {
+        document.getElementById('profRole').innerText = 'Role: OWNER (MIDMAN UTAMA)';
         document.getElementById('profRole').className = 'role-badge owner';
         document.getElementById('nav-owner').style.display = 'inline-flex';
       } else {
@@ -327,5 +353,5 @@
     });
   </script>
 </body>
-                                   </html>
-                                   
+  </html>
+    
