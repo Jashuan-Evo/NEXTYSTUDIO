@@ -3,10 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXTYSTUDIO - Gaming Marketplace & MIDMAN Platform</title>
+  <title>NEXTYSTUDIO - Gaming Marketplace</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <!-- Supabase JS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -37,29 +35,24 @@
     .hero-banner h1 span { color: #f43f5e; }
     .hero-banner p { color: #94a3b8; margin-bottom: 20px; font-size: 0.95rem; }
     
-    .section-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-left: 4px solid #2563eb; padding-left: 10px; }
-    .grid-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
-    .card-product { background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 16px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+    .section-title { margin-bottom: 20px; border-left: 4px solid #2563eb; padding-left: 10px; }
+    .grid-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+    .card-product { background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 18px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
     .badge-cat { position: absolute; top: 12px; right: 12px; background-color: #0284c7; color: white; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
-    .card-product h3 { font-size: 0.95rem; margin-top: 15px; margin-bottom: 8px; }
-    .card-product .price { color: #4ade80; font-size: 1.15rem; font-weight: bold; margin-bottom: 6px; }
+    .card-product h3 { font-size: 1rem; margin-top: 15px; margin-bottom: 8px; }
+    .card-product .price { color: #4ade80; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px; }
     .card-product .seller { color: #94a3b8; font-size: 0.8rem; margin-bottom: 12px; }
     
-    .filter-tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
-    .filter-btn { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
-    .filter-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
-
-    .owner-panel { background: #1e293b; border: 1px solid #f43f5e; padding: 20px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 0 15px rgba(244,63,94,0.15); }
-    .profile-card, .store-box { background: #1e293b; border: 1px solid #334155; padding: 20px; border-radius: 8px; margin-bottom: 15px; }
-    .role-badge { background: #059669; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; }
-    .role-badge.owner { background: #f43f5e; }
-
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 9999; padding: 15px; }
     .modal-box { background: #1e293b; padding: 25px; border-radius: 10px; width: 100%; max-width: 380px; border: 1px solid #334155; position: relative; }
     .close-btn { position: absolute; top: 12px; right: 15px; font-size: 1.4rem; cursor: pointer; color: #94a3b8; }
     .form-group { margin-bottom: 12px; }
     .form-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; color: #cbd5e1; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; background-color: #0f172a; border: 1px solid #334155; border-radius: 6px; color: white; font-size: 0.9rem; }
+    .form-group input { width: 100%; padding: 10px 12px; background-color: #0f172a; border: 1px solid #334155; border-radius: 6px; color: white; font-size: 0.9rem; }
+    
+    .profile-card, .owner-panel { background: #1e293b; border: 1px solid #334155; padding: 20px; border-radius: 8px; margin-bottom: 15px; }
+    .role-badge { background: #059669; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; }
+    .role-badge.owner { background: #f43f5e; }
 
     @media (max-width: 600px) {
       .navbar { flex-direction: column; text-align: center; }
@@ -75,9 +68,8 @@
     <div class="nav-links">
       <a id="nav-beranda" class="active" onclick="showTab('beranda')"><i class="fa-solid fa-house"></i> Beranda</a>
       <a id="nav-marketplace" onclick="showTab('marketplace')"><i class="fa-solid fa-store"></i> Marketplace</a>
-      <a id="nav-pesan" onclick="showTab('pesan')"><i class="fa-solid fa-comments"></i> Chat MIDMAN</a>
-      <a id="nav-toko" onclick="showTab('toko')"><i class="fa-solid fa-shop"></i> Jual / Toko</a>
-      <!-- Menu Panel Owner (Eksklusif Database) -->
+      <a id="nav-pesan" onclick="showTab('pesan')"><i class="fa-solid fa-comments"></i> Pesan</a>
+      <a id="nav-toko" onclick="showTab('toko')"><i class="fa-solid fa-shop"></i> Toko Saya</a>
       <a id="nav-owner" style="display:none; color:#f43f5e;" onclick="showTab('owner')"><i class="fa-solid fa-crown"></i> Panel Owner</a>
       <a id="nav-profil" onclick="showTab('profil')"><i class="fa-solid fa-user"></i> Profil</a>
     </div>
@@ -92,72 +84,60 @@
     <div id="tab-beranda" class="tab-content active">
       <div class="hero-banner">
         <h1>Marketplace Gaming <span>NEXTYSTUDIO</span></h1>
-        <p>Jual beli Akun, Diamond, & Jasa Joki aman dengan sistem Escrow MIDMAN.</p>
-        <button class="btn btn-primary btn-lg" onclick="showTab('marketplace')">Jelajahi Katalog G2G</button>
+        <p>Jual beli akun game, coin, dan item dengan aman diawasi MIDMAN.</p>
+        <button class="btn btn-primary btn-lg" onclick="showTab('marketplace')">Jelajahi Produk</button>
       </div>
-      <div class="section-title"><h2>Produk Unggulan</h2></div>
-      <div class="grid-products" id="homeGrid"></div>
+      <div class="section-title"><h2>Produk Terpopuler</h2></div>
+      <div class="grid-products">
+        <div class="card-product">
+          <span class="badge-cat">Akun Game</span>
+          <h3>Akun Mobile Legends Mythical Glory</h3>
+          <p class="price">Rp 750.000</p>
+          <p class="seller"><i class="fa-solid fa-shop"></i> Nexty Gaming Store</p>
+          <button class="btn btn-primary btn-block" onclick="showTab('pesan')">Beli via MIDMAN</button>
+        </div>
+      </div>
     </div>
 
     <!-- Tab Marketplace -->
     <div id="tab-marketplace" class="tab-content">
       <div class="section-title"><h2>Katalog Marketplace</h2></div>
-      <div class="filter-tabs">
-        <button class="filter-btn active" onclick="filterCat('Semua', this)">Semua</button>
-        <button class="filter-btn" onclick="filterCat('Akun', this)">Akun Game</button>
-        <button class="filter-btn" onclick="filterCat('Diamond', this)">Top-Up Diamond</button>
-        <button class="filter-btn" onclick="filterCat('Joki', this)">Jasa Joki</button>
+      <div class="grid-products">
+        <div class="card-product">
+          <span class="badge-cat">Akun Game</span>
+          <h3>Akun Mobile Legends Mythical Glory</h3>
+          <p class="price">Rp 750.000</p>
+          <p class="seller"><i class="fa-solid fa-shop"></i> Nexty Gaming Store</p>
+          <button class="btn btn-primary btn-block" onclick="showTab('pesan')">Beli via MIDMAN</button>
+        </div>
       </div>
-      <div class="grid-products" id="marketGrid"></div>
     </div>
 
-    <!-- Tab Pesan / Chat MIDMAN -->
+    <!-- Tab Pesan -->
     <div id="tab-pesan" class="tab-content">
-      <div class="section-title"><h2>Ruang Transaksi & Chat MIDMAN</h2></div>
+      <div class="section-title"><h2>Ruang Chat MIDMAN</h2></div>
       <div style="background:#1e293b; padding:20px; border-radius:8px; border:1px solid #334155;">
-        <p style="color:#94a3b8; font-size:0.9rem;">Sistem chat escrow aktif dan diawasi langsung oleh MIDMAN Utama.</p>
+        <p style="color:#94a3b8; font-size:0.9rem;">Sistem chat transaksi aktif dan siap digunakan.</p>
       </div>
     </div>
 
     <!-- Tab Toko Saya -->
     <div id="tab-toko" class="tab-content">
-      <div class="section-title"><h2>Dashboard Penjual (Seller Center)</h2></div>
-      <div class="store-box">
-        <h3 style="margin-bottom:10px;"><i class="fa-solid fa-plus-circle"></i> Tambah Produk Jualan</h3>
-        <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:15px;">Pasang iklan akun atau diamond kamu di sini.</p>
-        <form onsubmit="postProduct(event)">
-          <div class="form-group">
-            <label>Judul Produk</label>
-            <input type="text" id="pTitle" required placeholder="Contoh: Akun ML Mythic / 1000 Diamond">
-          </div>
-          <div class="form-group">
-            <label>Kategori</label>
-            <select id="pCat">
-              <option value="Akun">Akun Game</option>
-              <option value="Diamond">Top-Up Diamond</option>
-              <option value="Joki">Jasa Joki</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Harga (Rp)</label>
-            <input type="number" id="pPrice" required placeholder="50000">
-          </div>
-          <button type="submit" class="btn btn-primary btn-block">Publish Iklan</button>
-        </form>
+      <div class="section-title"><h2>Kelola Toko Saya</h2></div>
+      <div style="background:#1e293b; padding:20px; border-radius:8px; border:1px solid #334155;">
+        <h3 style="margin-bottom:10px;">Form Pengajuan Toko</h3>
+        <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:15px;">Daftarkan toko kamu untuk mulai berjualan.</p>
+        <button class="btn btn-primary" onclick="alert('Pengajuan toko berhasil dikirim!')">Kirim Pengajuan</button>
       </div>
     </div>
 
-    <!-- Tab Panel Owner (Eksklusif Database Supabase) -->
+    <!-- Tab Owner Panel -->
     <div id="tab-owner" class="tab-content">
-      <div class="section-title"><h2><i class="fa-solid fa-crown"></i> Panel Kontrol Owner & MIDMAN Utama</h2></div>
+      <div class="section-title"><h2>Panel Kontrol Owner</h2></div>
       <div class="owner-panel">
-        <h3 style="margin-bottom: 10px; color: #f43f5e;"><i class="fa-solid fa-shield-halved"></i> Kontrol Escrow & Status Database</h3>
-        <p style="color: #f43f5e; font-size: 0.85rem; margin-bottom: 15px;">Status Akses: Terverifikasi sebagai OWNER di Supabase (`profiles.role = 'owner'`).</p>
-        <div style="background:#0f172a; padding:15px; border-radius:6px; border-left:4px solid #f43f5e;">
-          <strong>Kontrol Keamanan Global</strong>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:5px;">Semua transaksi escrow dan verifikasi seller berada di bawah kendali penuh database Anda.</p>
-          <button class="btn btn-primary btn-sm" style="margin-top:12px;" onclick="alert('Sistem database Supabase aktif & aman!')">Sinkronisasi Database</button>
-        </div>
+        <h3 style="color:#f43f5e; margin-bottom:10px;">Kontrol Transaksi Escrow</h3>
+        <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:15px;">Panel khusus untuk mencairkan atau menahan dana transaksi.</p>
+        <button class="btn btn-primary btn-sm" onclick="alert('Dana berhasil dicairkan ke Seller!')">Cairkan Dana Transaksi</button>
       </div>
     </div>
 
@@ -178,7 +158,7 @@
       <h3 id="modalTitle" style="margin-bottom:15px;">Masuk ke NEXTYSTUDIO</h3>
       <form onsubmit="handleAuthSubmit(event)">
         <div class="form-group">
-          <label>Email</label>
+          <label>Email (Ketik 'owner' untuk akses panel admin)</label>
           <input type="email" id="authEmail" required placeholder="email@contoh.com">
         </div>
         <div class="form-group">
@@ -191,22 +171,7 @@
   </div>
 
   <script>
-    const SUPABASE_URL = "https://weayjlimtpwhjihmmvjl.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlYXlqbGltdHB3aGppaG1tdmpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM4ODQyMjgsImV4cCI6MjEwOTQ2MDIyOH0.QZjSPfj9cT8vI0QxJvpajaHLADo6-FBY4KAOIRWhPUA";
-
-    var supabaseClient = null;
-    try {
-      if (window.supabase) {
-        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      }
-    } catch(e) {}
-
     var currentAuthMode = 'login';
-    var products = [
-      { title: "Akun Mobile Legends Mythical Glory", cat: "Akun", price: 750000, seller: "NextyStore" },
-      { title: "1000 Diamond Pixel World Instan", cat: "Diamond", price: 50000, seller: "PixelKing" },
-      { title: "Jasa Joki Rank Epic ke Mythic", cat: "Joki", price: 90000, seller: "ProJoki" }
-    ];
 
     function showTab(tabId) {
       var tabs = document.querySelectorAll('.tab-content');
@@ -214,41 +179,10 @@
       var links = document.querySelectorAll('.nav-links a');
       for (var j = 0; j < links.length; j++) links[j].classList.remove('active');
 
-      document.getElementById('tab-' + tabId).classList.add('active');
-      document.getElementById('nav-' + tabId).classList.add('active');
-      if(tabId === 'beranda') renderProducts('Semua', 'homeGrid');
-      if(tabId === 'marketplace') renderProducts('Semua', 'marketGrid');
-    }
-
-    function renderProducts(cat, gridId) {
-      var grid = document.getElementById(gridId);
-      var filtered = cat === 'Semua' ? products : products.filter(p => p.cat === cat);
-      grid.innerHTML = filtered.map(p => `
-        <div class="card-product">
-          <span class="badge-cat">${p.cat}</span>
-          <h3>${p.title}</h3>
-          <p class="price">Rp ${p.price.toLocaleString('id-ID')}</p>
-          <p class="seller"><i class="fa-solid fa-shop"></i> ${p.seller}</p>
-          <button class="btn btn-primary btn-block" onclick="showTab('pesan')">Beli via MIDMAN</button>
-        </div>
-      `).join('');
-    }
-
-    function filterCat(cat, btn) {
-      var btns = document.querySelectorAll('.filter-btn');
-      for(var b of btns) b.classList.remove('active');
-      btn.classList.add('active');
-      renderProducts(cat, 'marketGrid');
-    }
-
-    function postProduct(e) {
-      e.preventDefault();
-      var title = document.getElementById('pTitle').value;
-      var cat = document.getElementById('pCat').value;
-      var price = Number(document.getElementById('pPrice').value);
-      products.unshift({ title, cat, price, seller: 'Toko Saya' });
-      alert("Produk berhasil dipublish ke marketplace!");
-      showTab('marketplace');
+      var target = document.getElementById('tab-' + tabId);
+      if(target) target.classList.add('active');
+      var targetNav = document.getElementById('nav-' + tabId);
+      if(targetNav) targetNav.classList.add('active');
     }
 
     function openAuthModal(mode) {
@@ -262,81 +196,29 @@
       document.getElementById('authModal').style.display = 'none';
     }
 
-    async function handleAuthSubmit(e) {
+    function handleAuthSubmit(e) {
       e.preventDefault();
       var email = document.getElementById('authEmail').value;
-      var password = document.getElementById('authPassword').value;
+      
+      alert("Berhasil " + (currentAuthMode === 'login' ? 'Masuk' : 'Daftar') + " sebagai " + email);
+      closeAuthModal();
 
-      if (!supabaseClient) {
-        alert("Supabase belum terhubung.");
-        return;
-      }
-
-      if (currentAuthMode === 'register') {
-        var res = await supabaseClient.auth.signUp({ email, password });
-        if (res.error) alert("Gagal Daftar: " + res.error.message);
-        else { alert("Pendaftaran Berhasil! Silakan Masuk."); openAuthModal('login'); }
-      } else {
-        var res = await supabaseClient.auth.signInWithPassword({ email, password });
-        if (res.error) {
-          alert("Gagal Login: " + res.error.message);
-        } else {
-          alert("Berhasil Login!");
-          closeAuthModal();
-          checkUserSession();
-        }
-      }
-    }
-
-    async function checkUserSession() {
-      if (!supabaseClient) return;
-      try {
-        var sessionRes = await supabaseClient.auth.getSession();
-        if (sessionRes.data && sessionRes.data.session) {
-          var user = sessionRes.data.session.user;
-          var email = user.email;
-
-          // Ambil role langsung dari tabel profiles Supabase
-          var profileRes = await supabaseClient.from('profiles').select('role').eq('id', user.id).single();
-          var role = (profileRes.data && profileRes.data.role) ? profileRes.data.role : 'buyer';
-
-          updateUIAfterLogin(email, role);
-        }
-      } catch (err) {
-        console.log("Session info:", err);
-      }
-    }
-
-    function updateUIAfterLogin(email, role) {
       document.getElementById('authContainer').innerHTML = `
-        <span style="color:#4ade80; font-size:0.85rem;"><i class="fa-solid fa-user-check"></i> ${email}</span>
-        <button class="btn btn-outline btn-sm" onclick="handleLogout()">Keluar</button>
+        <span style="color:#4ade80; font-size:0.85rem;">${email}</span>
+        <button class="btn btn-outline btn-sm" onclick="location.reload()">Keluar</button>
       `;
       document.getElementById('profEmail').innerText = email;
 
-      // Kunci panel owner mutlak berdasarkan database supabase
-      if (role.toLowerCase() === 'owner') {
-        document.getElementById('profRole').innerText = 'Role: OWNER (MIDMAN UTAMA)';
+      if (email.toLowerCase().includes('owner')) {
+        document.getElementById('profRole').innerText = 'Role: OWNER (MIDMAN)';
         document.getElementById('profRole').className = 'role-badge owner';
         document.getElementById('nav-owner').style.display = 'inline-flex';
       } else {
-        document.getElementById('profRole').innerText = 'Role: ' + role.toUpperCase();
+        document.getElementById('profRole').innerText = 'Role: BUYER';
         document.getElementById('nav-owner').style.display = 'none';
       }
     }
-
-    async function handleLogout() {
-      if (supabaseClient) await supabaseClient.auth.signOut();
-      location.reload();
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      renderProducts('Semua', 'homeGrid');
-      if (supabaseClient) {
-        setTimeout(checkUserSession, 400);
-      }
-    });
   </script>
 </body>
-  </html>
-  
+        </html>
+            
