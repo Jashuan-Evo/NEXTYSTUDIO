@@ -215,23 +215,39 @@
     var currentAuthMode = 'login';
     var currentUserEmail = '';
     
-    // Penyimpanan lokal agar postingan produk & chat tidak hilang saat di-refresh
-    var products = JSON.parse(localStorage.getItem('nexty_products')) || [];
-    var transactions = JSON.parse(localStorage.getItem('nexty_txs')) || [];
+    // Penyimpanan lokal aman dengan pelindung data kosong
+    var products = [];
+    var transactions = [];
+    try {
+      products = JSON.parse(localStorage.getItem('nexty_products')) || [];
+      transactions = JSON.parse(localStorage.getItem('nexty_txs')) || [];
+    } catch(e) {
+      products = [];
+      transactions = [];
+    }
+    
     var activeTxId = null;
 
     function saveToStorage() {
-      localStorage.setItem('nexty_products', JSON.stringify(products));
-      localStorage.setItem('nexty_txs', JSON.stringify(transactions));
+      try {
+        localStorage.setItem('nexty_products', JSON.stringify(products));
+        localStorage.setItem('nexty_txs', JSON.stringify(transactions));
+      } catch(e) {}
     }
 
     function showTab(tabId) {
       var tabs = document.querySelectorAll('.tab-content');
-      for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+      for (var i = 0; i < tabs.length; i++) {
+        if(tabs[i]) tabs[i].classList.remove('active');
+      }
       var links = document.querySelectorAll('.nav-links a');
-      for (var j = 0; j < links.length; j++) links[j].classList.remove('active');
+      for (var j = 0; j < links.length; j++) {
+        if(links[j]) links[j].classList.remove('active');
+      }
 
-      document.getElementById('tab-' + tabId).classList.add('active');
+      var targetTab = document.getElementById('tab-' + tabId);
+      if(targetTab) targetTab.classList.add('active');
+
       var activeNav = document.getElementById('nav-' + tabId);
       if(activeNav) activeNav.classList.add('active');
 
@@ -264,7 +280,7 @@
     function filterCat(cat, btn) {
       var btns = document.querySelectorAll('.filter-btn');
       for(var b of btns) b.classList.remove('active');
-      btn.classList.add('active');
+      if(btn) btn.classList.add('active');
       renderProducts(cat, 'marketGrid');
     }
 
@@ -307,7 +323,9 @@
       var tx = transactions.find(t => t.id === id);
       if(!tx) return;
 
-      document.getElementById('roomTitle').innerText = `#${tx.id} - ${tx.title}`;
+      var roomTitle = document.getElementById('roomTitle');
+      if(roomTitle) roomTitle.innerText = `#${tx.id} - ${tx.title}`;
+      
       renderChatMessages(tx);
       renderChatSidebar();
       renderOwnerControl(tx);
@@ -326,13 +344,15 @@
 
     function sendChat() {
       if(!activeTxId) {
-        alert("Pilih atau buat transaksi terlebih dahulu!");
+        alert("Pilih atau buat transaksi terlebih dahulu di tab Chat Rekber!");
         return;
       }
       var input = document.getElementById('chatInput');
       if(!input || !input.value.trim()) return;
 
       var tx = transactions.find(t => t.id === activeTxId);
+      if(!tx) return;
+
       var senderName = currentUserEmail ? currentUserEmail.split('@')[0] : 'Pembeli';
       var senderType = currentUserEmail.toLowerCase().includes('owner') ? 'owner' : 'buyer';
 
@@ -354,15 +374,4 @@
           <span style="font-size:0.85rem; color:#facc15;">${tx.status}</span>
           <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
             <button class="btn btn-primary btn-sm" onclick="ownerConfirmTF('${tx.id}')">1. Telah Dikonfirmasi (TF Masuk)</button>
-            <button class="btn btn-outline btn-sm" onclick="ownerFinishTx('${tx.id}')">2. Selesaikan & Minta Norek Seller</button>
-          </div>
-        </div>
-      `;
-    }
-
-    function ownerConfirmTF(txId) {
-      if(!currentUserEmail.toLowerCase().includes('owner')) {
-        alert("Hanya Owner yang dapat mengkonfirmasi!");
-        return;
-      }
-      var tx = transactions.find(t => t.id ===
+            <button class="btn btn-outline btn-sm
