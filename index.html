@@ -10,10 +10,10 @@
     body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; padding-bottom: 50px; }
     
     .navbar { display: flex; justify-content: space-between; align-items: center; background-color: #1e293b; padding: 15px 20px; border-bottom: 2px solid #334155; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 10px; }
-    .logo { font-size: 1.4rem; font-weight: 800; color: #38bdf8; text-decoration: none; }
+    .logo { font-size: 1.4rem; font-weight: 800; color: #38bdf8; text-decoration: none; cursor: pointer; }
     .logo span { color: #f43f5e; }
-    .nav-links { display: flex; list-style: none; gap: 8px; flex-wrap: wrap; }
-    .nav-links a { color: #94a3b8; text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 6px; font-size: 0.9rem; transition: all 0.2s; cursor: pointer; }
+    .nav-links { display: flex; list-style: none; gap: 6px; flex-wrap: wrap; }
+    .nav-links a { color: #94a3b8; text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 6px; font-size: 0.88rem; transition: all 0.2s; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
     .nav-links a:hover, .nav-links a.active { color: #ffffff; background-color: #334155; }
     .auth-buttons { display: flex; gap: 8px; }
     
@@ -27,6 +27,7 @@
     
     .container { max-width: 1100px; margin: 25px auto; padding: 0 15px; }
     .tab-content { display: none; }
+    .tab-content.active { display: block; }
     
     .hero-banner { background: linear-gradient(135deg, #1e1b4b, #0f172a); border: 1px solid #312e81; border-radius: 12px; padding: 35px 20px; text-align: center; margin-bottom: 30px; }
     .hero-banner h1 { font-size: 1.8rem; margin-bottom: 12px; }
@@ -82,148 +83,19 @@
       .chat-main { width: 100%; height: 400px; }
     }
   </style>
-
-  <script>
-    var currentAuthMode = 'login';
-    var supabaseClient = null;
-
-    function showTab(tabId) {
-      var tabs = document.querySelectorAll('.tab-content');
-      for (var i = 0; i < tabs.length; i++) {
-        tabs[i].style.display = 'none';
-      }
-      var links = document.querySelectorAll('.nav-links a');
-      for (var j = 0; j < links.length; j++) {
-        links[j].className = links[j].className.replace(' active', '');
-      }
-
-      var targetTab = document.getElementById('tab-' + tabId);
-      if (targetTab) {
-        targetTab.style.display = 'block';
-      }
-      var targetNav = document.getElementById('nav-' + tabId);
-      if (targetNav) {
-        targetNav.className += ' active';
-      }
-    }
-
-    function openAuthModal(mode) {
-      currentAuthMode = mode;
-      var modal = document.getElementById('authModal');
-      var title = document.getElementById('modalTitle');
-      var submitBtn = document.getElementById('modalSubmitBtn');
-      var usernameGroup = document.getElementById('usernameGroup');
-
-      if (!modal) return;
-
-      if (mode === 'login') {
-        if (title) title.innerText = 'Masuk ke NEXTYSTUDIO';
-        if (submitBtn) submitBtn.innerText = 'Masuk';
-        if (usernameGroup) usernameGroup.style.display = 'none';
-      } else {
-        if (title) title.innerText = 'Daftar Akun Baru';
-        if (submitBtn) submitBtn.innerText = 'Daftar Akun';
-        if (usernameGroup) usernameGroup.style.display = 'block';
-      }
-      modal.style.display = 'flex';
-    }
-
-    function closeAuthModal() {
-      var modal = document.getElementById('authModal');
-      if (modal) modal.style.display = 'none';
-    }
-
-    function sendMessage() {
-      var input = document.getElementById('msgInput');
-      if (!input) return;
-      var text = input.value.trim();
-      if (!text) return;
-
-      var body = document.getElementById('chatMessages');
-      var newMsg = document.createElement('div');
-      newMsg.className = 'msg seller';
-      newMsg.innerHTML = '<b>Kamu:</b> ' + text;
-      body.appendChild(newMsg);
-      input.value = '';
-      body.scrollTop = body.scrollHeight;
-    }
-
-    function handleKeyPress(e) {
-      if (e.key === 'Enter') sendMessage();
-    }
-
-    function submitSellerForm(e) {
-      e.preventDefault();
-      alert("Pengajuan Toko berhasil dikirim ke Admin/Owner! Status toko kamu sekarang: PENDING.");
-    }
-
-    function createOrderDemo(prodName) {
-      alert("Pesanan untuk '" + prodName + "' dibuat! Kamu otomatis diarahkan ke Ruang Chat MIDMAN.");
-      showTab('pesan');
-    }
-
-    function updateUILoggedIn(email) {
-      var container = document.getElementById('authContainer');
-      if (container) {
-        container.innerHTML = '<span style="color:#4ade80; font-size:0.85rem; align-self:center;"><i class="fa-solid fa-user-check"></i> ' + email + '</span><button class="btn btn-outline" onclick="location.reload()">Keluar</button>';
-      }
-      var prof = document.getElementById('profUsername');
-      if (prof) prof.innerText = email;
-    }
-
-    async function handleAuthSubmit(e) {
-      e.preventDefault();
-      var email = document.getElementById('authEmail').value;
-      var password = document.getElementById('authPassword').value;
-      var username = document.getElementById('authUsername') ? document.getElementById('authUsername').value : '';
-
-      if (!supabaseClient) {
-        alert("Berhasil " + (currentAuthMode === 'login' ? 'Masuk' : 'Daftar') + "! (Mode Demo UI)");
-        closeAuthModal();
-        updateUILoggedIn(email);
-        return;
-      }
-
-      if (currentAuthMode === 'register') {
-        var res = await supabaseClient.auth.signUp({
-          email: email,
-          password: password,
-          options: { data: { username: username } }
-        });
-        if (res.error) {
-          alert("Gagal Daftar: " + res.error.message);
-        } else {
-          alert("Pendaftaran Berhasil! Silakan cek email kamu atau langsung login.");
-          closeAuthModal();
-        }
-      } else {
-        var res = await supabaseClient.auth.signInWithPassword({
-          email: email,
-          password: password
-        });
-        if (res.error) {
-          alert("Gagal Login: " + res.error.message);
-        } else {
-          alert("Berhasil Login!");
-          closeAuthModal();
-          updateUILoggedIn(email);
-        }
-      }
-    }
-  </script>
 </head>
 <body>
 
   <!-- Navigation -->
   <nav class="navbar">
-    <a href="javascript:void(0)" class="logo" onclick="showTab('beranda')"><i class="fa-solid fa-gamepad"></i> NEXTY<span>STUDIO</span></a>
+    <a class="logo" onclick="showTab('beranda')"><i class="fa-solid fa-gamepad"></i> NEXTY<span>STUDIO</span></a>
     <div class="nav-links">
-      <a href="javascript:void(0)" id="nav-beranda" class="active" onclick="showTab('beranda')"><i class="fa-solid fa-house"></i> Beranda</a>
-      <a href="javascript:void(0)" id="nav-marketplace" onclick="showTab('marketplace')"><i class="fa-solid fa-store"></i> Marketplace</a>
-      <a href="javascript:void(0)" id="nav-pesan" onclick="showTab('pesan')"><i class="fa-solid fa-comments"></i> Pesan</a>
-      <a href="javascript:void(0)" id="nav-transaksi" onclick="showTab('transaksi')"><i class="fa-solid fa-shield-halved"></i> Transaksi MIDMAN</a>
-      <a href="javascript:void(0)" id="nav-toko" onclick="showTab('toko')"><i class="fa-solid fa-shop"></i> Toko Saya</a>
-      <a href="javascript:void(0)" id="nav-profil" onclick="showTab('profil')"><i class="fa-solid fa-user"></i> Profil</a>
+      <a id="nav-beranda" class="active" onclick="showTab('beranda')"><i class="fa-solid fa-house"></i> Beranda</a>
+      <a id="nav-marketplace" onclick="showTab('marketplace')"><i class="fa-solid fa-store"></i> Marketplace</a>
+      <a id="nav-pesan" onclick="showTab('pesan')"><i class="fa-solid fa-comments"></i> Pesan</a>
+      <a id="nav-transaksi" onclick="showTab('transaksi')"><i class="fa-solid fa-shield-halved"></i> Transaksi MIDMAN</a>
+      <a id="nav-toko" onclick="showTab('toko')"><i class="fa-solid fa-shop"></i> Toko Saya</a>
+      <a id="nav-profil" onclick="showTab('profil')"><i class="fa-solid fa-user"></i> Profil</a>
     </div>
     <div class="auth-buttons" id="authContainer">
       <button type="button" class="btn btn-outline" onclick="openAuthModal('login')">Masuk</button>
@@ -233,7 +105,7 @@
 
   <main class="container">
     <!-- Tab 1: Beranda -->
-    <div id="tab-beranda" class="tab-content" style="display: block;">
+    <div id="tab-beranda" class="tab-content active">
       <div class="hero-banner">
         <h1>Marketplace Gaming dengan Sistem <span>MIDMAN Wajib</span></h1>
         <p>Jual beli akun game, coin, dan item dengan aman 100% diawasi oleh MIDMAN terpercaya.</p>
@@ -389,4 +261,124 @@
           </div>
           <button type="submit" class="btn btn-primary">Kirim Pengajuan Toko</button>
         </form>
-      </d
+      </div>
+    </div>
+
+    <!-- Tab 6: Profil -->
+    <div id="tab-profil" class="tab-content">
+      <div class="section-title"><h2>Pengaturan Profil</h2></div>
+      <div class="profile-card">
+        <h3 id="profUsername" style="color:#38bdf8;">Tamu / Belum Login</h3>
+        <p style="margin-top:5px; font-size:0.85rem; color:#94a3b8;">Role Default: <strong>Buyer</strong></p>
+        <hr style="margin: 15px 0; border:0; border-top:1px solid #334155;">
+        <p style="font-size:0.9rem;"><strong>Database Status:</strong> Connected to Supabase (`NextyStudioMarket`)</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Pop-up Modal Auth -->
+  <div class="modal-overlay" id="authModal" onclick="if(event.target===this) closeAuthModal();">
+    <div class="modal-box">
+      <span class="close-btn" onclick="closeAuthModal()">&times;</span>
+      <h3 id="modalTitle" style="margin-bottom:15px;">Masuk ke NEXTYSTUDIO</h3>
+      <form onsubmit="handleAuthSubmit(event)">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="authEmail" required placeholder="email@contoh.com">
+        </div>
+        <div class="form-group">
+          <label>Kata Sandi</label>
+          <input type="password" id="authPassword" required placeholder="******">
+        </div>
+        <div class="form-group" id="usernameGroup" style="display:none;">
+          <label>Username</label>
+          <input type="text" id="authUsername" placeholder="username_kamu">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="modalSubmitBtn">Masuk</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    var currentAuthMode = 'login';
+    var supabaseClient = null;
+
+    function showTab(tabId) {
+      var tabs = document.querySelectorAll('.tab-content');
+      for (var i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove('active');
+      }
+      var links = document.querySelectorAll('.nav-links a');
+      for (var j = 0; j < links.length; j++) {
+        links[j].classList.remove('active');
+      }
+
+      var targetTab = document.getElementById('tab-' + tabId);
+      if (targetTab) {
+        targetTab.classList.add('active');
+      }
+      var targetNav = document.getElementById('nav-' + tabId);
+      if (targetNav) {
+        targetNav.classList.add('active');
+      }
+    }
+
+    function openAuthModal(mode) {
+      currentAuthMode = mode;
+      var modal = document.getElementById('authModal');
+      var title = document.getElementById('modalTitle');
+      var submitBtn = document.getElementById('modalSubmitBtn');
+      var usernameGroup = document.getElementById('usernameGroup');
+
+      if (!modal) return;
+
+      if (mode === 'login') {
+        if (title) title.innerText = 'Masuk ke NEXTYSTUDIO';
+        if (submitBtn) submitBtn.innerText = 'Masuk';
+        if (usernameGroup) usernameGroup.style.display = 'none';
+      } else {
+        if (title) title.innerText = 'Daftar Akun Baru';
+        if (submitBtn) submitBtn.innerText = 'Daftar Akun';
+        if (usernameGroup) usernameGroup.style.display = 'block';
+      }
+      modal.style.display = 'flex';
+    }
+
+    function closeAuthModal() {
+      var modal = document.getElementById('authModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function sendMessage() {
+      var input = document.getElementById('msgInput');
+      if (!input) return;
+      var text = input.value.trim();
+      if (!text) return;
+
+      var body = document.getElementById('chatMessages');
+      var newMsg = document.createElement('div');
+      newMsg.className = 'msg seller';
+      newMsg.innerHTML = '<b>Kamu:</b> ' + text;
+      body.appendChild(newMsg);
+      input.value = '';
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function handleKeyPress(e) {
+      if (e.key === 'Enter') sendMessage();
+    }
+
+    function submitSellerForm(e) {
+      e.preventDefault();
+      alert("Pengajuan Toko berhasil dikirim ke Admin/Owner! Status toko kamu sekarang: PENDING.");
+    }
+
+    function createOrderDemo(prodName) {
+      alert("Pesanan untuk '" + prodName + "' dibuat! Kamu otomatis diarahkan ke Ruang Chat MIDMAN.");
+      showTab('pesan');
+    }
+
+    function updateUILoggedIn(email) {
+      var container = document.getElementById('authContainer');
+      if (container) {
+        container.innerHTML = '<span style="color:#4ade80; font-size:0.85rem; align-self:center;"><i class="fa-solid fa-user-check"></i> ' + email + '</span><button class=
