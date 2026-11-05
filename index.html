@@ -13,12 +13,12 @@
     .navbar { display: flex; justify-content: space-between; align-items: center; background-color: #1e293b; padding: 15px 20px; border-bottom: 2px solid #334155; position: sticky; top: 0; z-index: 1000; flex-wrap: wrap; gap: 10px; }
     .logo { font-size: 1.4rem; font-weight: 800; color: #38bdf8; text-decoration: none; cursor: pointer; }
     .logo span { color: #f43f5e; }
-    .nav-links { display: flex; list-style: none; gap: 6px; flex-wrap: wrap; }
+    .nav-links { display: flex; list-style: none; gap: 6px; flex-wrap: wrap; z-index: 1001; }
     .nav-links a { color: #94a3b8; text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 6px; font-size: 0.88rem; transition: all 0.2s; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
     .nav-links a:hover, .nav-links a.active { color: #ffffff; background-color: #334155; }
-    .auth-buttons { display: flex; gap: 8px; align-items: center; }
+    .auth-buttons { display: flex; gap: 8px; align-items: center; z-index: 1001; }
     
-    .btn { padding: 8px 16px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+    .btn { padding: 10px 16px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.9rem; position: relative; z-index: 10; }
     .btn-primary { background-color: #2563eb; color: white; }
     .btn-primary:hover { background-color: #1d4ed8; }
     .btn-outline { background: transparent; border: 1px solid #475569; color: #e2e8f0; }
@@ -26,7 +26,7 @@
     .btn-block { width: 100%; display: block; margin-top: 10px; }
     .btn-sm { padding: 4px 8px; font-size: 0.8rem; }
     
-    .container { max-width: 1100px; margin: 25px auto; padding: 0 15px; }
+    .container { max-width: 1100px; margin: 25px auto; padding: 0 15px; position: relative; z-index: 1; }
     .tab-content { display: none; }
     .tab-content.active { display: block !important; }
     
@@ -37,18 +37,18 @@
     
     .section-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-left: 4px solid #2563eb; padding-left: 10px; }
     .grid-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
-    .card-product { background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 16px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+    .card-product { background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 16px; position: relative; display: flex; flex-direction: column; justify-content: space-between; z-index: 2; }
     .badge-cat { position: absolute; top: 12px; right: 12px; background-color: #0284c7; color: white; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
     .card-product h3 { font-size: 0.95rem; margin-top: 15px; margin-bottom: 8px; }
     .card-product .price { color: #4ade80; font-size: 1.15rem; font-weight: bold; margin-bottom: 6px; }
     .card-product .seller { color: #94a3b8; font-size: 0.8rem; margin-bottom: 12px; }
     .empty-state { text-align: center; color: #94a3b8; padding: 40px; background: #1e293b; border-radius: 8px; border: 1px solid #334155; grid-column: 1 / -1; }
     
-    .filter-tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
+    .filter-tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; position: relative; z-index: 5; }
     .filter-btn { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
     .filter-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
 
-    .chat-container { display: flex; background: #1e293b; border-radius: 8px; border: 1px solid #334155; height: 440px; overflow: hidden; }
+    .chat-container { display: flex; background: #1e293b; border-radius: 8px; border: 1px solid #334155; height: 440px; overflow: hidden; position: relative; z-index: 2; }
     .chat-sidebar { width: 35%; border-right: 1px solid #334155; padding: 10px; background: #0f172a; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
     .chat-room-item { padding: 10px; border-radius: 6px; background: #1e293b; cursor: pointer; border-left: 3px solid #334155; transition: 0.2s; }
     .chat-room-item.active-room { border-left-color: #2563eb; background: #334155; }
@@ -62,14 +62,14 @@
     .chat-footer { padding: 10px; display: flex; gap: 8px; background: #0f172a; }
     .chat-footer input { flex: 1; padding: 8px 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: white; font-size: 0.9rem; }
 
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 9999; padding: 15px; }
-    .modal-box { background: #1e293b; padding: 25px; border-radius: 10px; width: 100%; max-width: 380px; border: 1px solid #334155; position: relative; }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 99999; padding: 15px; }
+    .modal-box { background: #1e293b; padding: 25px; border-radius: 10px; width: 100%; max-width: 380px; border: 1px solid #334155; position: relative; z-index: 100000; }
     .close-btn { position: absolute; top: 12px; right: 15px; font-size: 1.4rem; cursor: pointer; color: #94a3b8; }
     .form-group { margin-bottom: 12px; }
     .form-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; color: #cbd5e1; }
     .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; background-color: #0f172a; border: 1px solid #334155; border-radius: 6px; color: white; font-size: 0.9rem; }
     
-    .profile-card, .store-box, .owner-panel { background: #1e293b; border: 1px solid #334155; padding: 20px; border-radius: 8px; margin-bottom: 15px; }
+    .profile-card, .store-box, .owner-panel { background: #1e293b; border: 1px solid #334155; padding: 20px; border-radius: 8px; margin-bottom: 15px; position: relative; z-index: 2; }
     .role-badge { background: #059669; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; }
     .role-badge.owner { background: #f43f5e; }
 
@@ -96,8 +96,8 @@
       <a id="nav-profil" onclick="showTab('profil')"><i class="fa-solid fa-user"></i> Profil</a>
     </div>
     <div class="auth-buttons" id="authContainer">
-      <button type="button" class="btn btn-outline" onclick="openAuthModal('login')">Masuk</button>
-      <button type="button" class="btn btn-primary" onclick="openAuthModal('register')">Daftar</button>
+      <button type="button" class="btn btn-outline btn-sm" onclick="openAuthModal('login')">Masuk</button>
+      <button type="button" class="btn btn-primary btn-sm" onclick="openAuthModal('register')">Daftar</button>
     </div>
   </nav>
 
@@ -107,7 +107,7 @@
       <div class="hero-banner">
         <h1>Marketplace Gaming <span>NEXTYSTUDIO</span></h1>
         <p>Jual beli Akun & Item Aman dengan Sistem Rekber Manual (TF ke QRIS/Norek Owner).</p>
-        <button class="btn btn-primary btn-lg" onclick="showTab('marketplace')">Jelajahi Katalog</button>
+        <button type="button" class="btn btn-primary btn-lg" onclick="showTab('marketplace')">Jelajahi Katalog</button>
       </div>
       <div class="section-title"><h2>Produk Terbaru Dari Penjual</h2></div>
       <div class="grid-products" id="homeGrid"></div>
@@ -117,10 +117,10 @@
     <div id="tab-marketplace" class="tab-content">
       <div class="section-title"><h2>Katalog Marketplace</h2></div>
       <div class="filter-tabs">
-        <button class="filter-btn active" onclick="filterCat('Semua', this)">Semua</button>
-        <button class="filter-btn" onclick="filterCat('Akun', this)">Akun Game</button>
-        <button class="filter-btn" onclick="filterCat('Diamond', this)">Top-Up Diamond</button>
-        <button class="filter-btn" onclick="filterCat('Joki', this)">Jasa Joki</button>
+        <button type="button" class="filter-btn active" onclick="filterCat('Semua', this)">Semua</button>
+        <button type="button" class="filter-btn" onclick="filterCat('Akun', this)">Akun Game</button>
+        <button type="button" class="filter-btn" onclick="filterCat('Diamond', this)">Top-Up Diamond</button>
+        <button type="button" class="filter-btn" onclick="filterCat('Joki', this)">Jasa Joki</button>
       </div>
       <div class="grid-products" id="marketGrid"></div>
     </div>
@@ -140,7 +140,7 @@
           </div>
           <div class="chat-footer">
             <input type="text" id="chatInput" placeholder="Ketik pesan atau konfirmasi..." onkeypress="if(event.key==='Enter') sendChat()">
-            <button class="btn btn-primary" onclick="sendChat()"><i class="fa-solid fa-paper-plane"></i></button>
+            <button type="button" class="btn btn-primary" onclick="sendChat()"><i class="fa-solid fa-paper-plane"></i></button>
           </div>
         </div>
       </div>
@@ -214,9 +214,26 @@
   <script>
     var currentAuthMode = 'login';
     var currentUserEmail = '';
+    
+    // Inisialisasi aman dengan try-catch agar tidak pernah crash
     var products = [];
     var transactions = [];
+    try {
+      products = JSON.parse(localStorage.getItem('nexty_products')) || [];
+      transactions = JSON.parse(localStorage.getItem('nexty_txs')) || [];
+    } catch(err) {
+      products = [];
+      transactions = [];
+    }
+    
     var activeTxId = null;
+
+    function saveToStorage() {
+      try {
+        localStorage.setItem('nexty_products', JSON.stringify(products));
+        localStorage.setItem('nexty_txs', JSON.stringify(transactions));
+      } catch(err) {}
+    }
 
     function showTab(tabId) {
       var tabs = document.querySelectorAll('.tab-content');
@@ -250,12 +267,14 @@
       }
 
       grid.innerHTML = filtered.map(function(p) {
+        var safeTitle = (p.title || '').replace(/'/g, "\\'");
+        var safeSeller = (p.seller || '').replace(/'/g, "\\'");
         return '<div class="card-product">' +
-          '<span class="badge-cat">' + p.cat + '</span>' +
-          '<h3>' + p.title + '</h3>' +
-          '<p class="price">Rp ' + p.price.toLocaleString('id-ID') + '</p>' +
-          '<p class="seller"><i class="fa-solid fa-shop"></i> ' + p.seller + '</p>' +
-          '<button class="btn btn-primary btn-block" onclick="createTransaction(\'' + p.title.replace(/'/g, "\\'") + '\', ' + p.price + ', \'' + p.seller.replace(/'/g, "\\'") + '\')">Beli via Rekber Manual</button>' +
+          '<span class="badge-cat">' + (p.cat || '') + '</span>' +
+          '<h3>' + (p.title || '') + '</h3>' +
+          '<p class="price">Rp ' + Number(p.price || 0).toLocaleString('id-ID') + '</p>' +
+          '<p class="seller"><i class="fa-solid fa-shop"></i> ' + (p.seller || '') + '</p>' +
+          '<button type="button" class="btn btn-primary btn-block" onclick="createTransaction(\'' + safeTitle + '\', ' + (p.price || 0) + ', \'' + safeSeller + '\')">Beli via Rekber Manual</button>' +
           '</div>';
       }).join('');
     }
@@ -276,10 +295,11 @@
         seller: seller,
         status: 'Menunggu Pembeli Transfer ke QRIS/Norek',
         messages: [
-          { sender: 'system', text: '📢 [TRANSAKSI #' + txId + ' DIBUAT]<br>Produk: <b>' + title + '</b> (Rp ' + price.toLocaleString('id-ID') + ')<br>Penjual: ' + seller + '<br><br>Silahkan TF ke QRIS / Norek Owner:<br><b>BCA: 1234567890 a.n Nexty Studio / QRIS Resmi Nexty</b>' }
+          { sender: 'system', text: '📢 [TRANSAKSI #' + txId + ' DIBUAT]<br>Produk: <b>' + title + '</b> (Rp ' + Number(price).toLocaleString('id-ID') + ')<br>Penjual: ' + seller + '<br><br>Silahkan TF ke QRIS / Norek Owner:<br><b>BCA: 1234567890 a.n Nexty Studio / QRIS Resmi Nexty</b>' }
         ]
       };
       transactions.unshift(newTx);
+      saveToStorage();
       alert("Ruang chat rekber manual berhasil dibuat!");
       showTab('pesan');
       selectRoom(txId);
@@ -315,11 +335,11 @@
 
     function renderChatMessages(tx) {
       var chatBody = document.getElementById('chatBody');
-      if(!chatBody) return;
+      if(!chatBody || !tx || !tx.messages) return;
       chatBody.innerHTML = tx.messages.map(function(m) {
         if(m.sender === 'system') return '<div class="msg system">' + m.text + '</div>';
         if(m.sender === 'owner') return '<div class="msg owner"><b>Owner (MIDMAN):</b> ' + m.text + '</div>';
-        return '<div class="msg buyer"><b>' + m.name + ':</b> ' + m.text + '</div>';
+        return '<div class="msg buyer"><b>' + (m.name || 'User') + ':</b> ' + m.text + '</div>';
       }).join('');
       chatBody.scrollTop = chatBody.scrollHeight;
     }
@@ -339,24 +359,11 @@
       var senderType = currentUserEmail.toLowerCase().includes('owner') ? 'owner' : 'buyer';
 
       tx.messages.push({ sender: senderType, name: senderName, text: input.value });
+      saveToStorage();
       input.value = '';
       renderChatMessages(tx);
     }
 
     function renderOwnerControl(tx) {
       var panel = document.getElementById('ownerControlPanel');
-      if(!panel) return;
-      panel.innerHTML = '<h3 style="margin-bottom: 10px; color: #f43f5e;">Kontrol Transaksi #' + tx.id + '</h3>' +
-        '<p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Produk: <b>' + tx.title + '</b> | Harga: Rp ' + tx.price.toLocaleString('id-ID') + '</p>' +
-        '<div style="background:#0f172a; padding:15px; border-radius:6px; margin-bottom:12px; border-left:4px solid #f43f5e;">' +
-        '<strong>Status Saat Ini:</strong><br>' +
-        '<span style="font-size:0.85rem; color:#facc15;">' + tx.status + '</span>' +
-        '<div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">' +
-        '<button class="btn btn-primary btn-sm" onclick="ownerConfirmTF(\'' + tx.id + '\')">1. Telah Dikonfirmasi (TF Masuk)</button>' +
-        '<button class="btn btn-outline btn-sm" onclick="ownerFinishTx(\'' + tx.id + '\')">2. Selesaikan & Minta Norek Seller</button>' +
-        '</div></div>';
-    }
-
-    function ownerConfirmTF(txId) {
-      if(!currentUserEmail.toLowerCase().includes('owner')) {
-        alert("Hanya Owner yang dapat mengkonfirma
+      if(!panel || !tx) retur
