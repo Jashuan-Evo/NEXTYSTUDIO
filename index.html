@@ -36,7 +36,6 @@
     .hero-banner h1 { font-size: 1.8rem; margin-bottom: 12px; }
     .hero-banner h1 span { color: #f43f5e; }
     .hero-banner p { color: #94a3b8; margin-bottom: 20px; font-size: 0.95rem; }
-    .hero-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
     
     .section-title { margin-bottom: 20px; border-left: 4px solid #2563eb; padding-left: 10px; }
     .grid-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
@@ -127,20 +126,6 @@
           <p class="seller"><i class="fa-solid fa-shop"></i> Nexty Gaming Store</p>
           <button class="btn btn-primary btn-block" onclick="createOrderDemo('MLBB Account')">Beli via MIDMAN</button>
         </div>
-        <div class="card-product">
-          <span class="badge-cat">Mata Uang</span>
-          <h3>1000 Diamond Pixel World</h3>
-          <p class="price">Rp 50.000</p>
-          <p class="seller"><i class="fa-solid fa-shop"></i> Coin Master Shop</p>
-          <button class="btn btn-primary btn-block" onclick="createOrderDemo('Diamond Pixel World')">Beli via MIDMAN</button>
-        </div>
-        <div class="card-product">
-          <span class="badge-cat">Item Game</span>
-          <h3>Item RPG Maker MV Pack Custom City</h3>
-          <p class="price">Rp 120.000</p>
-          <p class="seller"><i class="fa-solid fa-shop"></i> Nexty Studio Asset</p>
-          <button class="btn btn-primary btn-block" onclick="createOrderDemo('Item RPG Maker')">Beli via MIDMAN</button>
-        </div>
       </div>
     </div>
 
@@ -220,29 +205,6 @@
           <p style="font-size:0.8rem; color:#94a3b8; margin-top:5px;">Setelah pembeli konfirmasi terima, MIDMAN mencairkan dana ke penjual.</p>
         </div>
       </div>
-      <div style="overflow-x:auto;">
-        <h3>Riwayat Transaksi Kamu</h3>
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>ID Transaksi</th>
-              <th>Produk</th>
-              <th>Total</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>#TX1029</td>
-              <td>Akun MLBB Mythical Glory</td>
-              <td>Rp 750.000</td>
-              <td><span class="badge-status">Penitipan Dana</span></td>
-              <td><button class="btn btn-outline" style="padding:4px 8px; font-size:0.75rem;" onclick="showTab('pesan')">Buka Chat MIDMAN</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
 
     <!-- Tab 5: Toko Saya -->
@@ -258,10 +220,7 @@
           </div>
           <div class="form-group">
             <label>Deskripsi Barang yang Akan Dijual</label>
-            <textarea rows="3" required placeholder="Jelaskan akun game, coin, atau item yang akan kamu jual..."></textarea>
-          </div>
-          <div class="form-group">
-            <label style="font-size:0.8rem;"><input type="checkbox" required> Saya menyetujui semua peraturan MIDMAN & NEXTYSTUDIO</label>
+            <textarea rows="3" required placeholder="Jelaskan akun game, coin, atau item..."></textarea>
           </div>
           <button type="submit" class="btn btn-primary">Kirim Pengajuan Toko</button>
         </form>
@@ -280,7 +239,7 @@
           </div>
         </div>
         <hr style="margin: 15px 0; border:0; border-top:1px solid #334155;">
-        <p style="font-size:0.9rem;"><strong>Database Status:</strong> Terhubung ke Supabase (`NextyStudioMarket`)</p>
+        <p style="font-size:0.9rem;"><strong>Database Status:</strong> Terhubung ke Supabase</p>
       </div>
     </div>
   </main>
@@ -308,7 +267,7 @@
     </div>
   </div>
 
-  <!-- JavaScript Utama & Koneksi Supabase -->
+  <!-- JavaScript Supabase & Logic -->
   <script>
     const SUPABASE_URL = "https://weayjlimtpwhjihmmvjl.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlYXlqbGltdHB3aGppaG1tdmpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM4ODQyMjgsImV4cCI6MjEwOTQ2MDIyOH0.QZjSPfj9cT8vI0QxJvpajaHLADo6-FBY4KAOIRWhPUA";
@@ -326,22 +285,14 @@
 
     function showTab(tabId) {
       var tabs = document.querySelectorAll('.tab-content');
-      for (var i = 0; i < tabs.length; i++) {
-        tabs[i].classList.remove('active');
-      }
+      for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
       var links = document.querySelectorAll('.nav-links a');
-      for (var j = 0; j < links.length; j++) {
-        links[j].classList.remove('active');
-      }
+      for (var j = 0; j < links.length; j++) links[j].classList.remove('active');
 
       var targetTab = document.getElementById('tab-' + tabId);
-      if (targetTab) {
-        targetTab.classList.add('active');
-      }
+      if (targetTab) targetTab.classList.add('active');
       var targetNav = document.getElementById('nav-' + tabId);
-      if (targetNav) {
-        targetNav.classList.add('active');
-      }
+      if (targetNav) targetNav.classList.add('active');
     }
 
     function openAuthModal(mode) {
@@ -374,4 +325,61 @@
       var input = document.getElementById('msgInput');
       if (!input) return;
       var text = input.value.trim();
-      if (!text) retur
+      if (!text) return;
+
+      var body = document.getElementById('chatMessages');
+      var newMsg = document.createElement('div');
+      newMsg.className = 'msg seller';
+      newMsg.innerHTML = '<b>Kamu:</b> ' + text;
+      body.appendChild(newMsg);
+      input.value = '';
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function handleKeyPress(e) {
+      if (e.key === 'Enter') sendMessage();
+    }
+
+    function submitSellerForm(e) {
+      e.preventDefault();
+      alert("Pengajuan Toko berhasil dikirim ke Admin/Owner!");
+    }
+
+    function createOrderDemo(prodName) {
+      alert("Pesanan untuk '" + prodName + "' dibuat!");
+      showTab('pesan');
+    }
+
+    function updateUIUser(email, role) {
+      var container = document.getElementById('authContainer');
+      if (container) {
+        container.innerHTML = '<span style="color:#4ade80; font-size:0.85rem; align-self:center;"><i class="fa-solid fa-user-check"></i> ' + email + '</span><button class="btn btn-outline btn-sm" onclick="handleLogout()">Keluar</button>';
+      }
+      var profUser = document.getElementById('profUsername');
+      if (profUser) profUser.innerText = email;
+
+      var profRole = document.getElementById('profRole');
+      if (profRole) {
+        profRole.innerText = 'Role: ' + (role ? role.toUpperCase() : 'BUYER');
+      }
+    }
+
+    async function handleAuthSubmit(e) {
+      e.preventDefault();
+      var email = document.getElementById('authEmail').value;
+      var password = document.getElementById('authPassword').value;
+      var username = document.getElementById('authUsername') ? document.getElementById('authUsername').value : '';
+
+      if (!supabaseClient) {
+        alert("Koneksi Supabase belum siap.");
+        return;
+      }
+
+      if (currentAuthMode === 'register') {
+        var res = await supabaseClient.auth.signUp({
+          email: email,
+          password: password,
+          options: { data: { username: username } }
+        });
+        if (res.error) {
+          a
