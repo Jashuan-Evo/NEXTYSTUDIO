@@ -49,9 +49,10 @@
     .filter-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
 
     .chat-container { display: flex; background: #1e293b; border-radius: 8px; border: 1px solid #334155; height: 440px; overflow: hidden; }
-    .chat-sidebar { width: 32%; border-right: 1px solid #334155; padding: 12px; background: #0f172a; }
-    .chat-room-item { padding: 10px; border-radius: 6px; background: #1e293b; cursor: pointer; margin-bottom: 8px; border-left: 3px solid #2563eb; }
-    .chat-main { width: 68%; display: flex; flex-direction: column; }
+    .chat-sidebar { width: 35%; border-right: 1px solid #334155; padding: 10px; background: #0f172a; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+    .chat-room-item { padding: 10px; border-radius: 6px; background: #1e293b; cursor: pointer; border-left: 3px solid #334155; transition: 0.2s; }
+    .chat-room-item.active-room { border-left-color: #2563eb; background: #334155; }
+    .chat-main { width: 65%; display: flex; flex-direction: column; }
     .chat-header { padding: 12px 15px; background: #1e293b; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
     .chat-body { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
     .msg { padding: 8px 12px; border-radius: 8px; max-width: 85%; font-size: 0.9rem; }
@@ -76,8 +77,8 @@
       .navbar { flex-direction: column; text-align: center; }
       .nav-links { justify-content: center; }
       .chat-container { flex-direction: column; height: 480px; }
-      .chat-sidebar { width: 100%; height: 80px; }
-      .chat-main { width: 100%; height: 400px; }
+      .chat-sidebar { width: 100%; height: 90px; }
+      .chat-main { width: 100%; height: 390px; }
     }
   </style>
 </head>
@@ -91,7 +92,7 @@
       <a id="nav-marketplace" onclick="showTab('marketplace')"><i class="fa-solid fa-store"></i> Marketplace</a>
       <a id="nav-pesan" onclick="showTab('pesan')"><i class="fa-solid fa-comments"></i> Chat Rekber</a>
       <a id="nav-toko" onclick="showTab('toko')"><i class="fa-solid fa-shop"></i> Jual / Toko</a>
-      <a id="nav-owner" style="display:none; color:#f43f5e;" onclick="showTab('owner')"><i class="fa-solid fa-crown"></i> Panel Owner (MIDMAN)</a>
+      <a id="nav-owner" style="display:none; color:#f43f5e;" onclick="showTab('owner')"><i class="fa-solid fa-crown"></i> Panel Owner</a>
       <a id="nav-profil" onclick="showTab('profil')"><i class="fa-solid fa-user"></i> Profil</a>
     </div>
     <div class="auth-buttons" id="authContainer">
@@ -124,26 +125,23 @@
       <div class="grid-products" id="marketGrid"></div>
     </div>
 
-    <!-- Tab Pesan / Chat Rekber Manual -->
+    <!-- Tab Pesan / Chat Rekber Dinamis -->
     <div id="tab-pesan" class="tab-content">
       <div class="section-title"><h2>Ruang Diskusi & Rekber Manual</h2></div>
       <div class="chat-container">
-        <div class="chat-sidebar">
-          <div class="chat-room-item" onclick="selectRoom('TX1029', 'Transaksi Manual Rekber')">
-            <strong>#TX1029</strong>
-            <p style="font-size:0.75rem; color:#94a3b8;">Ruang Diskusi Utama</p>
-          </div>
+        <div class="chat-sidebar" id="chatSidebarList">
+          <!-- Daftar kamar chat akan muncul otomatis saat pembeli klik "Beli via Rekber Manual" -->
         </div>
         <div class="chat-main">
           <div class="chat-header">
-            <span id="roomTitle" style="font-size:0.9rem; font-weight:bold;">#TX1029 - Rekber Manual</span>
-            <span style="font-size:0.75rem; color:#4ade80;"><i class="fa-solid fa-headset"></i> Aktif</span>
+            <span id="roomTitle" style="font-size:0.9rem; font-weight:bold;">Pilih Transaksi</span>
+            <span style="font-size:0.75rem; color:#4ade80;"><i class="fa-solid fa-headset"></i> Rekber Manual</span>
           </div>
           <div class="chat-body" id="chatBody">
-            <div class="msg system">📢 INSTRUKSI: Silahkan TF ke QRIS / Norek Owner di bawah ini:<br><b>BCA: 1234567890 a.n Nexty Studio / QRIS Resmi Nexty</b></div>
+            <div class="msg system">Silakan pilih atau buat transaksi dari katalog marketplace untuk mulai chat rekber.</div>
           </div>
           <div class="chat-footer">
-            <input type="text" id="chatInput" placeholder="Ketik pesan atau konfirmasi..." onkeypress="if(event.key==='Enter') sendChat()">
+            <input type="text" id="chatInput" placeholder="Ketik pesan atau info transfer..." onkeypress="if(event.key==='Enter') sendChat()">
             <button class="btn btn-primary" onclick="sendChat()"><i class="fa-solid fa-paper-plane"></i></button>
           </div>
         </div>
@@ -181,18 +179,8 @@
     <!-- Tab Panel Owner / MIDMAN Manual -->
     <div id="tab-owner" class="tab-content">
       <div class="section-title"><h2><i class="fa-solid fa-crown"></i> Panel Kontrol MIDMAN Manual (Owner)</h2></div>
-      <div class="owner-panel">
-        <h3 style="margin-bottom: 10px; color: #f43f5e;">Kontrol Status Transaksi #TX1029</h3>
-        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Cek mutasi dana masuk secara manual lalu update status di bawah.</p>
-        
-        <div style="background:#0f172a; padding:15px; border-radius:6px; margin-bottom:12px; border-left:4px solid #f43f5e;">
-          <strong>Transaksi #TX1029</strong><br>
-          <span id="txStatus" style="font-size:0.85rem; color:#facc15;">Status: Menunggu Pembeli Transfer ke QRIS/Norek</span>
-          <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
-            <button class="btn btn-primary btn-sm" onclick="ownerConfirmTF()">1. Telah Dikonfirmasi (TF Masuk)</button>
-            <button class="btn btn-outline btn-sm" onclick="ownerFinishTx()">2. Selesaikan & Minta Norek Seller</button>
-          </div>
-        </div>
+      <div class="owner-panel" id="ownerControlPanel">
+        <p style="color:#94a3b8; font-size:0.9rem;">Pilih salah satu ruang chat transaksi di tab "Chat Rekber" atau buat transaksi untuk mengontrol statusnya.</p>
       </div>
     </div>
 
@@ -228,7 +216,9 @@
   <script>
     var currentAuthMode = 'login';
     var currentUserEmail = '';
-    var products = []; // Katalog dikosongkan agar penjual yang memajang mandiri
+    var products = []; // Katalog bersih kosong
+    var transactions = []; // Ruang chat dinamis
+    var activeTxId = null;
 
     function showTab(tabId) {
       var tabs = document.querySelectorAll('.tab-content');
@@ -240,6 +230,7 @@
       document.getElementById('nav-' + tabId).classList.add('active');
       if(tabId === 'beranda') renderProducts('Semua', 'homeGrid');
       if(tabId === 'marketplace') renderProducts('Semua', 'marketGrid');
+      if(tabId === 'pesan') renderChatSidebar();
     }
 
     function renderProducts(cat, gridId) {
@@ -247,17 +238,17 @@
       var filtered = cat === 'Semua' ? products : products.filter(p => p.cat === cat);
       
       if(filtered.length === 0) {
-        grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-box-open" style="font-size:2rem; margin-bottom:10px;"></i><p>Belum ada produk yang dipasang oleh penjual.</p></div>`;
+        grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-box-open" style="font-size:2rem; margin-bottom:10px;"></i><p>Belum ada produk dari penjual. Silakan pasang iklan di menu "Jual / Toko".</p></div>`;
         return;
       }
 
-      grid.innerHTML = filtered.map(p => `
+      grid.innerHTML = filtered.map((p, index) => `
         <div class="card-product">
           <span class="badge-cat">${p.cat}</span>
           <h3>${p.title}</h3>
           <p class="price">Rp ${p.price.toLocaleString('id-ID')}</p>
           <p class="seller"><i class="fa-solid fa-shop"></i> ${p.seller}</p>
-          <button class="btn btn-primary btn-block" onclick="showTab('pesan')">Beli via Rekber Manual</button>
+          <button class="btn btn-primary btn-block" onclick="createTransaction('${p.title}', ${p.price}, '${p.seller}')">Beli via Rekber Manual</button>
         </div>
       `).join('');
     }
@@ -269,93 +260,106 @@
       renderProducts(cat, 'marketGrid');
     }
 
-    function selectRoom(id, title) {
-      document.getElementById('roomTitle').innerText = `#${id} - ${title}`;
+    // Buat transaksi baru saat pembeli klik beli produk
+    function createTransaction(title, price, seller) {
+      var txId = 'TX' + Math.floor(1000 + Math.random() * 9000);
+      var newTx = {
+        id: txId,
+        title: title,
+        price: price,
+        seller: seller,
+        status: 'Menunggu Pembeli Transfer ke QRIS/Norek',
+        messages: [
+          { sender: 'system', text: `📢 [TRANSAKSI #${txId} DIBUAT]<br>Produk: <b>${title}</b> (Rp ${price.toLocaleString('id-ID')})<br>Penjual: ${seller}<br><br>Silahkan TF ke QRIS / Norek Owner:<br><b>BCA: 1234567890 a.n Nexty Studio / QRIS Resmi Nexty</b>` }
+        ]
+      };
+      transactions.unshift(newTx);
+      alert("Ruang chat rekber berhasil dibuat!");
+      showTab('pesan');
+      selectRoom(txId);
+    }
+
+    function renderChatSidebar() {
+      var sidebar = document.getElementById('chatSidebarList');
+      if(transactions.length === 0) {
+        sidebar.innerHTML = `<p style="font-size:0.8rem; color:#94a3b8; text-align:center; padding:20px;">Belum ada transaksi aktif. Silakan pilih produk di Marketplace.</p>`;
+        return;
+      }
+      sidebar.innerHTML = transactions.map(tx => `
+        <div class="chat-room-item ${activeTxId === tx.id ? 'active-room' : ''}" onclick="selectRoom('${tx.id}')">
+          <strong>#${tx.id}</strong>
+          <p style="font-size:0.75rem; color:#94a3b8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${tx.title}</p>
+        </div>
+      `).join('');
+    }
+
+    function selectRoom(id) {
+      activeTxId = id;
+      var tx = transactions.find(t => t.id === id);
+      if(!tx) return;
+
+      document.getElementById('roomTitle').innerText = `#${tx.id} - ${tx.title}`;
+      renderChatMessages(tx);
+      renderChatSidebar();
+      renderOwnerControl(tx);
+    }
+
+    function renderChatMessages(tx) {
+      var chatBody = document.getElementById('chatBody');
+      chatBody.innerHTML = tx.messages.map(m => {
+        if(m.sender === 'system') return `<div class="msg system">${m.text}</div>`;
+        if(m.sender === 'owner') return `<div class="msg owner"><b>Owner (MIDMAN):</b> ${m.text}</div>`;
+        return `<div class="msg buyer"><b>${m.name}:</b> ${m.text}</div>`;
+      }).join('');
+      chatBody.scrollTop = chatBody.scrollHeight;
     }
 
     function sendChat() {
+      if(!activeTxId) {
+        alert("Pilih atau buat transaksi terlebih dahulu di Marketplace!");
+        return;
+      }
       var input = document.getElementById('chatInput');
       if(!input.value.trim()) return;
+
+      var tx = transactions.find(t => t.id === activeTxId);
       var senderName = currentUserEmail ? currentUserEmail.split('@')[0] : 'Pembeli';
-      var msgClass = currentUserEmail.toLowerCase().includes('owner') ? 'owner' : 'buyer';
-      
-      document.getElementById('chatBody').innerHTML += `
-        <div class="msg ${msgClass}"><b>${senderName}:</b> ${input.value}</div>
-      `;
+      var senderType = currentUserEmail.toLowerCase().includes('owner') ? 'owner' : 'buyer';
+
+      tx.messages.push({ sender: senderType, name: senderName, text: input.value });
       input.value = '';
+      renderChatMessages(tx);
     }
 
-    function ownerConfirmTF() {
+    // Panel Kontrol Owner Dinamis
+    function renderOwnerControl(tx) {
+      var panel = document.getElementById('ownerControlPanel');
+      panel.innerHTML = `
+        <h3 style="margin-bottom: 10px; color: #f43f5e;">Kontrol Transaksi #${tx.id}</h3>
+        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Produk: <b>${tx.title}</b> | Harga: Rp ${tx.price.toLocaleString('id-ID')}</p>
+        
+        <div style="background:#0f172a; padding:15px; border-radius:6px; margin-bottom:12px; border-left:4px solid #f43f5e;">
+          <strong>Status Saat Ini:</strong><br>
+          <span style="font-size:0.85rem; color:#facc15;">${tx.status}</span>
+          <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" onclick="ownerConfirmTF('${tx.id}')">1. Telah Dikonfirmasi (TF Masuk)</button>
+            <button class="btn btn-outline btn-sm" onclick="ownerFinishTx('${tx.id}')">2. Selesaikan & Minta Norek Seller</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function ownerConfirmTF(txId) {
       if(!currentUserEmail.toLowerCase().includes('owner')) {
         alert("Hanya Owner yang dapat mengkonfirmasi!");
         return;
       }
-      document.getElementById('txStatus').innerHTML = 'Status: <span style="color:#4ade80;">Telah Dikonfirmasi (Dana Masuk)</span>';
-      document.getElementById('chatBody').innerHTML += `
-        <div class="msg system">✅ [TELAH DIKONFIRMASI] Dana sudah masuk ke QRIS/Norek Owner. Silakan Penjual kirim data barang/akun ke Pembeli!</div>
-      `;
-      alert("Berhasil dikonfirmasi! Status: Telah Dikonfirmasi.");
+      var tx = transactions.find(t => t.id === txId);
+      tx.status = 'Telah Dikonfirmasi (Dana Masuk)';
+      tx.messages.push({ sender: 'system', text: `✅ [TELAH DIKONFIRMASI] Dana sudah masuk ke QRIS/Norek Owner. Silakan Penjual kirim data barang/akun ke Pembeli!` });
+      selectRoom(txId);
+      alert("Status transaksi diubah menjadi: Telah Dikonfirmasi.");
     }
 
-    function ownerFinishTx() {
-      if(!currentUserEmail.toLowerCase().includes('owner')) {
-        alert("Hanya Owner yang dapat menyelesaikan transaksi!");
-        return;
-      }
-      document.getElementById('txStatus').innerHTML = 'Status: <span style="color:#38bdf8;">Transaksi Selesai (Menunggu Norek Seller)</span>';
-      document.getElementById('chatBody').innerHTML += `
-        <div class="msg system">🎉 [TRANSAKSI SELESAI] Pembeli sudah menerima barang dengan aman. <b>Pemberitahuan untuk Penjual:</b> Silakan kirimkan nomor rekening (norek) kamu ke chat untuk pencairan dana!</div>
-      `;
-      alert("Transaksi selesai! Notifikasi norek penjual dikirim ke chat.");
-    }
-
-    function postProduct(e) {
-      e.preventDefault();
-      var title = document.getElementById('pTitle').value;
-      var cat = document.getElementById('pCat').value;
-      var price = Number(document.getElementById('pPrice').value);
-      products.unshift({ title, cat, price, seller: currentUserEmail ? currentUserEmail.split('@')[0] : 'Toko Penjual' });
-      alert("Produk berhasil dipublish ke marketplace!");
-      showTab('marketplace');
-    }
-
-    function openAuthModal(mode) {
-      currentAuthMode = mode;
-      document.getElementById('modalTitle').innerText = mode === 'login' ? 'Masuk ke NEXTYSTUDIO' : 'Daftar Akun Baru';
-      document.getElementById('modalSubmitBtn').innerText = mode === 'login' ? 'Masuk' : 'Daftar';
-      document.getElementById('authModal').style.display = 'flex';
-    }
-
-    function closeAuthModal() {
-      document.getElementById('authModal').style.display = 'none';
-    }
-
-    function handleAuthSubmit(e) {
-      e.preventDefault();
-      currentUserEmail = document.getElementById('authEmail').value;
-      alert("Berhasil " + (currentAuthMode === 'login' ? 'Masuk' : 'Daftar') + " sebagai " + currentUserEmail);
-      closeAuthModal();
-
-      document.getElementById('authContainer').innerHTML = `
-        <span style="color:#4ade80; font-size:0.85rem;">${currentUserEmail}</span>
-        <button class="btn btn-outline btn-sm" onclick="location.reload()">Keluar</button>
-      `;
-      document.getElementById('profEmail').innerText = currentUserEmail;
-
-      if(currentUserEmail.toLowerCase().includes('owner')) {
-        document.getElementById('profRole').innerText = 'Role: OWNER (MIDMAN)';
-        document.getElementById('profRole').className = 'role-badge owner';
-        document.getElementById('nav-owner').style.display = 'inline-flex';
-      } else {
-        document.getElementById('profRole').innerText = 'Role: BUYER / SELLER';
-        document.getElementById('nav-owner').style.display = 'none';
-      }
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      renderProducts('Semua', 'homeGrid');
-    });
-  </script>
-</body>
-  </html>
-            
+    function ownerFinishTx(txId) {
+      if(!currentUserEmail.toLowerCase().includes(
