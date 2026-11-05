@@ -42,6 +42,7 @@
     .card-product h3 { font-size: 0.95rem; margin-top: 15px; margin-bottom: 8px; }
     .card-product .price { color: #4ade80; font-size: 1.15rem; font-weight: bold; margin-bottom: 6px; }
     .card-product .seller { color: #94a3b8; font-size: 0.8rem; margin-bottom: 12px; }
+    .empty-state { text-align: center; color: #94a3b8; padding: 40px; background: #1e293b; border-radius: 8px; border: 1px solid #334155; grid-column: 1 / -1; }
     
     .filter-tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
     .filter-btn { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
@@ -107,7 +108,7 @@
         <p>Jual beli Akun & Item Aman dengan Sistem Rekber Manual (TF ke QRIS/Norek Owner).</p>
         <button class="btn btn-primary btn-lg" onclick="showTab('marketplace')">Jelajahi Katalog</button>
       </div>
-      <div class="section-title"><h2>Produk Unggulan</h2></div>
+      <div class="section-title"><h2>Produk Terbaru Dari Penjual</h2></div>
       <div class="grid-products" id="homeGrid"></div>
     </div>
 
@@ -128,21 +129,21 @@
       <div class="section-title"><h2>Ruang Diskusi & Rekber Manual</h2></div>
       <div class="chat-container">
         <div class="chat-sidebar">
-          <div class="chat-room-item" onclick="selectRoom('TX1029', 'Akun MLBB Mythical Glory')">
+          <div class="chat-room-item" onclick="selectRoom('TX1029', 'Transaksi Manual Rekber')">
             <strong>#TX1029</strong>
-            <p style="font-size:0.75rem; color:#94a3b8;">Akun MLBB (Rp 750k)</p>
+            <p style="font-size:0.75rem; color:#94a3b8;">Ruang Diskusi Utama</p>
           </div>
         </div>
         <div class="chat-main">
           <div class="chat-header">
-            <span id="roomTitle" style="font-size:0.9rem; font-weight:bold;">#TX1029 - Akun MLBB</span>
-            <span style="font-size:0.75rem; color:#4ade80;"><i class="fa-solid fa-headset"></i> Rekber Manual</span>
+            <span id="roomTitle" style="font-size:0.9rem; font-weight:bold;">#TX1029 - Rekber Manual</span>
+            <span style="font-size:0.75rem; color:#4ade80;"><i class="fa-solid fa-headset"></i> Aktif</span>
           </div>
           <div class="chat-body" id="chatBody">
             <div class="msg system">📢 INSTRUKSI: Silahkan TF ke QRIS / Norek Owner di bawah ini:<br><b>BCA: 1234567890 a.n Nexty Studio / QRIS Resmi Nexty</b></div>
           </div>
           <div class="chat-footer">
-            <input type="text" id="chatInput" placeholder="Ketik pesan / konfirmasi..." onkeypress="if(event.key==='Enter') sendChat()">
+            <input type="text" id="chatInput" placeholder="Ketik pesan atau konfirmasi..." onkeypress="if(event.key==='Enter') sendChat()">
             <button class="btn btn-primary" onclick="sendChat()"><i class="fa-solid fa-paper-plane"></i></button>
           </div>
         </div>
@@ -154,7 +155,7 @@
       <div class="section-title"><h2>Dashboard Penjual</h2></div>
       <div class="store-box">
         <h3 style="margin-bottom:10px;"><i class="fa-solid fa-plus-circle"></i> Pasang Iklan Produk</h3>
-        <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:15px;">Daftarkan jualan kamu agar bisa dipesan pembeli.</p>
+        <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:15px;">Daftarkan jualan kamu agar tampil di marketplace.</p>
         <form onsubmit="postProduct(event)">
           <div class="form-group">
             <label>Judul Produk</label>
@@ -181,14 +182,14 @@
     <div id="tab-owner" class="tab-content">
       <div class="section-title"><h2><i class="fa-solid fa-crown"></i> Panel Kontrol MIDMAN Manual (Owner)</h2></div>
       <div class="owner-panel">
-        <h3 style="margin-bottom: 10px; color: #f43f5e;">Kontrol Transaksi #TX1029</h3>
-        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Cek mutasi dana masuk dari pembeli secara manual lalu klik tombol di bawah.</p>
+        <h3 style="margin-bottom: 10px; color: #f43f5e;">Kontrol Status Transaksi #TX1029</h3>
+        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Cek mutasi dana masuk secara manual lalu update status di bawah.</p>
         
         <div style="background:#0f172a; padding:15px; border-radius:6px; margin-bottom:12px; border-left:4px solid #f43f5e;">
-          <strong>Transaksi #TX1029</strong> - Akun MLBB (Rp 750.000)<br>
+          <strong>Transaksi #TX1029</strong><br>
           <span id="txStatus" style="font-size:0.85rem; color:#facc15;">Status: Menunggu Pembeli Transfer ke QRIS/Norek</span>
           <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
-            <button class="btn btn-primary btn-sm" onclick="ownerConfirmTF()">1. Konfirmasi TF Masuk</button>
+            <button class="btn btn-primary btn-sm" onclick="ownerConfirmTF()">1. Telah Dikonfirmasi (TF Masuk)</button>
             <button class="btn btn-outline btn-sm" onclick="ownerFinishTx()">2. Selesaikan & Minta Norek Seller</button>
           </div>
         </div>
@@ -227,11 +228,7 @@
   <script>
     var currentAuthMode = 'login';
     var currentUserEmail = '';
-    var products = [
-      { title: "Akun Mobile Legends Mythical Glory", cat: "Akun", price: 750000, seller: "NextyStore" },
-      { title: "1000 Diamond Pixel World Instan", cat: "Diamond", price: 50000, seller: "PixelKing" },
-      { title: "Jasa Joki Rank Epic ke Mythic", cat: "Joki", price: 90000, seller: "ProJoki" }
-    ];
+    var products = []; // Katalog dikosongkan agar penjual yang memajang mandiri
 
     function showTab(tabId) {
       var tabs = document.querySelectorAll('.tab-content');
@@ -248,6 +245,12 @@
     function renderProducts(cat, gridId) {
       var grid = document.getElementById(gridId);
       var filtered = cat === 'Semua' ? products : products.filter(p => p.cat === cat);
+      
+      if(filtered.length === 0) {
+        grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-box-open" style="font-size:2rem; margin-bottom:10px;"></i><p>Belum ada produk yang dipasang oleh penjual.</p></div>`;
+        return;
+      }
+
       grid.innerHTML = filtered.map(p => `
         <div class="card-product">
           <span class="badge-cat">${p.cat}</span>
@@ -282,7 +285,6 @@
       input.value = '';
     }
 
-    // Alur 1: Owner konfirmasi dana masuk
     function ownerConfirmTF() {
       if(!currentUserEmail.toLowerCase().includes('owner')) {
         alert("Hanya Owner yang dapat mengkonfirmasi!");
@@ -290,22 +292,21 @@
       }
       document.getElementById('txStatus').innerHTML = 'Status: <span style="color:#4ade80;">Telah Dikonfirmasi (Dana Masuk)</span>';
       document.getElementById('chatBody').innerHTML += `
-        <div class="msg system">✅ [STATUS: TELAH DIKONFIRMASI] Dana sudah masuk ke rekening/QRIS Owner. Silakan Penjual kirim data barang/akun ke Pembeli!</div>
+        <div class="msg system">✅ [TELAH DIKONFIRMASI] Dana sudah masuk ke QRIS/Norek Owner. Silakan Penjual kirim data barang/akun ke Pembeli!</div>
       `;
-      alert("Berhasil dikonfirmasi! Status berubah menjadi Telah Dikonfirmasi.");
+      alert("Berhasil dikonfirmasi! Status: Telah Dikonfirmasi.");
     }
 
-    // Alur 2: Transaksi selesai, minta norek penjual
     function ownerFinishTx() {
       if(!currentUserEmail.toLowerCase().includes('owner')) {
         alert("Hanya Owner yang dapat menyelesaikan transaksi!");
         return;
       }
-      document.getElementById('txStatus').innerHTML = 'Status: <span style="color:#38bdf8;">Transaksi Selesai (Menunggu Norek Penjual)</span>';
+      document.getElementById('txStatus').innerHTML = 'Status: <span style="color:#38bdf8;">Transaksi Selesai (Menunggu Norek Seller)</span>';
       document.getElementById('chatBody').innerHTML += `
-        <div class="msg system">🎉 [TRANSAKSI SELESAI] Pembeli sudah menerima barang/akun dengan aman. <b>Pemberitahuan untuk Penjual:</b> Silakan kirimkan nomor rekening (norek) kamu ke chat untuk pencairan dana!</div>
+        <div class="msg system">🎉 [TRANSAKSI SELESAI] Pembeli sudah menerima barang dengan aman. <b>Pemberitahuan untuk Penjual:</b> Silakan kirimkan nomor rekening (norek) kamu ke chat untuk pencairan dana!</div>
       `;
-      alert("Transaksi selesai! Notifikasi norek dikirim ke chat.");
+      alert("Transaksi selesai! Notifikasi norek penjual dikirim ke chat.");
     }
 
     function postProduct(e) {
@@ -313,7 +314,7 @@
       var title = document.getElementById('pTitle').value;
       var cat = document.getElementById('pCat').value;
       var price = Number(document.getElementById('pPrice').value);
-      products.unshift({ title, cat, price, seller: currentUserEmail ? currentUserEmail.split('@')[0] : 'Toko Saya' });
+      products.unshift({ title, cat, price, seller: currentUserEmail ? currentUserEmail.split('@')[0] : 'Toko Penjual' });
       alert("Produk berhasil dipublish ke marketplace!");
       showTab('marketplace');
     }
@@ -342,7 +343,7 @@
       document.getElementById('profEmail').innerText = currentUserEmail;
 
       if(currentUserEmail.toLowerCase().includes('owner')) {
-        document.getElementById('profRole').innerText = 'Role: OWNER (MIDMAN UTAMA)';
+        document.getElementById('profRole').innerText = 'Role: OWNER (MIDMAN)';
         document.getElementById('profRole').className = 'role-badge owner';
         document.getElementById('nav-owner').style.display = 'inline-flex';
       } else {
@@ -356,5 +357,5 @@
     });
   </script>
 </body>
-          </html>
-          
+  </html>
+            
