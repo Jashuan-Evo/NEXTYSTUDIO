@@ -129,9 +129,7 @@
     <div id="tab-pesan" class="tab-content">
       <div class="section-title"><h2>Ruang Diskusi & Rekber Manual</h2></div>
       <div class="chat-container">
-        <div class="chat-sidebar" id="chatSidebarList">
-          <!-- Daftar kamar chat muncul otomatis saat pembeli klik beli produk -->
-        </div>
+        <div class="chat-sidebar" id="chatSidebarList"></div>
         <div class="chat-main">
           <div class="chat-header">
             <span id="roomTitle" style="font-size:0.9rem; font-weight:bold;">Pilih Transaksi</span>
@@ -216,9 +214,16 @@
   <script>
     var currentAuthMode = 'login';
     var currentUserEmail = '';
-    var products = []; // Katalog bersih kosong, murni diisi oleh penjual
-    var transactions = []; 
+    
+    // Ambil data produk & transaksi dari localStorage agar tidak hilang saat di-refresh
+    var products = JSON.parse(localStorage.getItem('nexty_products')) || [];
+    var transactions = JSON.parse(localStorage.getItem('nexty_txs')) || [];
     var activeTxId = null;
+
+    function saveToStorage() {
+      localStorage.setItem('nexty_products', JSON.stringify(products));
+      localStorage.setItem('nexty_txs', JSON.stringify(transactions));
+    }
 
     function showTab(tabId) {
       var tabs = document.querySelectorAll('.tab-content');
@@ -273,6 +278,7 @@
         ]
       };
       transactions.unshift(newTx);
+      saveToStorage();
       alert("Ruang chat rekber manual berhasil dibuat!");
       showTab('pesan');
       selectRoom(txId);
@@ -326,6 +332,7 @@
       var senderType = currentUserEmail.toLowerCase().includes('owner') ? 'owner' : 'buyer';
 
       tx.messages.push({ sender: senderType, name: senderName, text: input.value });
+      saveToStorage();
       input.value = '';
       renderChatMessages(tx);
     }
@@ -354,12 +361,4 @@
       }
       var tx = transactions.find(t => t.id === txId);
       tx.status = 'Telah Dikonfirmasi (Dana Masuk)';
-      tx.messages.push({ sender: 'system', text: `✅ [TELAH DIKONFIRMASI] Dana sudah masuk ke QRIS/Norek Owner. Silakan Penjual kirim data barang/akun ke Pembeli!` });
-      selectRoom(txId);
-      alert("Status diubah: Telah Dikonfirmasi.");
-    }
-
-    function ownerFinishTx(txId) {
-      if(!currentUserEmail.toLowerCase().includes('owner')) {
-        alert("Hanya Owner yang dapat menyelesaikan transaksi!");
-     
+      tx.messages.push({ sender: 'system', text: `✅ [TELAH DIKONFIRMASI] Dana sudah masuk ke QRIS/Norek Owner. Silakan Penjual kirim data
