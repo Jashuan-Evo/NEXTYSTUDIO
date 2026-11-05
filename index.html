@@ -2,267 +2,120 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>NEXTYSTUDIO - Official Store</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #0b0f19; color: #f8fafc; min-height: 100vh; padding-bottom: 70px; }
-    
-    /* Navbar */
-    .navbar { background-color: #111827; padding: 14px 20px; border-bottom: 1px solid #1f2937; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 1.25rem; font-weight: 800; color: #38bdf8; text-decoration: none; cursor: pointer; }
-    .logo span { color: #f43f5e; }
-    
-    .nav-menu { display: flex; gap: 8px; list-style: none; }
-    .nav-btn { background: transparent; border: none; color: #9ca3af; font-weight: 600; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
-    .nav-btn:hover, .nav-btn.active { color: #ffffff; background-color: #1f2937; }
-    
-    .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
-    .tab-view { display: none; }
-    .tab-view.active { display: block !important; }
-    
-    /* Hero Banner */
-    .hero { background: linear-gradient(135deg, #1e1b4b, #0f172a); border: 1px solid #312e81; border-radius: 12px; padding: 30px 20px; text-align: center; margin-bottom: 25px; }
-    .hero h1 { font-size: 1.6rem; margin-bottom: 8px; color: #f8fafc; }
-    .hero h1 span { color: #f43f5e; }
-    .hero p { color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px; }
-    
-    .btn { padding: 10px 18px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; width: 100%; }
-    .btn-primary { background-color: #2563eb; color: white; }
-    .btn-primary:active { background-color: #1d4ed8; transform: scale(0.98); }
-    .btn-success { background-color: #16a34a; color: white; }
-    .btn-success:active { background-color: #15803d; transform: scale(0.98); }
-    
-    .section-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; border-left: 4px solid #38bdf8; padding-left: 10px; display: flex; justify-content: space-between; align-items: center; }
-    
-    /* Katalog Produk */
-    .grid-catalog { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; }
-    .card { background-color: #111827; border: 1px solid #1f2937; border-radius: 10px; padding: 16px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
-    .badge { position: absolute; top: 12px; right: 12px; background-color: #0284c7; color: white; font-size: 0.65rem; padding: 3px 8px; border-radius: 4px; font-weight: bold; text-transform: uppercase; }
-    .card h3 { font-size: 1rem; margin-top: 15px; margin-bottom: 8px; color: #f8fafc; }
-    .card .price { color: #4ade80; font-size: 1.15rem; font-weight: bold; margin-bottom: 10px; }
-    
-    .empty-box { text-align: center; color: #9ca3af; padding: 40px; background: #111827; border-radius: 10px; border: 1px solid #1f2937; grid-column: 1 / -1; }
-    
-    /* Form & Panels */
-    .form-card, .cart-card { background: #111827; border: 1px solid #1f2937; padding: 20px; border-radius: 10px; margin-bottom: 15px; }
-    .form-group { margin-bottom: 14px; }
-    .form-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; color: #d1d5db; }
-    .form-group input, .form-group select { width: 100%; padding: 10px 12px; background-color: #090d16; border: 1px solid #374151; border-radius: 6px; color: white; font-size: 0.9rem; }
-    
-    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #1f2937; font-size: 0.9rem; }
-    
-    @media(max-width: 600px) {
-      .navbar { flex-direction: column; gap: 10px; text-align: center; }
-      .nav-menu { width: 100%; justify-content: center; overflow-x: auto; padding-bottom: 5px; }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXTYSTORE</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-
-  <!-- Navbar Toko -->
-  <nav class="navbar">
-    <a class="logo" id="navLogo">NEXTY<span>STORE</span></a>
-    <ul class="nav-menu">
-      <li><button class="nav-btn active" id="menuHome"><i class="fa-solid fa-store"></i> Katalog</button></li>
-      <li><button class="nav-btn" id="menuCart"><i class="fa-solid fa-cart-shopping"></i> Keranjang (<span id="cartCount">0</span>)</button></li>
-      <li><button class="nav-btn" id="menuManage"><i class="fa-solid fa-circle-plus"></i> Tambah Produk</button></li>
-    </ul>
-  </nav>
-
-  <main class="container">
-    <!-- Tab Katalog Toko -->
-    <div id="view-home" class="tab-view active">
-      <div class="hero">
-        <h1>Katalog Resmi <span>NEXTYSTUDIO</span></h1>
-        <p>Pilih produk game atau item digital terbaikmu di sini dengan proses cepat dan aman.</p>
-      </div>
-      <div class="section-title"><span>🛍️ Daftar Produk Tersedia</span></div>
-      <div class="grid-catalog" id="storeGrid"></div>
+<body class="bg-gray-900 text-white p-4 font-sans">
+  <div class="max-w-md mx-auto">
+    <!-- Tab Navigation -->
+    <div class="flex justify-around mb-6 bg-gray-800 p-2 rounded-lg border border-gray-700">
+      <button onclick="show('katalog')" class="px-4 py-1 rounded text-emerald-400 font-bold">Katalog</button>
+      <button onclick="show('pesanan')" class="px-4 py-1 rounded text-emerald-400 font-bold">Pesanan</button>
+      <button onclick="show('kelola')" class="px-4 py-1 rounded text-emerald-400 font-bold">Kelola</button>
     </div>
 
-    <!-- Tab Keranjang & Checkout -->
-    <div id="view-cart" class="tab-view">
-      <div class="section-title"><span>🛒 Keranjang Belanja</span></div>
-      <div class="cart-card">
-        <div id="cartItemsList">
-          <p style="color: #9ca3af; text-align: center; padding: 20px;">Keranjang kamu masih kosong.</p>
-        </div>
-        <div style="margin-top: 15px; border-top: 1px solid #1f2937; padding-top: 15px;" id="cartCheckoutArea">
-          <h3>Total: <span id="cartTotal" style="color: #4ade80;">Rp 0</span></h3>
-          <button type="button" class="btn btn-success" id="btnCheckout" style="margin-top: 12px;"><i class="fa-brands fa-whatsapp"></i> Checkout / Pesan via WhatsApp</button>
-        </div>
-      </div>
+    <!-- Katalog Tab -->
+    <div id="katalog" class="tab-content">
+      <h2 class="text-xl font-bold mb-4 text-center text-emerald-400">Katalog Produk</h2>
+      <div id="product-list" class="space-y-4">Memuat produk...</div>
     </div>
 
-    <!-- Tab Tambah Produk (Admin Toko) -->
-    <div id="view-manage" class="tab-view">
-      <div class="section-title"><span>➕ Tambah Produk Jualan Baru</span></div>
-      <div class="form-card">
-        <form id="addProductForm">
-          <div class="form-group">
-            <label>Nama Produk</label>
-            <input type="text" id="pTitle" required placeholder="Contoh: Akun ML Mythic / Diamond 706">
-          </div>
-          <div class="form-group">
-            <label>Kategori</label>
-            <select id="pCat">
-              <option value="Akun">Akun Game</option>
-              <option value="Top-Up">Top-Up Diamond</option>
-              <option value="Item">Item / Lainnya</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Harga (Rp)</label>
-            <input type="number" id="pPrice" required placeholder="50000">
-          </div>
-          <button type="submit" class="btn btn-primary">Publish Produk ke Toko</button>
-        </form>
-      </div>
+    <!-- Pesanan Tab -->
+    <div id="pesanan" class="tab-content hidden">
+      <h2 class="text-xl font-bold mb-4 text-center text-emerald-400">Riwayat Pesanan</h2>
+      <div id="history-list" class="space-y-4"></div>
     </div>
-  </main>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Data produk awal toko kamu
-      var products = [
-        { id: 1, title: "Akun MLBB Mythic Full Skin", cat: "Akun", price: 200000 },
-        { id: 2, title: "Top-Up 368 Diamonds ML", cat: "Top-Up", price: 95000 },
-        { id: 3, title: "Akun Epic Skin Kof", cat: "Akun", price: 350000 }
-      ];
-      
-      var cart = [];
+    <!-- Kelola Tab -->
+    <div id="kelola" class="tab-content hidden">
+      <h2 class="text-xl font-bold mb-4 text-center text-emerald-400">Admin Panel</h2>
+      <input id="name" placeholder="Nama Produk" class="w-full p-2 mb-2 bg-gray-800 rounded border border-gray-700">
+      <input id="price" placeholder="Harga" class="w-full p-2 mb-2 bg-gray-800 rounded border border-gray-700">
+      <input id="code" placeholder="Kode Voucher/Akun" class="w-full p-2 mb-4 bg-gray-800 rounded border border-gray-700">
+      <button id="add-btn" class="w-full bg-emerald-500 p-2 rounded font-bold hover:bg-emerald-600 transition">Tambah Produk</button>
+    </div>
+  </div>
 
-      try {
-        var savedProd = localStorage.getItem('nexty_mystore_products');
-        if(savedProd) products = JSON.parse(savedProd);
-      } catch(e) {}
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-      function saveProducts() {
-        try {
-          localStorage.setItem('nexty_mystore_products', JSON.stringify(products));
-        } catch(e) {}
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "nextystudio.firebaseapp.com",
+      databaseURL: "https://nextystudio-default-rtdb.firebaseio.com",
+      projectId: "nextystudio"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Tab Switcher
+    window.show = (tabId) => {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById(tabId).classList.remove('hidden');
+      if (tabId === 'pesanan') renderHistory();
+    };
+
+    // Baca Produk Real-Time
+    onValue(ref(db, 'products'), (snap) => {
+      const list = document.getElementById('product-list');
+      list.innerHTML = '';
+      const data = snap.val();
+      if (!data) return list.innerHTML = '<p class="text-center text-gray-500">Belum ada produk.</p>';
+      for (let id in data) {
+        const p = data[id];
+        const card = document.createElement('div');
+        card.className = "bg-gray-800 p-4 rounded-lg flex justify-between items-center border border-gray-700";
+        card.innerHTML = `<div><strong>${p.name}</strong><p class="text-emerald-400">Rp ${p.price}</p></div>
+          <button onclick="buy('${p.name}', '${p.code}')" class="bg-emerald-500 px-3 py-1 rounded text-sm font-bold hover:bg-emerald-600">Beli</button>`;
+        list.appendChild(card);
       }
-
-      function switchTab(tabId) {
-        var views = document.querySelectorAll('.tab-view');
-        for(var i=0; i<views.length; i++) views[i].classList.remove('active');
-        
-        var target = document.getElementById('view-' + tabId);
-        if(target) target.classList.add('active');
-
-        var btns = document.querySelectorAll('.nav-btn');
-        for(var j=0; j<btns.length; j++) btns[j].classList.remove('active');
-
-        var map = { 'home': 'menuHome', 'cart': 'menuCart', 'manage': 'menuManage' };
-        var activeBtn = document.getElementById(map[tabId]);
-        if(activeBtn) activeBtn.classList.add('active');
-
-        if(tabId === 'home') renderStore();
-        if(tabId === 'cart') renderCart();
-      }
-
-      document.getElementById('navLogo').addEventListener('click', function() { switchTab('home'); });
-      document.getElementById('menuHome').addEventListener('click', function() { switchTab('home'); });
-      document.getElementById('menuCart').addEventListener('click', function() { switchTab('cart'); });
-      document.getElementById('menuManage').addEventListener('click', function() { switchTab('manage'); });
-
-      function renderStore() {
-        var grid = document.getElementById('storeGrid');
-        if(!grid) return;
-        
-        if(products.length === 0) {
-          grid.innerHTML = '<div class="empty-box"><p>Belum ada produk di toko. Silakan tambah produk melalui menu "Tambah Produk".</p></div>';
-          return;
-        }
-
-        grid.innerHTML = '';
-        for(var i=0; i<products.length; i++) {
-          var p = products[i];
-          var card = document.createElement('div');
-          card.className = 'card';
-          card.innerHTML = '<span class="badge">' + p.cat + '</span>' +
-            '<h3>' + p.title + '</h3>' +
-            '<p class="price">Rp ' + Number(p.price).toLocaleString('id-ID') + '</p>';
-          
-          var addBtn = document.createElement('button');
-          addBtn.type = 'button';
-          addBtn.className = 'btn btn-primary';
-          addBtn.innerText = 'Tambah ke Keranjang';
-          
-          (function(prod) {
-            addBtn.addEventListener('click', function() {
-              cart.push(prod);
-              document.getElementById('cartCount').innerText = cart.length;
-              alert("Berhasil menambahkan '" + prod.title + "' ke keranjang!");
-            });
-          })(p);
-
-          card.appendChild(addBtn);
-          grid.appendChild(card);
-        }
-      }
-
-      function renderCart() {
-        var container = document.getElementById('cartItemsList');
-        var checkoutArea = document.getElementById('cartCheckoutArea');
-        if(!container) return;
-
-        if(cart.length === 0) {
-          container.innerHTML = '<p style="color: #9ca3af; text-align: center; padding: 20px;">Keranjang kamu masih kosong.</p>';
-          if(checkoutArea) checkoutArea.style.display = 'none';
-          return;
-        }
-
-        if(checkoutArea) checkoutArea.style.display = 'block';
-        container.innerHTML = '';
-        var total = 0;
-
-        for(var i=0; i<cart.length; i++) {
-          var item = cart[i];
-          total += item.price;
-          var div = document.createElement('div');
-          div.className = 'cart-item';
-          div.innerHTML = '<span><b>' + item.title + '</b></span><span style="color: #4ade80;">Rp ' + Number(item.price).toLocaleString('id-ID') + '</span>';
-          container.appendChild(div);
-        }
-
-        document.getElementById('cartTotal').innerText = 'Rp ' + Number(total).toLocaleString('id-ID');
-      }
-
-      document.getElementById('addProductForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        var title = document.getElementById('pTitle').value;
-        var cat = document.getElementById('pCat').value;
-        var price = Number(document.getElementById('pPrice').value);
-
-        products.unshift({ id: Date.now(), title: title, cat: cat, price: price });
-        saveProducts();
-        alert("Produk berhasil ditambahkan ke tokomu!");
-
-        document.getElementById('pTitle').value = '';
-        document.getElementById('pPrice').value = '';
-        switchTab('home');
-      });
-
-      document.getElementById('btnCheckout').addEventListener('click', function() {
-        if(cart.length === 0) return;
-        var text = "Halo Admin Nexty Store, saya ingin memesan produk berikut:%0A";
-        var total = 0;
-        for(var i=0; i<cart.length; i++) {
-          text += "- " + cart[i].title + " (Rp " + Number(cart[i].price).toLocaleString('id-ID') + ")%0A";
-          total += cart[i].price;
-        }
-        text += "%0A*Total Pembayaran: Rp " + Number(total).toLocaleString('id-ID') + "*";
-        
-        window.open('https://wa.me/6281234567890?text=' + text, '_blank');
-      });
-
-      switchTab('home');
     });
+
+    // Proses Pembelian Instan (Auto-Delivery)
+    window.buy = (name, code) => {
+      const orderId = '#ORD-' + Math.floor(100000 + Math.random() * 900000);
+      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+      orders.push({ orderId, name, code, date: new Date().toLocaleDateString() });
+      localStorage.setItem('orders', JSON.stringify(orders));
+      alert(`Sukses! Pesanan: ${orderId}\nData Produk: ${code}`);
+      show('pesanan');
+    };
+
+    // Render Riwayat Pesanan Lokal
+    function renderHistory() {
+      const list = document.getElementById('history-list');
+      list.innerHTML = '';
+      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+      if (orders.length === 0) return list.innerHTML = '<p class="text-center text-gray-500">Belum ada pesanan.</p>';
+      orders.forEach(o => {
+        const div = document.createElement('div');
+        div.className = "bg-gray-800 p-4 rounded-lg border border-gray-700";
+        div.innerHTML = `<div class="flex justify-between"><strong>${o.orderId}</strong><span class="text-xs text-gray-400">${o.date}</span></div>
+          <p class="text-sm mt-1">${o.name}</p>
+          <div class="mt-2 bg-gray-700 p-2 rounded flex justify-between items-center text-xs">
+            <code>${o.code}</code>
+            <button onclick="navigator.clipboard.writeText('${o.code}'); alert('Disalin!');" class="text-emerald-400 font-bold ml-2">Salin</button>
+          </div>`;
+        list.appendChild(div);
+      });
+    }
+
+    // Tambah Produk Baru
+    document.getElementById('add-btn').onclick = () => {
+      const name = document.getElementById('name').value;
+      const price = document.getElementById('price').value;
+      const code = document.getElementById('code').value;
+      if (name && price && code) {
+        push(ref(db, 'products'), { name, price, code });
+        alert("Produk Berhasil Ditambahkan!");
+        document.getElementById('name').value = '';
+        document.getElementById('price').value = '';
+        document.getElementById('code').value = '';
+      }
+    };
   </script>
 </body>
-  </html>
-  
+</html>
