@@ -3,138 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>NEXTYSTUDIO - MIDMAN Manual Escrow</title>
+  <title>NEXTYSTUDIO - Marketplace Gaming</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; padding-bottom: 70px; }
     
-    .navbar { background-color: #1e293b; padding: 12px 15px; border-bottom: 2px solid #334155; position: sticky; top: 0; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
-    .nav-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-    .logo { font-size: 1.2rem; font-weight: 800; color: #38bdf8; text-decoration: none; cursor: pointer; }
+    .navbar { background-color: #1e293b; padding: 12px 15px; border-bottom: 2px solid #334155; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.25rem; font-weight: 800; color: #38bdf8; text-decoration: none; cursor: pointer; }
     .logo span { color: #f43f5e; }
     
-    .nav-links { display: flex; list-style: none; gap: 5px; overflow-x: auto; width: 100%; padding-bottom: 4px; }
-    .nav-links button { background: #0f172a; border: 1px solid #334155; color: #94a3b8; font-weight: 600; padding: 6px 10px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; }
-    .nav-links button.active { color: #ffffff; background-color: #2563eb; border-color: #2563eb; }
+    .nav-links { display: flex; gap: 6px; list-style: none; }
+    .nav-btn { background: #0f172a; border: 1px solid #334155; color: #94a3b8; padding: 6px 12px; border-radius: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+    .nav-btn.active { background-color: #2563eb; color: white; border-color: #2563eb; }
     
-    .auth-buttons { display: flex; gap: 6px; align-items: center; }
+    .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+    .tab-view { display: none; }
+    .tab-view.active { display: block !important; }
     
-    .btn { padding: 10px 14px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; font-size: 0.9rem; width: 100%; text-align: center; }
-    .btn-primary { background-color: #2563eb; color: white; }
-    .btn-outline { background: transparent; border: 1px solid #475569; color: #e2e8f0; width: auto; padding: 6px 12px; font-size: 0.8rem; }
-    
-    .container { max-width: 1000px; margin: 15px auto; padding: 0 10px; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block !important; }
-    
-    .hero { background: linear-gradient(135deg, #1e1b4b, #0f172a); border: 1px solid #312e81; border-radius: 10px; padding: 20px 15px; text-align: center; margin-bottom: 20px; }
-    .hero h1 { font-size: 1.4rem; margin-bottom: 8px; }
+    .hero { background: linear-gradient(135deg, #1e1b4b, #0f172a); border: 1px solid #312e81; border-radius: 10px; padding: 25px 15px; text-align: center; margin-bottom: 20px; }
+    .hero h1 { font-size: 1.5rem; margin-bottom: 8px; }
     .hero h1 span { color: #f43f5e; }
     .hero p { color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px; }
     
-    .section-title { margin-bottom: 15px; border-left: 4px solid #2563eb; padding-left: 8px; font-size: 0.95rem; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
-    .grid-products { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .btn { padding: 10px 16px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; font-size: 0.88rem; width: 100%; transition: 0.2s; }
+    .btn-primary { background-color: #2563eb; color: white; }
+    .btn-primary:active { background-color: #1d4ed8; transform: scale(0.98); }
     
-    @media(min-width: 600px) {
-      .navbar { flex-direction: row; }
-      .nav-links { width: auto; overflow-x: visible; }
-      .grid-products { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    .card-product { background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 14px; position: relative; }
-    .badge-cat { position: absolute; top: 10px; right: 10px; background-color: #0284c7; color: white; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
-    .card-product h3 { font-size: 0.9rem; margin-top: 10px; margin-bottom: 6px; }
-    .card-product .price { color: #4ade80; font-size: 1.05rem; font-weight: bold; margin-bottom: 4px; }
-    .card-product .seller { color: #94a3b8; font-size: 0.75rem; margin-bottom: 10px; }
-    .empty-state { text-align: center; color: #94a3b8; padding: 30px; background: #1e293b; border-radius: 8px; border: 1px solid #334155; font-size: 0.85rem; }
-
-    .chat-container { display: flex; background: #1e293b; border-radius: 8px; border: 1px solid #334155; height: 380px; overflow: hidden; flex-direction: column; }
-    .chat-header { padding: 10px 12px; background: #0f172a; border-bottom: 1px solid #334155; font-size: 0.85rem; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
-    .chat-body { flex: 1; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-    .msg { padding: 8px 10px; border-radius: 6px; max-width: 90%; font-size: 0.85rem; word-break: break-word; }
-    .msg.system { background: #334155; text-align: center; max-width: 100%; color: #cbd5e1; font-size: 0.75rem; }
-    .msg.buyer { background: #1e3a8a; align-self: flex-start; }
-    .msg.owner { background: #831843; align-self: flex-end; border: 1px solid #f43f5e; }
-    .chat-footer { padding: 8px; display: flex; gap: 6px; background: #0f172a; }
-    .chat-footer input { flex: 1; padding: 8px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: white; font-size: 0.85rem; }
-
-    .form-group { margin-bottom: 10px; }
-    .form-group label { display: block; margin-bottom: 4px; font-size: 0.8rem; color: #cbd5e1; }
+    .section-title { font-size: 1rem; font-weight: bold; margin-bottom: 15px; border-left: 4px solid #2563eb; padding-left: 8px; display: flex; justify-content: space-between; align-items: center; }
+    
+    .grid-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
+    .card { background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 15px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+    .badge { position: absolute; top: 10px; right: 10px; background-color: #0284c7; color: white; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+    .card h3 { font-size: 0.95rem; margin-top: 10px; margin-bottom: 6px; }
+    .card .price { color: #4ade80; font-size: 1.1rem; font-weight: bold; margin-bottom: 6px; }
+    .card .seller { color: #94a3b8; font-size: 0.75rem; margin-bottom: 12px; }
+    
+    .empty-state { text-align: center; color: #94a3b8; padding: 40px; background: #1e293b; border-radius: 8px; border: 1px solid #334155; grid-column: 1 / -1; font-size: 0.85rem; }
+    
+    .box-card { background: #1e293b; border: 1px solid #334155; padding: 20px; border-radius: 8px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; margin-bottom: 5px; font-size: 0.82rem; color: #cbd5e1; }
     .form-group input, .form-group select { width: 100%; padding: 10px; background-color: #0f172a; border: 1px solid #334155; border-radius: 6px; color: white; font-size: 0.9rem; }
     
-    .box-card { background: #1e293b; border: 1px solid #334155; padding: 15px; border-radius: 8px; margin-bottom: 12px; }
-    .role-badge { background: #059669; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: bold; }
-    .role-badge.owner { background: #f43f5e; }
-
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 99999; padding: 15px; }
-    .modal-box { background: #1e293b; padding: 20px; border-radius: 8px; width: 100%; max-width: 340px; border: 1px solid #334155; position: relative; }
-    .close-btn { position: absolute; top: 10px; right: 12px; font-size: 1.3rem; cursor: pointer; color: #94a3b8; }
+    .order-item { background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 6px; margin-bottom: 10px; font-size: 0.85rem; }
   </style>
 </head>
 <body>
 
   <!-- Navbar -->
   <nav class="navbar">
-    <div class="nav-top">
-      <a class="logo" id="navLogo"><i class="fa-solid fa-gamepad"></i> NEXTY<span>STUDIO</span></a>
-      <div class="auth-buttons" id="authContainer">
-        <button type="button" class="btn btn-outline" id="btnLoginModal">Masuk</button>
-        <button type="button" class="btn btn-primary" id="btnRegisterModal" style="padding: 6px 12px; font-size: 0.8rem; width: auto;">Daftar</button>
-      </div>
-    </div>
-    <div class="nav-links">
-      <button type="button" id="btnTabBeranda" class="active"><i class="fa-solid fa-house"></i> Beranda</button>
-      <button type="button" id="btnTabMarket"><i class="fa-solid fa-store"></i> Pasar</button>
-      <button type="button" id="btnTabPesan"><i class="fa-solid fa-comments"></i> Chat</button>
-      <button type="button" id="btnTabToko"><i class="fa-solid fa-shop"></i> Jual</button>
-      <button type="button" id="btnTabOwner" style="display:none; color:#f43f5e;"><i class="fa-solid fa-crown"></i> Owner</button>
-      <button type="button" id="btnTabProfil"><i class="fa-solid fa-user"></i> Profil</button>
-    </div>
+    <a class="logo" id="navLogo">NEXTY<span>STUDIO</span></a>
+    <ul class="nav-links">
+      <li><button class="nav-btn active" id="btnHome"><i class="fa-solid fa-house"></i> Home</button></li>
+      <li><button class="nav-btn" id="btnMarket"><i class="fa-solid fa-store"></i> Katalog</button></li>
+      <li><button class="nav-btn" id="btnOrders"><i class="fa-solid fa-bag-shopping"></i> Pesanan</button></li>
+      <li><button class="nav-btn" id="btnSell"><i class="fa-solid fa-plus-circle"></i> Jual</button></li>
+    </ul>
   </nav>
 
   <main class="container">
-    <!-- Beranda -->
-    <div id="tab-beranda" class="tab-content active">
+    <!-- Home Tab -->
+    <div id="tab-home" class="tab-view active">
       <div class="hero">
-        <h1>NEXTY<span>STUDIO</span></h1>
-        <p>Marketplace & Rekber Manual (TF ke QRIS/Norek Owner).</p>
-        <button type="button" class="btn btn-primary" id="btnGoMarket">Buka Katalog Marketplace</button>
+        <h1>Marketplace <span>NEXTYSTUDIO</span></h1>
+        <p>Platform jual beli produk digital dan akun gaming mandiri.</p>
+        <button class="btn btn-primary" id="btnExplore" style="max-width: 200px; margin: 0 auto;">Jelajahi Katalog</button>
       </div>
-      <div class="section-title">Produk Terbaru Dari Penjual</div>
+      <div class="section-title">Produk Terbaru</div>
       <div class="grid-products" id="homeGrid"></div>
     </div>
 
-    <!-- Marketplace -->
-    <div id="tab-marketplace" class="tab-content">
-      <div class="section-title">Katalog Marketplace</div>
+    <!-- Marketplace Tab -->
+    <div id="tab-market" class="tab-view">
+      <div class="section-title">Semua Katalog Produk</div>
       <div class="grid-products" id="marketGrid"></div>
     </div>
 
-    <!-- Chat Rekber -->
-    <div id="tab-pesan" class="tab-content">
-      <div class="section-title">Ruang Chat Rekber Manual</div>
-      <div class="chat-container">
-        <div class="chat-header">
-          <span id="roomTitle">#TX1029 - Rekber Manual</span>
-          <span style="color:#4ade80; font-size:0.75rem;"><i class="fa-solid fa-shield"></i> Aktif</span>
-        </div>
-        <div class="chat-body" id="chatBody">
-          <div class="msg system">📢 Silahkan TF ke QRIS / Norek Owner:<br><b>BCA: 1234567890 a.n Nexty Studio</b></div>
-        </div>
-        <div class="chat-footer">
-          <input type="text" id="chatInput" placeholder="Ketik pesan...">
-          <button type="button" class="btn btn-primary" id="btnSendChat" style="width: auto; padding: 8px 12px;"><i class="fa-solid fa-paper-plane"></i></button>
-        </div>
-      </div>
+    <!-- Pesanan Tab -->
+    <div id="tab-orders" class="tab-view">
+      <div class="section-title">Riwayat Pesanan Saya</div>
+      <div id="orderContainer"></div>
     </div>
 
-    <!-- Jual / Toko -->
-    <div id="tab-toko" class="tab-content">
-      <div class="section-title">Pasang Produk Jualan</div>
+    <!-- Jual Tab -->
+    <div id="tab-sell" class="tab-view">
+      <div class="section-title">Pasang Produk / Iklan Baru</div>
       <div class="box-card">
-        <form id="productForm">
+        <form id="sellForm">
           <div class="form-group">
             <label>Judul Produk</label>
             <input type="text" id="pTitle" required placeholder="Contoh: Akun ML Mythic">
@@ -143,125 +100,85 @@
             <label>Kategori</label>
             <select id="pCat">
               <option value="Akun">Akun Game</option>
-              <option value="Diamond">Top-Up Diamond</option>
-              <option value="Joki">Jasa Joki</option>
+              <option value="Diamond">Top-Up</option>
+              <option value="Item">Item Langka</option>
             </select>
           </div>
           <div class="form-group">
             <label>Harga (Rp)</label>
             <input type="number" id="pPrice" required placeholder="50000">
           </div>
-          <button type="submit" class="btn btn-primary">Publish Iklan Sekarang</button>
+          <div class="form-group">
+            <label>Nama Penjual</label>
+            <input type="text" id="pSeller" required placeholder="Nama Kamu">
+          </div>
+          <button type="submit" class="btn btn-primary">Publish Produk</button>
         </form>
-      </div>
-    </div>
-
-    <!-- Owner Panel -->
-    <div id="tab-owner" class="tab-content">
-      <div class="section-title">Panel Kontrol Owner (MIDMAN)</div>
-      <div class="box-card" style="border-color:#f43f5e;">
-        <h3 style="color:#f43f5e; font-size:0.95rem; margin-bottom:6px;">Kontrol Transaksi #TX1029</h3>
-        <p id="txStatusText" style="font-size:0.8rem; color:#facc15; margin-bottom:12px;">Status: Menunggu Pembeli Transfer</p>
-        <button type="button" class="btn btn-primary" id="ownerBtn1" style="margin-bottom: 8px;">1. Konfirmasi TF Masuk</button>
-        <button type="button" class="btn btn-outline" id="ownerBtn2" style="width: 100%; border-color: #475569; color: white;">2. Selesaikan & Minta Norek</button>
-      </div>
-    </div>
-
-    <!-- Profil -->
-    <div id="tab-profil" class="tab-content">
-      <div class="section-title">Pengaturan Profil</div>
-      <div class="box-card">
-        <h3 id="profEmail" style="font-size:0.95rem; margin-bottom:4px;">Tamu</h3>
-        <span class="role-badge" id="profRole">Role: Tamu</span>
       </div>
     </div>
   </main>
 
-  <!-- Modal Auth -->
-  <div class="modal-overlay" id="authModal">
-    <div class="modal-box">
-      <span class="close-btn" id="btnCloseModal">&times;</span>
-      <h3 id="modalTitle" style="font-size:1rem; margin-bottom:12px;">Masuk</h3>
-      <form id="authForm">
-        <div class="form-group">
-          <label>Email (Ketik 'owner' untuk jadi admin)</label>
-          <input type="email" id="authEmail" required placeholder="email@mail.com">
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="authPass" required placeholder="******">
-        </div>
-        <button type="submit" class="btn btn-primary" id="modalBtn">Masuk</button>
-      </form>
-    </div>
-  </div>
-
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      var authMode = 'login';
-      var userEmail = '';
-      
-      var products = [];
-      var chatMessages = [
-        { sender: 'system', text: '📢 Silahkan TF ke QRIS / Norek Owner:\nBCA: 1234567890 a.n Nexty Studio' }
+      var products = [
+        { title: "Akun ML Mythic Glory", cat: "Akun", price: 250000, seller: "Nexty Official" },
+        { title: "Top-Up 368 Diamonds", cat: "Diamond", price: 90000, seller: "Nexty Store" }
       ];
+      var myOrders = [];
 
       try {
-        products = JSON.parse(localStorage.getItem('nexty_products')) || [];
-        var savedMsgs = JSON.parse(localStorage.getItem('nexty_msgs'));
-        if(savedMsgs) chatMessages = savedMsgs;
+        var savedProd = localStorage.getItem('nexty_pure_prod');
+        var savedOrd = localStorage.getItem('nexty_pure_ord');
+        if(savedProd) products = JSON.parse(savedProd);
+        if(savedOrd) myOrders = JSON.parse(savedOrd);
       } catch(e) {}
 
       function saveData() {
         try {
-          localStorage.setItem('nexty_products', JSON.stringify(products));
-          localStorage.setItem('nexty_msgs', JSON.stringify(chatMessages));
+          localStorage.setItem('nexty_pure_prod', JSON.stringify(products));
+          localStorage.setItem('nexty_pure_ord', JSON.stringify(myOrders));
         } catch(e) {}
       }
 
       function switchTab(tabId) {
-        var tabs = document.querySelectorAll('.tab-content');
-        for (var i = 0; i < tabs.length; i++) {
-          tabs[i].classList.remove('active');
-        }
+        var views = document.querySelectorAll('.tab-view');
+        for(var i=0; i<views.length; i++) views[i].classList.remove('active');
+        
         var target = document.getElementById('tab-' + tabId);
         if(target) target.classList.add('active');
 
-        var navBtns = document.querySelectorAll('.nav-links button');
-        for (var j = 0; j < navBtns.length; j++) {
-          navBtns[j].classList.remove('active');
-        }
-        var activeBtn = document.getElementById('btnTab' + tabId.charAt(0).toUpperCase() + tabId.slice(1));
+        var buttons = document.querySelectorAll('.nav-btn');
+        for(var j=0; j<buttons.length; j++) buttons[j].classList.remove('active');
+
+        var mapBtn = { 'home': 'btnHome', 'market': 'btnMarket', 'orders': 'btnOrders', 'sell': 'btnSell' };
+        var activeBtn = document.getElementById(mapBtn[tabId]);
         if(activeBtn) activeBtn.classList.add('active');
 
-        if(tabId === 'beranda' || tabId === 'marketplace') renderMarket();
-        if(tabId === 'pesan') renderChat();
+        if(tabId === 'home' || tabId === 'market') renderProducts();
+        if(tabId === 'orders') renderOrders();
       }
 
-      // Event listener tombol navigasi bawah & atas
-      document.getElementById('navLogo').addEventListener('click', function() { switchTab('beranda'); });
-      document.getElementById('btnTabBeranda').addEventListener('click', function() { switchTab('beranda'); });
-      document.getElementById('btnTabMarket').addEventListener('click', function() { switchTab('marketplace'); });
-      document.getElementById('btnTabPesan').addEventListener('click', function() { switchTab('pesan'); });
-      document.getElementById('btnTabToko').addEventListener('click', function() { switchTab('toko'); });
-      document.getElementById('btnTabOwner').addEventListener('click', function() { switchTab('owner'); });
-      document.getElementById('btnTabProfil').addEventListener('click', function() { switchTab('profil'); });
-      document.getElementById('btnGoMarket').addEventListener('click', function() { switchTab('marketplace'); });
+      document.getElementById('navLogo').addEventListener('click', function() { switchTab('home'); });
+      document.getElementById('btnHome').addEventListener('click', function() { switchTab('home'); });
+      document.getElementById('btnMarket').addEventListener('click', function() { switchTab('market'); });
+      document.getElementById('btnOrders').addEventListener('click', function() { switchTab('orders'); });
+      document.getElementById('btnSell').addEventListener('click', function() { switchTab('sell'); });
+      document.getElementById('btnExplore').addEventListener('click', function() { switchTab('market'); });
 
-      function renderMarket() {
+      function renderProducts() {
         var grids = [document.getElementById('homeGrid'), document.getElementById('marketGrid')];
         for(var i=0; i<grids.length; i++) {
           var g = grids[i];
           if(!g) continue;
           if(products.length === 0) {
-            g.innerHTML = '<div class="empty-state"><p>Belum ada produk. Silakan pasang item di menu "Jual".</p></div>';
+            g.innerHTML = '<div class="empty-state"><p>Belum ada produk tersedia.</p></div>';
           } else {
             g.innerHTML = '';
-            for(var j=0; j<products.length; j++) {
-              var p = products[j];
+            for(var k=0; k<products.length; k++) {
+              var p = products[k];
               var card = document.createElement('div');
-              card.className = 'card-product';
-              card.innerHTML = '<span class="badge-cat">' + p.cat + '</span>' +
+              card.className = 'card';
+              card.innerHTML = '<span class="badge">' + p.cat + '</span>' +
                 '<h3>' + p.title + '</h3>' +
                 '<p class="price">Rp ' + Number(p.price).toLocaleString('id-ID') + '</p>' +
                 '<p class="seller"><i class="fa-solid fa-shop"></i> ' + p.seller + '</p>';
@@ -269,13 +186,16 @@
               var buyBtn = document.createElement('button');
               buyBtn.type = 'button';
               buyBtn.className = 'btn btn-primary';
-              buyBtn.style.marginTop = '8px';
-              buyBtn.style.padding = '8px';
-              buyBtn.innerText = 'Beli via Rekber Manual';
+              buyBtn.innerText = 'Beli Sekarang';
               
-              buyBtn.addEventListener('click', function() {
-                switchTab('pesan');
-              });
+              (function(prod) {
+                buyBtn.addEventListener('click', function() {
+                  myOrders.unshift({ title: prod.title, price: prod.price, date: new Date().toLocaleDateString('id-ID'), status: 'Berhasil Dibeli' });
+                  saveData();
+                  alert("Pembelian produk '" + prod.title + "' berhasil!");
+                  switchTab('orders');
+                });
+              })(p);
 
               card.appendChild(buyBtn);
               g.appendChild(card);
@@ -284,109 +204,45 @@
         }
       }
 
-      document.getElementById('productForm').addEventListener('submit', function(e) {
+      function renderOrders() {
+        var container = document.getElementById('orderContainer');
+        if(!container) return;
+        if(myOrders.length === 0) {
+          container.innerHTML = '<div class="empty-state"><p>Belum ada riwayat pesanan.</p></div>';
+        } else {
+          container.innerHTML = '';
+          for(var i=0; i<myOrders.length; i++) {
+            var o = myOrders[i];
+            var div = document.createElement('div');
+            div.className = 'order-item';
+            div.innerHTML = '<strong>' + o.title + '</strong><br>' +
+              '<span style="color:#4ade80;">Rp ' + Number(o.price).toLocaleString('id-ID') + '</span> | ' +
+              '<span style="color:#94a3b8;">' + o.date + '</span><br>' +
+              'Status: <b style="color:#38bdf8;">' + o.status + '</b>';
+            container.appendChild(div);
+          }
+        }
+      }
+
+      document.getElementById('sellForm').addEventListener('submit', function(e) {
         e.preventDefault();
         var title = document.getElementById('pTitle').value;
         var cat = document.getElementById('pCat').value;
         var price = Number(document.getElementById('pPrice').value);
-        var seller = userEmail ? userEmail.split('@')[0] : 'Penjual';
+        var seller = document.getElementById('pSeller').value;
 
         products.unshift({ title: title, cat: cat, price: price, seller: seller });
         saveData();
-        alert("Produk berhasil dipublish!");
+        alert("Produk berhasil ditambahkan ke katalog!");
+        
         document.getElementById('pTitle').value = '';
         document.getElementById('pPrice').value = '';
-        switchTab('marketplace');
+        document.getElementById('pSeller').value = '';
+        switchTab('market');
       });
 
-      function renderChat() {
-        var body = document.getElementById('chatBody');
-        if(!body) return;
-        body.innerHTML = '';
-        for(var i=0; i<chatMessages.length; i++) {
-          var m = chatMessages[i];
-          var div = document.createElement('div');
-          if(m.sender === 'system') {
-            div.className = 'msg system';
-            div.style.whiteSpace = 'pre-line';
-            div.innerHTML = m.text;
-          } else if(m.sender === 'owner') {
-            div.className = 'msg owner';
-            div.innerHTML = '<b>Owner:</b> ' + m.text;
-          } else {
-            div.className = 'msg buyer';
-            div.innerHTML = '<b>' + m.name + ':</b> ' + m.text;
-          }
-          body.appendChild(div);
-        }
-        body.scrollTop = body.scrollHeight;
-      }
-
-      function sendMsg() {
-        var input = document.getElementById('chatInput');
-        if(!input || !input.value.trim()) return;
-
-        var name = userEmail ? userEmail.split('@')[0] : 'Pembeli';
-        var type = userEmail.toLowerCase().includes('owner') ? 'owner' : 'buyer';
-
-        chatMessages.push({ sender: type, name: name, text: input.value });
-        saveData();
-        input.value = '';
-        renderChat();
-      }
-
-      document.getElementById('btnSendChat').addEventListener('click', sendMsg);
-      document.getElementById('chatInput').addEventListener('keypress', function(e) {
-        if(e.key === 'Enter') sendMsg();
-      });
-
-      document.getElementById('ownerBtn1').addEventListener('click', function() {
-        if(!userEmail.toLowerCase().includes('owner')) {
-          alert("Hanya Owner yang dapat mengkonfirmasi!");
-          return;
-        }
-        document.getElementById('txStatusText').innerHTML = 'Status: <span style="color:#4ade80;">Telah Dikonfirmasi (Dana Masuk)</span>';
-        chatMessages.push({ sender: 'system', text: '✅ [TELAH DIKONFIRMASI] Dana sudah masuk ke rekening Owner. Penjual silakan kirim barang ke Pembeli!' });
-        saveData();
-        renderChat();
-        alert("Status diubah: Telah Dikonfirmasi.");
-      });
-
-      document.getElementById('ownerBtn2').addEventListener('click', function() {
-        if(!userEmail.toLowerCase().includes('owner')) {
-          alert("Hanya Owner yang dapat menyelesaikan transaksi!");
-          return;
-        }
-        document.getElementById('txStatusText').innerHTML = 'Status: <span style="color:#38bdf8;">Selesai (Menunggu Norek Penjual)</span>';
-        chatMessages.push({ sender: 'system', text: '🎉 [TRANSAKSI SELESAI] Pembeli sudah menerima barang. Pemberitahuan untuk Penjual: Silakan kirimkan nomor rekening (norek) kamu ke chat untuk pencairan dana!' });
-        saveData();
-        renderChat();
-        alert("Transaksi selesai! Notifikasi norek dikirim ke chat.");
-      });
-
-      // Modal Auth Handlers
-      var authModal = document.getElementById('authModal');
-      document.getElementById('btnLoginModal').addEventListener('click', function() {
-        authMode = 'login';
-        document.getElementById('modalTitle').innerText = 'Masuk';
-        document.getElementById('modalBtn').innerText = 'Masuk';
-        authModal.style.display = 'flex';
-      });
-
-      document.getElementById('btnRegisterModal').addEventListener('click', function() {
-        authMode = 'register';
-        document.getElementById('modalTitle').innerText = 'Daftar';
-        document.getElementById('modalBtn').innerText = 'Daftar';
-        authModal.style.display = 'flex';
-      });
-
-      document.getElementById('btnCloseModal').addEventListener('click', function() {
-        authModal.style.display = 'none';
-      });
-
-      authModal.addEventListener('click', function(e) {
-        if(e.target === this) authModal.style.display = 'none';
-      });
-
-      document.getElementById('authForm').addEventListener('submit', function(e) {
-        e.preventDefau
+      switchTab('home');
+    });
+  </script>
+</body>
+</html>
