@@ -4,251 +4,44 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NEXTYSTUDIO - Gaming Marketplace & MIDMAN Platform</title>
-  <link rel="stylesheet" href="css/style.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <!-- Supabase JS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-<body>
-
-  <!-- Navbar Navigation -->
-  <nav class="navbar">
-    <div class="logo">
-      <i class="fa-solid fa-gamepad"></i> NEXTY<span>STUDIO</span>
-    </div>
-    <ul class="nav-links">
-      <li><a href="#" class="active" onclick="showTab('beranda')"><i class="fa-solid fa-house"></i> Beranda</a></li>
-      <li><a href="#" onclick="showTab('marketplace')"><i class="fa-solid fa-store"></i> Marketplace</a></li>
-      <li><a href="#" onclick="showTab('pesan')"><i class="fa-solid fa-comments"></i> Pesan</a></li>
-      <li><a href="#" onclick="showTab('transaksi')"><i class="fa-solid fa-shield-halved"></i> Transaksi MIDMAN</a></li>
-      <li><a href="#" onclick="showTab('toko')"><i class="fa-solid fa-shop"></i> Toko Saya</a></li>
-      <li><a href="#" onclick="showTab('profil')"><i class="fa-solid fa-user"></i> Profil</a></li>
-    </ul>
-    <div class="auth-buttons" id="authContainer">
-      <button class="btn btn-outline" onclick="openAuthModal('login')">Masuk</button>
-      <button class="btn btn-primary" onclick="openAuthModal('register')">Daftar</button>
-    </div>
-  </nav>
-
-  <!-- Container Utama -->
-  <main class="container">
-
-    <!-- Tab 1: Beranda -->
-    <section id="tab-beranda" class="tab-content active">
-      <div class="hero-banner">
-        <h1>Marketplace Gaming dengan Sistem <span>MIDMAN Wajib</span></h1>
-        <p>Jual beli akun game, coin, dan item dengan aman 100% diawasi oleh MIDMAN terpercaya.</p>
-        <div class="hero-actions">
-          <button class="btn btn-primary btn-lg" onclick="showTab('marketplace')">Jelajahi Produk</button>
-          <button class="btn btn-outline btn-lg" onclick="showTab('toko')">Buka Toko Gratis</button>
-        </div>
-      </div>
-
-      <div class="section-title">
-        <h2><i class="fa-solid fa-fire"></i> Produk Terpopuler</h2>
-      </div>
-      <div class="grid-products">
-        <div class="card-product">
-          <div class="badge-cat">Akun Game</div>
-          <h3>Akun Mobile Legends Mythical Glory</h3>
-          <p class="price">Rp 750.000</p>
-          <p class="seller"><i class="fa-solid fa-shop"></i> Nexty Gaming Store</p>
-          <button class="btn btn-primary btn-block" onclick="createOrderDemo('MLBB Account')">Beli via MIDMAN</button>
-        </div>
-        <div class="card-product">
-          <div class="badge-cat">Mata Uang</div>
-          <h3>1000 Diamond Pixel World</h3>
-          <p class="price">Rp 50.000</p>
-          <p class="seller"><i class="fa-solid fa-shop"></i> Coin Master Shop</p>
-          <button class="btn btn-primary btn-block" onclick="createOrderDemo('Diamond Pixel World')">Beli via MIDMAN</button>
-        </div>
-        <div class="card-product">
-          <div class="badge-cat">Item Game</div>
-          <h3>Item RPG Maker MV Pack Custom City</h3>
-          <p class="price">Rp 120.000</p>
-          <p class="seller"><i class="fa-solid fa-shop"></i> Nexty Studio Asset</p>
-          <button class="btn btn-primary btn-block" onclick="createOrderDemo('Item RPG Maker')">Beli via MIDMAN</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Tab 2: Marketplace -->
-    <section id="tab-marketplace" class="tab-content">
-      <div class="section-title">
-        <h2>Katalog Marketplace</h2>
-      </div>
-      <div class="search-bar-container">
-        <input type="text" id="searchInput" placeholder="Cari akun, coin, item game...">
-        <select id="categoryFilter">
-          <option value="all">Semua Kategori</option>
-          <option value="akun">Akun Game</option>
-          <option value="coin">Coin / Diamond</option>
-          <option value="item">Item Game</option>
-        </select>
-      </div>
-      <div class="grid-products">
-        <div class="card-product">
-          <div class="badge-cat">Akun Game</div>
-          <h3>Akun Mobile Legends Mythical Glory</h3>
-          <p class="price">Rp 750.000</p>
-          <p class="seller"><i class="fa-solid fa-shop"></i> Nexty Gaming Store</p>
-          <button class="btn btn-primary btn-block" onclick="createOrderDemo('MLBB Account')">Beli via MIDMAN</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Tab 3: Pesan -->
-    <section id="tab-pesan" class="tab-content">
-      <div class="section-title">
-        <h2>Chat & Pesan Realtime MIDMAN</h2>
-      </div>
-      <div class="chat-container">
-        <div class="chat-sidebar">
-          <div class="chat-user-item active">
-            <h4>MIDMAN Room #TX1029</h4>
-            <p>Buyer, Seller, & MIDMAN</p>
-          </div>
-        </div>
-        <div class="chat-main">
-          <div class="chat-header">
-            <h3>Ruang Chat Transaksi #TX1029</h3>
-            <span class="badge-status">MIDMAN Presens</span>
-          </div>
-          <div class="chat-body" id="chatMessages">
-            <div class="msg system">Sistem: Ruang Transaksi dibuat otomatis. MIDMAN akan mengawasi proses ini.</div>
-            <div class="msg seller"><b>Seller:</b> Halo, dana sudah diproses ke penampungan MIDMAN?</div>
-            <div class="msg midman"><b>MIDMAN (Owner):</b> Saya sudah memverifikasi pembayaran. Silakan seller serahkan data akun/item ke buyer.</div>
-          </div>
-          <div class="chat-footer">
-            <input type="text" id="msgInput" placeholder="Ketik pesan..." onkeypress="handleKeyPress(event)">
-            <button class="btn btn-primary" onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Tab 4: Transaksi MIDMAN -->
-    <section id="tab-transaksi" class="tab-content">
-      <div class="section-title">
-        <h2>Sistem Transaksi MIDMAN Wajib</h2>
-      </div>
-      <div class="midman-workflow">
-        <div class="step-card">
-          <div class="step-number">1</div>
-          <h4>Pesan & Buat Room</h4>
-          <p>Pembeli memilih barang, sistem otomatis membuat ruang khusus MIDMAN.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-number">2</div>
-          <h4>Penitipan Dana</h4>
-          <p>Pembeli mentransfer dana ke mekanisme penitipan aman (Escrow MIDMAN).</p>
-        </div>
-        <div class="step-card">
-          <div class="step-number">3</div>
-          <h4>Penyerahan Barang</h4>
-          <p>Penjual menyerahkan akun/coin/item dengan pengawasan MIDMAN.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-number">4</div>
-          <h4>Pencairan Dana</h4>
-          <p>Setelah pembeli konfirmasi terima, MIDMAN mencairkan dana ke penjual.</p>
-        </div>
-      </div>
-      <div class="table-responsive">
-        <h3>Riwayat Transaksi Kamu</h3>
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>ID Transaksi</th>
-              <th>Produk</th>
-              <th>Total</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>#TX1029</td>
-              <td>Akun MLBB Mythical Glory</td>
-              <td>Rp 750.000</td>
-              <td><span class="badge-status status-escrow">Penitipan Dana</span></td>
-              <td><button class="btn btn-sm btn-outline" onclick="showTab('pesan')">Buka Chat MIDMAN</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- Tab 5: Toko Saya -->
-    <section id="tab-toko" class="tab-content">
-      <div class="section-title">
-        <h2>Kelola Toko Saya</h2>
-      </div>
-      <div class="store-box">
-        <h3>Pengajuan Akses Seller</h3>
-        <p>Siapa pun boleh mendaftar, namun kamu wajib mengajukan verifikasi toko sebelum bisa berjualan.</p>
-        <form id="sellerForm" onsubmit="submitSellerForm(event)">
-          <div class="form-group">
-            <label>Nama Toko</label>
-            <input type="text" required placeholder="Contoh: Nexty Gaming Store">
-          </div>
-          <div class="form-group">
-            <label>Deskripsi Barang yang Akan Dijual</label>
-            <textarea rows="4" required placeholder="Jelaskan akun game, coin, atau item yang akan kamu jual..."></textarea>
-          </div>
-          <div class="form-group">
-            <label><input type="checkbox" required> Saya menyetujui semua peraturan MIDMAN & Peraturan NEXTYSTUDIO</label>
-          </div>
-          <button type="submit" class="btn btn-primary">Kirim Pengajuan Toko</button>
-        </form>
-      </div>
-    </section>
-
-    <!-- Tab 6: Profil -->
-    <section id="tab-profil" class="tab-content">
-      <div class="section-title">
-        <h2>Pengaturan Profil</h2>
-      </div>
-      <div class="profile-card">
-        <div class="profile-header">
-          <i class="fa-solid fa-circle-user fa-4x"></i>
-          <div>
-            <h3 id="profUsername">Tamu / Belum Login</h3>
-            <span class="role-badge" id="profRole">Role: Buyer</span>
-          </div>
-        </div>
-        <hr style="margin: 20px 0; border:0; border-top:1px solid #334155;">
-        <p><strong>Database Status:</strong> Terhubung ke Supabase (`NextyStudioMarket`)</p>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Modal Auth -->
-  <div class="modal" id="authModal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeAuthModal()">&times;</span>
-      <h3 id="modalTitle">Masuk ke NEXTYSTUDIO</h3>
-      <form id="authForm" onsubmit="handleAuthSubmit(event)">
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="authEmail" required placeholder="email@contoh.com">
-        </div>
-        <div class="form-group">
-          <label>Kata Sandi</label>
-          <input type="password" id="authPassword" required placeholder="******">
-        </div>
-        <div class="form-group" id="usernameGroup" style="display:none;">
-          <label>Username</label>
-          <input type="text" id="authUsername" placeholder="username_kamu">
-        </div>
-        <button type="submit" class="btn btn-primary btn-block" id="modalSubmitBtn">Masuk</button>
-      </form>
-    </div>
-  </div>
-
-  <script src="js/supabase-client.js"></script>
-  <script src="js/app.js"></script>
-</body>
-                                            </html>
-                                                                           
+  
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; background-color: #1e293b; padding: 15px 30px; border-bottom: 2px solid #334155; position: sticky; top: 0; z-index: 100; }
+    .logo { font-size: 1.4rem; font-weight: bold; color: #38bdf8; }
+    .logo span { color: #f43f5e; }
+    .nav-links { display: flex; list-style: none; gap: 15px; }
+    .nav-links a { color: #94a3b8; text-decoration: none; font-weight: 500; padding: 8px 12px; border-radius: 6px; transition: 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: #ffffff; background-color: #334155; }
+    .auth-buttons { display: flex; gap: 10px; }
+    .btn { padding: 8px 16px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn-primary { background-color: #2563eb; color: white; }
+    .btn-primary:hover { background-color: #1d4ed8; }
+    .btn-outline { background: transparent; border: 1px solid #475569; color: #e2e8f0; }
+    .btn-outline:hover { background: #334155; }
+    .btn-block { width: 100%; display: block; margin-top: 10px; }
+    .btn-lg { padding: 12px 24px; font-size: 1rem; }
+    .btn-sm { padding: 4px 8px; font-size: 0.85rem; }
+    .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .hero-banner { background: linear-gradient(135deg, #1e1b4b, #0f172a); border: 1px solid #312e81; border-radius: 12px; padding: 40px; text-align: center; margin-bottom: 40px; }
+    .hero-banner h1 { font-size: 2.2rem; margin-bottom: 15px; }
+    .hero-banner h1 span { color: #f43f5e; }
+    .hero-banner p { color: #94a3b8; margin-bottom: 25px; font-size: 1.1rem; }
+    .hero-actions { display: flex; justify-content: center; gap: 15px; }
+    .section-title { margin-bottom: 20px; border-left: 4px solid #2563eb; padding-left: 12px; }
+    .grid-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+    .card-product { background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 20px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+    .badge-cat { position: absolute; top: 12px; right: 12px; background-color: #0284c7; color: white; font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; }
+    .card-product h3 { font-size: 1.1rem; margin-top: 15px; margin-bottom: 10px; }
+    .card-product .price { color: #4ade80; font-size: 1.3rem; font-weight: bold; margin-bottom: 10px; }
+    .card-product .seller { color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px; }
+    .search-bar-container { display: flex; gap: 15px; margin-bottom: 25px; }
+    .search-bar-container input, .search-bar-container select, .form-group input, .form-group textarea { width: 100%; padding: 10px 14px; background-color: #1e293b; border: 1px solid #334155; border-radius: 6px; color: white; }
+    .chat-container { display: flex; background: #1e293b; border-radius: 8px; border: 1px solid #334155; height: 480px
+    
