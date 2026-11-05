@@ -7,26 +7,27 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; padding-bottom: 50px; }
     
-    .navbar { display: flex; justify-content: space-between; align-items: center; background-color: #1e293b; padding: 15px 20px; border-bottom: 2px solid #334155; position: sticky; top: 0; z-index: 1000; flex-wrap: wrap; gap: 10px; }
+    /* Navbar dengan layer tinggi agar tombol menu bebas diklik */
+    .navbar { display: flex; justify-content: space-between; align-items: center; background-color: #1e293b; padding: 15px 20px; border-bottom: 2px solid #334155; position: sticky; top: 0; z-index: 9999; flex-wrap: wrap; gap: 10px; }
     .logo { font-size: 1.4rem; font-weight: 800; color: #38bdf8; text-decoration: none; cursor: pointer; }
     .logo span { color: #f43f5e; }
-    .nav-links { display: flex; list-style: none; gap: 6px; flex-wrap: wrap; z-index: 1001; }
+    .nav-links { display: flex; list-style: none; gap: 6px; flex-wrap: wrap; }
     .nav-links a { color: #94a3b8; text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 6px; font-size: 0.88rem; transition: all 0.2s; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
     .nav-links a:hover, .nav-links a.active { color: #ffffff; background-color: #334155; }
-    .auth-buttons { display: flex; gap: 8px; align-items: center; z-index: 1001; }
+    .auth-buttons { display: flex; gap: 8px; align-items: center; }
     
-    .btn { padding: 10px 16px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.9rem; position: relative; z-index: 10; }
+    /* Tombol utama dengan prioritas klik tertinggi */
+    .btn { padding: 10px 18px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.9rem; position: relative; z-index: 50; }
     .btn-primary { background-color: #2563eb; color: white; }
-    .btn-primary:hover { background-color: #1d4ed8; }
+    .btn-primary:active { background-color: #1d4ed8; transform: scale(0.98); }
     .btn-outline { background: transparent; border: 1px solid #475569; color: #e2e8f0; }
-    .btn-outline:hover { background: #334155; }
     .btn-block { width: 100%; display: block; margin-top: 10px; }
-    .btn-sm { padding: 4px 8px; font-size: 0.8rem; }
+    .btn-sm { padding: 5px 10px; font-size: 0.8rem; }
     
-    .container { max-width: 1100px; margin: 25px auto; padding: 0 15px; position: relative; z-index: 1; }
+    .container { max-width: 1100px; margin: 25px auto; padding: 0 15px; position: relative; z-index: 10; }
     .tab-content { display: none; }
     .tab-content.active { display: block !important; }
     
@@ -37,18 +38,20 @@
     
     .section-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-left: 4px solid #2563eb; padding-left: 10px; }
     .grid-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
-    .card-product { background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 16px; position: relative; display: flex; flex-direction: column; justify-content: space-between; z-index: 2; }
+    
+    /* Kartu produk dengan z-index agar tombol beli aman disentuh */
+    .card-product { background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 16px; position: relative; display: flex; flex-direction: column; justify-content: space-between; z-index: 20; }
     .badge-cat { position: absolute; top: 12px; right: 12px; background-color: #0284c7; color: white; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
     .card-product h3 { font-size: 0.95rem; margin-top: 15px; margin-bottom: 8px; }
     .card-product .price { color: #4ade80; font-size: 1.15rem; font-weight: bold; margin-bottom: 6px; }
     .card-product .seller { color: #94a3b8; font-size: 0.8rem; margin-bottom: 12px; }
     .empty-state { text-align: center; color: #94a3b8; padding: 40px; background: #1e293b; border-radius: 8px; border: 1px solid #334155; grid-column: 1 / -1; }
     
-    .filter-tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; position: relative; z-index: 5; }
-    .filter-btn { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
+    .filter-tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
+    .filter-btn { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; z-index: 20; position: relative; }
     .filter-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
 
-    .chat-container { display: flex; background: #1e293b; border-radius: 8px; border: 1px solid #334155; height: 440px; overflow: hidden; position: relative; z-index: 2; }
+    .chat-container { display: flex; background: #1e293b; border-radius: 8px; border: 1px solid #334155; height: 440px; overflow: hidden; }
     .chat-sidebar { width: 35%; border-right: 1px solid #334155; padding: 10px; background: #0f172a; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
     .chat-room-item { padding: 10px; border-radius: 6px; background: #1e293b; cursor: pointer; border-left: 3px solid #334155; transition: 0.2s; }
     .chat-room-item.active-room { border-left-color: #2563eb; background: #334155; }
@@ -60,8 +63,9 @@
     .msg.buyer { background: #1e3a8a; align-self: flex-start; }
     .msg.owner { background: #831843; align-self: flex-end; border: 1px solid #f43f5e; }
     .chat-footer { padding: 10px; display: flex; gap: 8px; background: #0f172a; }
-    .chat-footer input { flex: 1; padding: 8px 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: white; font-size: 0.9rem; }
+    .chat-footer input { flex: 1; padding: 10px 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: white; font-size: 0.9rem; }
 
+    /* Modal dengan pengaman pointer events */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 99999; padding: 15px; }
     .modal-box { background: #1e293b; padding: 25px; border-radius: 10px; width: 100%; max-width: 380px; border: 1px solid #334155; position: relative; z-index: 100000; }
     .close-btn { position: absolute; top: 12px; right: 15px; font-size: 1.4rem; cursor: pointer; color: #94a3b8; }
@@ -69,7 +73,7 @@
     .form-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; color: #cbd5e1; }
     .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; background-color: #0f172a; border: 1px solid #334155; border-radius: 6px; color: white; font-size: 0.9rem; }
     
-    .profile-card, .store-box, .owner-panel { background: #1e293b; border: 1px solid #334155; padding: 20px; border-radius: 8px; margin-bottom: 15px; position: relative; z-index: 2; }
+    .profile-card, .store-box, .owner-panel { background: #1e293b; border: 1px solid #334155; padding: 20px; border-radius: 8px; margin-bottom: 15px; }
     .role-badge { background: #059669; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; }
     .role-badge.owner { background: #f43f5e; }
 
@@ -215,7 +219,6 @@
     var currentAuthMode = 'login';
     var currentUserEmail = '';
     
-    // Inisialisasi aman dengan try-catch agar tidak pernah crash
     var products = [];
     var transactions = [];
     try {
@@ -364,6 +367,4 @@
       renderChatMessages(tx);
     }
 
-    function renderOwnerControl(tx) {
-      var panel = document.getElementById('ownerControlPanel');
-      if(!panel || !tx) retur
+    function renderOwner
