@@ -214,26 +214,9 @@
   <script>
     var currentAuthMode = 'login';
     var currentUserEmail = '';
-    
-    // Penyimpanan lokal aman dengan pelindung data kosong
     var products = [];
     var transactions = [];
-    try {
-      products = JSON.parse(localStorage.getItem('nexty_products')) || [];
-      transactions = JSON.parse(localStorage.getItem('nexty_txs')) || [];
-    } catch(e) {
-      products = [];
-      transactions = [];
-    }
-    
     var activeTxId = null;
-
-    function saveToStorage() {
-      try {
-        localStorage.setItem('nexty_products', JSON.stringify(products));
-        localStorage.setItem('nexty_txs', JSON.stringify(transactions));
-      } catch(e) {}
-    }
 
     function showTab(tabId) {
       var tabs = document.querySelectorAll('.tab-content');
@@ -259,27 +242,27 @@
     function renderProducts(cat, gridId) {
       var grid = document.getElementById(gridId);
       if(!grid) return;
-      var filtered = cat === 'Semua' ? products : products.filter(p => p.cat === cat);
+      var filtered = cat === 'Semua' ? products : products.filter(function(p) { return p.cat === cat; });
       
       if(filtered.length === 0) {
-        grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-box-open" style="font-size:2rem; margin-bottom:10px;"></i><p>Belum ada produk dari penjual. Silakan pasang iklan melalui menu "Jual / Toko".</p></div>`;
+        grid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-box-open" style="font-size:2rem; margin-bottom:10px;"></i><p>Belum ada produk dari penjual. Silakan pasang iklan melalui menu "Jual / Toko".</p></div>';
         return;
       }
 
-      grid.innerHTML = filtered.map(p => `
-        <div class="card-product">
-          <span class="badge-cat">${p.cat}</span>
-          <h3>${p.title}</h3>
-          <p class="price">Rp ${p.price.toLocaleString('id-ID')}</p>
-          <p class="seller"><i class="fa-solid fa-shop"></i> ${p.seller}</p>
-          <button class="btn btn-primary btn-block" onclick="createTransaction('${p.title.replace(/'/g, "\\'")}', ${p.price}, '${p.seller.replace(/'/g, "\\'")}')">Beli via Rekber Manual</button>
-        </div>
-      `).join('');
+      grid.innerHTML = filtered.map(function(p) {
+        return '<div class="card-product">' +
+          '<span class="badge-cat">' + p.cat + '</span>' +
+          '<h3>' + p.title + '</h3>' +
+          '<p class="price">Rp ' + p.price.toLocaleString('id-ID') + '</p>' +
+          '<p class="seller"><i class="fa-solid fa-shop"></i> ' + p.seller + '</p>' +
+          '<button class="btn btn-primary btn-block" onclick="createTransaction(\'' + p.title.replace(/'/g, "\\'") + '\', ' + p.price + ', \'' + p.seller.replace(/'/g, "\\'") + '\')">Beli via Rekber Manual</button>' +
+          '</div>';
+      }).join('');
     }
 
     function filterCat(cat, btn) {
       var btns = document.querySelectorAll('.filter-btn');
-      for(var b of btns) b.classList.remove('active');
+      for(var i=0; i<btns.length; i++) btns[i].classList.remove('active');
       if(btn) btn.classList.add('active');
       renderProducts(cat, 'marketGrid');
     }
@@ -293,11 +276,10 @@
         seller: seller,
         status: 'Menunggu Pembeli Transfer ke QRIS/Norek',
         messages: [
-          { sender: 'system', text: `📢 [TRANSAKSI #${txId} DIBUAT]<br>Produk: <b>${title}</b> (Rp ${price.toLocaleString('id-ID')})<br>Penjual: ${seller}<br><br>Silahkan TF ke QRIS / Norek Owner:<br><b>BCA: 1234567890 a.n Nexty Studio / QRIS Resmi Nexty</b>` }
+          { sender: 'system', text: '📢 [TRANSAKSI #' + txId + ' DIBUAT]<br>Produk: <b>' + title + '</b> (Rp ' + price.toLocaleString('id-ID') + ')<br>Penjual: ' + seller + '<br><br>Silahkan TF ke QRIS / Norek Owner:<br><b>BCA: 1234567890 a.n Nexty Studio / QRIS Resmi Nexty</b>' }
         ]
       };
       transactions.unshift(newTx);
-      saveToStorage();
       alert("Ruang chat rekber manual berhasil dibuat!");
       showTab('pesan');
       selectRoom(txId);
@@ -307,24 +289,24 @@
       var sidebar = document.getElementById('chatSidebarList');
       if(!sidebar) return;
       if(transactions.length === 0) {
-        sidebar.innerHTML = `<p style="font-size:0.8rem; color:#94a3b8; text-align:center; padding:20px;">Belum ada transaksi. Silakan pilih produk di Marketplace.</p>`;
+        sidebar.innerHTML = '<p style="font-size:0.8rem; color:#94a3b8; text-align:center; padding:20px;">Belum ada transaksi. Silakan pilih produk di Marketplace.</p>';
         return;
       }
-      sidebar.innerHTML = transactions.map(tx => `
-        <div class="chat-room-item ${activeTxId === tx.id ? 'active-room' : ''}" onclick="selectRoom('${tx.id}')">
-          <strong>#${tx.id}</strong>
-          <p style="font-size:0.75rem; color:#94a3b8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${tx.title}</p>
-        </div>
-      `).join('');
+      sidebar.innerHTML = transactions.map(function(tx) {
+        return '<div class="chat-room-item ' + (activeTxId === tx.id ? 'active-room' : '') + '" onclick="selectRoom(\'' + tx.id + '\')">' +
+          '<strong>#' + tx.id + '</strong>' +
+          '<p style="font-size:0.75rem; color:#94a3b8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">' + tx.title + '</p>' +
+          '</div>';
+      }).join('');
     }
 
     function selectRoom(id) {
       activeTxId = id;
-      var tx = transactions.find(t => t.id === id);
+      var tx = transactions.find(function(t) { return t.id === id; });
       if(!tx) return;
 
       var roomTitle = document.getElementById('roomTitle');
-      if(roomTitle) roomTitle.innerText = `#${tx.id} - ${tx.title}`;
+      if(roomTitle) roomTitle.innerText = '#' + tx.id + ' - ' + tx.title;
       
       renderChatMessages(tx);
       renderChatSidebar();
@@ -334,10 +316,10 @@
     function renderChatMessages(tx) {
       var chatBody = document.getElementById('chatBody');
       if(!chatBody) return;
-      chatBody.innerHTML = tx.messages.map(m => {
-        if(m.sender === 'system') return `<div class="msg system">${m.text}</div>`;
-        if(m.sender === 'owner') return `<div class="msg owner"><b>Owner (MIDMAN):</b> ${m.text}</div>`;
-        return `<div class="msg buyer"><b>${m.name}:</b> ${m.text}</div>`;
+      chatBody.innerHTML = tx.messages.map(function(m) {
+        if(m.sender === 'system') return '<div class="msg system">' + m.text + '</div>';
+        if(m.sender === 'owner') return '<div class="msg owner"><b>Owner (MIDMAN):</b> ' + m.text + '</div>';
+        return '<div class="msg buyer"><b>' + m.name + ':</b> ' + m.text + '</div>';
       }).join('');
       chatBody.scrollTop = chatBody.scrollHeight;
     }
@@ -350,14 +332,13 @@
       var input = document.getElementById('chatInput');
       if(!input || !input.value.trim()) return;
 
-      var tx = transactions.find(t => t.id === activeTxId);
+      var tx = transactions.find(function(t) { return t.id === activeTxId; });
       if(!tx) return;
 
       var senderName = currentUserEmail ? currentUserEmail.split('@')[0] : 'Pembeli';
       var senderType = currentUserEmail.toLowerCase().includes('owner') ? 'owner' : 'buyer';
 
       tx.messages.push({ sender: senderType, name: senderName, text: input.value });
-      saveToStorage();
       input.value = '';
       renderChatMessages(tx);
     }
@@ -365,13 +346,17 @@
     function renderOwnerControl(tx) {
       var panel = document.getElementById('ownerControlPanel');
       if(!panel) return;
-      panel.innerHTML = `
-        <h3 style="margin-bottom: 10px; color: #f43f5e;">Kontrol Transaksi #${tx.id}</h3>
-        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Produk: <b>${tx.title}</b> | Harga: Rp ${tx.price.toLocaleString('id-ID')}</p>
-        
-        <div style="background:#0f172a; padding:15px; border-radius:6px; margin-bottom:12px; border-left:4px solid #f43f5e;">
-          <strong>Status Saat Ini:</strong><br>
-          <span style="font-size:0.85rem; color:#facc15;">${tx.status}</span>
-          <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
-            <button class="btn btn-primary btn-sm" onclick="ownerConfirmTF('${tx.id}')">1. Telah Dikonfirmasi (TF Masuk)</button>
-            <button class="btn btn-outline btn-sm
+      panel.innerHTML = '<h3 style="margin-bottom: 10px; color: #f43f5e;">Kontrol Transaksi #' + tx.id + '</h3>' +
+        '<p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Produk: <b>' + tx.title + '</b> | Harga: Rp ' + tx.price.toLocaleString('id-ID') + '</p>' +
+        '<div style="background:#0f172a; padding:15px; border-radius:6px; margin-bottom:12px; border-left:4px solid #f43f5e;">' +
+        '<strong>Status Saat Ini:</strong><br>' +
+        '<span style="font-size:0.85rem; color:#facc15;">' + tx.status + '</span>' +
+        '<div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">' +
+        '<button class="btn btn-primary btn-sm" onclick="ownerConfirmTF(\'' + tx.id + '\')">1. Telah Dikonfirmasi (TF Masuk)</button>' +
+        '<button class="btn btn-outline btn-sm" onclick="ownerFinishTx(\'' + tx.id + '\')">2. Selesaikan & Minta Norek Seller</button>' +
+        '</div></div>';
+    }
+
+    function ownerConfirmTF(txId) {
+      if(!currentUserEmail.toLowerCase().includes('owner')) {
+        alert("Hanya Owner yang dapat mengkonfirma
