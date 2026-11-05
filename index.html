@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NEXTYSTUDIO - Gaming Marketplace & MIDMAN Platform</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <!-- Supabase JS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -14,8 +12,8 @@
     .navbar { display: flex; justify-content: space-between; align-items: center; background-color: #1e293b; padding: 15px 30px; border-bottom: 2px solid #334155; position: sticky; top: 0; z-index: 100; }
     .logo { font-size: 1.4rem; font-weight: bold; color: #38bdf8; }
     .logo span { color: #f43f5e; }
-    .nav-links { display: flex; list-style: none; gap: 15px; }
-    .nav-links a { color: #94a3b8; text-decoration: none; font-weight: 500; padding: 8px 12px; border-radius: 6px; transition: 0.2s; }
+    .nav-links { display: flex; list-style: none; gap: 10px; }
+    .nav-links a { color: #94a3b8; text-decoration: none; font-weight: 500; padding: 8px 12px; border-radius: 6px; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
     .nav-links a:hover, .nav-links a.active { color: #ffffff; background-color: #334155; }
     .auth-buttons { display: flex; gap: 10px; }
     .btn { padding: 8px 16px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
@@ -25,15 +23,15 @@
     .btn-outline:hover { background: #334155; }
     .btn-block { width: 100%; display: block; margin-top: 10px; }
     .btn-lg { padding: 12px 24px; font-size: 1rem; }
-    .btn-sm { padding: 4px 8px; font-size: 0.85rem; }
+    .btn-sm { padding: 6px 12px; font-size: 0.85rem; }
     .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
-    .hero-banner { background: linear-gradient(135deg, #1e1b4b, #0f172a); border: 1px solid #312e81; border-radius: 12px; padding: 40px; text-align: center; margin-bottom: 40px; }
-    .hero-banner h1 { font-size: 2.2rem; margin-bottom: 15px; }
+    .hero-banner { background: linear-gradient(135deg, #1e1b4b, #0f172a); border: 1px solid #312e81; border-radius: 12px; padding: 40px 20px; text-align: center; margin-bottom: 40px; }
+    .hero-banner h1 { font-size: 2rem; margin-bottom: 15px; }
     .hero-banner h1 span { color: #f43f5e; }
-    .hero-banner p { color: #94a3b8; margin-bottom: 25px; font-size: 1.1rem; }
-    .hero-actions { display: flex; justify-content: center; gap: 15px; }
+    .hero-banner p { color: #94a3b8; margin-bottom: 25px; font-size: 1rem; }
+    .hero-actions { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
     .section-title { margin-bottom: 20px; border-left: 4px solid #2563eb; padding-left: 12px; }
     .grid-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
     .card-product { background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 20px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
@@ -41,7 +39,7 @@
     .card-product h3 { font-size: 1.1rem; margin-top: 15px; margin-bottom: 10px; }
     .card-product .price { color: #4ade80; font-size: 1.3rem; font-weight: bold; margin-bottom: 10px; }
     .card-product .seller { color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px; }
-    .search-bar-container { display: flex; gap: 15px; margin-bottom: 25px; }
+    .search-bar-container { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
     .search-bar-container input, .search-bar-container select, .form-group input, .form-group textarea { width: 100%; padding: 10px 14px; background-color: #1e293b; border: 1px solid #334155; border-radius: 6px; color: white; }
     .chat-container { display: flex; background: #1e293b; border-radius: 8px; border: 1px solid #334155; height: 480px; overflow: hidden; }
     .chat-sidebar { width: 30%; border-right: 1px solid #334155; padding: 15px; background: #0f172a; }
@@ -62,20 +60,22 @@
     .data-table th { background: #0f172a; color: #94a3b8; }
     .badge-status { padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
     .status-escrow { background: #854d0e; color: #fef08a; }
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 200; }
-    .modal-content { background: #1e293b; padding: 30px; border-radius: 10px; width: 90%; max-width: 400px; position: relative; }
-    .close-btn { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; cursor: pointer; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
+    .modal.active { display: flex !important; }
+    .modal-content { background: #1e293b; padding: 25px; border-radius: 10px; width: 100%; max-width: 400px; position: relative; border: 1px solid #334155; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    .close-btn { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; cursor: pointer; color: #94a3b8; }
+    .close-btn:hover { color: white; }
     .form-group { margin-bottom: 15px; }
     .form-group label { display: block; margin-bottom: 6px; font-size: 0.9rem; color: #cbd5e1; }
     .store-box, .profile-card { background: #1e293b; border: 1px solid #334155; padding: 30px; border-radius: 8px; }
     .profile-header { display: flex; align-items: center; gap: 20px; }
     .role-badge { background: #059669; padding: 3px 10px; border-radius: 12px; font-size: 0.85rem; }
     @media (max-width: 768px) {
-      .navbar { flex-direction: column; gap: 15px; }
+      .navbar { flex-direction: column; gap: 15px; text-align: center; }
       .nav-links { flex-wrap: wrap; justify-content: center; }
-      .chat-container { flex-direction: column; height: 600px; }
-      .chat-sidebar { width: 100%; height: 120px; }
-      .chat-main { width: 100%; height: 480px; }
+      .chat-container { flex-direction: column; height: 500px; }
+      .chat-sidebar { width: 100%; height: 100px; }
+      .chat-main { width: 100%; height: 400px; }
     }
   </style>
 </head>
@@ -87,16 +87,16 @@
       <i class="fa-solid fa-gamepad"></i> NEXTY<span>STUDIO</span>
     </div>
     <ul class="nav-links">
-      <li><a href="#" class="active" onclick="showTab('beranda')"><i class="fa-solid fa-house"></i> Beranda</a></li>
-      <li><a href="#" onclick="showTab('marketplace')"><i class="fa-solid fa-store"></i> Marketplace</a></li>
-      <li><a href="#" onclick="showTab('pesan')"><i class="fa-solid fa-comments"></i> Pesan</a></li>
-      <li><a href="#" onclick="showTab('transaksi')"><i class="fa-solid fa-shield-halved"></i> Transaksi MIDMAN</a></li>
-      <li><a href="#" onclick="showTab('toko')"><i class="fa-solid fa-shop"></i> Toko Saya</a></li>
-      <li><a href="#" onclick="showTab('profil')"><i class="fa-solid fa-user"></i> Profil</a></li>
+      <li><a href="#" id="nav-beranda" class="active" onclick="showTab('beranda', event)"><i class="fa-solid fa-house"></i> Beranda</a></li>
+      <li><a href="#" id="nav-marketplace" onclick="showTab('marketplace', event)"><i class="fa-solid fa-store"></i> Marketplace</a></li>
+      <li><a href="#" id="nav-pesan" onclick="showTab('pesan', event)"><i class="fa-solid fa-comments"></i> Pesan</a></li>
+      <li><a href="#" id="nav-transaksi" onclick="showTab('transaksi', event)"><i class="fa-solid fa-shield-halved"></i> Transaksi MIDMAN</a></li>
+      <li><a href="#" id="nav-toko" onclick="showTab('toko', event)"><i class="fa-solid fa-shop"></i> Toko Saya</a></li>
+      <li><a href="#" id="nav-profil" onclick="showTab('profil', event)"><i class="fa-solid fa-user"></i> Profil</a></li>
     </ul>
     <div class="auth-buttons" id="authContainer">
-      <button class="btn btn-outline" onclick="openAuthModal('login')">Masuk</button>
-      <button class="btn btn-primary" onclick="openAuthModal('register')">Daftar</button>
+      <button class="btn btn-outline" onclick="openAuthModal('login', event)">Masuk</button>
+      <button class="btn btn-primary" onclick="openAuthModal('register', event)">Daftar</button>
     </div>
   </nav>
 
@@ -109,8 +109,8 @@
         <h1>Marketplace Gaming dengan Sistem <span>MIDMAN Wajib</span></h1>
         <p>Jual beli akun game, coin, dan item dengan aman 100% diawasi oleh MIDMAN terpercaya.</p>
         <div class="hero-actions">
-          <button class="btn btn-primary btn-lg" onclick="showTab('marketplace')">Jelajahi Produk</button>
-          <button class="btn btn-outline btn-lg" onclick="showTab('toko')">Buka Toko Gratis</button>
+          <button class="btn btn-primary btn-lg" onclick="showTab('marketplace', event)">Jelajahi Produk</button>
+          <button class="btn btn-outline btn-lg" onclick="showTab('toko', event)">Buka Toko Gratis</button>
         </div>
       </div>
 
@@ -242,7 +242,7 @@
               <td>Akun MLBB Mythical Glory</td>
               <td>Rp 750.000</td>
               <td><span class="badge-status status-escrow">Penitipan Dana</span></td>
-              <td><button class="btn btn-sm btn-outline" onclick="showTab('pesan')">Buka Chat MIDMAN</button></td>
+              <td><button class="btn btn-sm btn-outline" onclick="showTab('pesan', event)">Buka Chat MIDMAN</button></td>
             </tr>
           </tbody>
         </table>
@@ -294,7 +294,7 @@
 
   </main>
 
-  <!-- Modal Auth -->
+  <!-- Modal Auth (Masuk & Daftar) -->
   <div class="modal" id="authModal">
     <div class="modal-content">
       <span class="close-btn" onclick="closeAuthModal()">&times;</span>
@@ -317,30 +317,30 @@
     </div>
   </div>
 
+  <!-- Skrip Utama Website (Langsung Berjalan Tanpa Menunggu Jaringan) -->
   <script>
-    const SUPABASE_URL = "https://weayjlimtpwhjihmmvjl.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlYXlqbGltdHB3aGppaG1tdmpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM4ODQyMjgsImV4cCI6MjEwOTQ2MDIyOH0.QZjSPfj9cT8vI0QxJvpajaHLADo6-FBY4KAOIRWhPUA";
-
-    let supabase = null;
-    if (typeof window.supabase !== 'undefined') {
-      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    }
-
     let currentAuthMode = 'login';
+    let supabaseClient = null;
 
-    function showTab(tabName) {
+    function showTab(tabName, event) {
+      if (event) event.preventDefault();
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
       document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+      
       const targetTab = document.getElementById('tab-' + tabName);
       if (targetTab) targetTab.classList.add('active');
+      const activeNav = document.getElementById('nav-' + tabName);
+      if (activeNav) activeNav.classList.add('active');
     }
 
-    function openAuthModal(mode) {
+    function openAuthModal(mode, event) {
+      if (event) event.preventDefault();
       currentAuthMode = mode;
       const modal = document.getElementById('authModal');
       const title = document.getElementById('modalTitle');
       const submitBtn = document.getElementById('modalSubmitBtn');
       const usernameGroup = document.getElementById('usernameGroup');
+      
       if (mode === 'login') {
         title.innerText = 'Masuk ke NEXTYSTUDIO';
         submitBtn.innerText = 'Masuk';
@@ -350,55 +350,48 @@
         submitBtn.innerText = 'Daftar Akun';
         usernameGroup.style.display = 'block';
       }
-      modal.style.display = 'flex';
+      modal.classList.add('active');
     }
 
     function closeAuthModal() {
-      document.getElementById('authModal').style.display = 'none';
+      const modal = document.getElementById('authModal');
+      modal.classList.remove('active');
+    }
+
+    // Klik di luar area modal untuk menutup
+    window.onclick = function(event) {
+      const modal = document.getElementById('authModal');
+      if (event.target === modal) closeAuthModal();
+    };
+
+    function sendMessage() {
+      const input = document.getElementById('msgInput');
+      const text = input.value.trim();
+      if (!text) return;
+      const body = document.getElementById('chatMessages');
+      const newMsg = document.createElement('div');
+      newMsg.className = 'msg seller';
+      newMsg.innerHTML = `<b>Kamu:</b> ${text}`;
+      body.appendChild(newMsg);
+      input.value = '';
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function handleKeyPress(e) {
+      if (e.key === 'Enter') sendMessage();
+    }
+
+    function submitSellerForm(e) {
+      e.preventDefault();
+      alert("Pengajuan Toko berhasil dikirim ke Admin/Owner! Status toko kamu sekarang: PENDING.");
+      document.getElementById('sellerForm').reset();
+    }
+
+    function createOrderDemo(prodName) {
+      alert(`Pesanan untuk "${prodName}" dibuat! Kamu otomatis diarahkan ke Ruang Chat MIDMAN.`);
+      showTab('pesan');
     }
 
     async function handleAuthSubmit(e) {
       e.preventDefault();
-      const email = document.getElementById('authEmail').value;
-      const password = document.getElementById('authPassword').value;
-      const username = document.getElementById('authUsername').value;
-
-      if (!supabase) {
-        alert("Koneksi Supabase belum siap.");
-        return;
-      }
-
-      if (currentAuthMode === 'register') {
-        const { data, error } = await supabase.auth.signUp({
-          email: email,
-          password: password,
-          options: { data: { username: username } }
-        });
-        if (error) {
-          alert("Gagal Daftar: " + error.message);
-        } else {
-          alert("Pendaftaran Berhasil! Silakan cek email kamu atau langsung login.");
-          closeAuthModal();
-        }
-      } else {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: email,
-          password: password
-        });
-        if (error) {
-          alert("Gagal Login: " + error.message);
-        } else {
-          alert("Berhasil Login!");
-          closeAuthModal();
-          checkCurrentUser();
-        }
-      }
-    }
-
-    async function checkCurrentUser() {
-      if (!supabase) return;
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        document.getElementById('authContainer').innerHTML = `
-          <span style="color:#4ade80; align-self:center;"><i class="fa-solid fa-user-check"></i> ${user.email}</span>
-          <button class
+      const email = document.getElementByI
