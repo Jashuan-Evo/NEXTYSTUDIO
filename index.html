@@ -5,12 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NEXTYSTUDIO - Gaming Marketplace & MIDMAN Platform</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Supabase JS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; padding-bottom: 50px; }
     
-    .navbar { display: flex; justify-content: space-between; align-items: center; background-color: #1e293b; padding: 15px 20px; border-bottom: 2px solid #334155; position: sticky; top: 0; z-index: 1000; flex-wrap: wrap; gap: 10px; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; background-color: #1e293b; padding: 15px 20px; border-bottom: 2px solid #334155; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 10px; }
     .logo { font-size: 1.4rem; font-weight: 800; color: #38bdf8; text-decoration: none; cursor: pointer; }
     .logo span { color: #f43f5e; }
     .nav-links { display: flex; list-style: none; gap: 6px; flex-wrap: wrap; }
@@ -24,6 +26,7 @@
     .btn-outline { background: transparent; border: 1px solid #475569; color: #e2e8f0; }
     .btn-outline:hover { background: #334155; }
     .btn-block { width: 100%; display: block; margin-top: 10px; }
+    .btn-lg { padding: 12px 24px; font-size: 1rem; }
     .btn-sm { padding: 4px 8px; font-size: 0.8rem; }
     
     .container { max-width: 1100px; margin: 25px auto; padding: 0 15px; }
@@ -75,6 +78,7 @@
     .form-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; color: #cbd5e1; }
     
     .store-box, .profile-card { background: #1e293b; border: 1px solid #334155; padding: 20px; border-radius: 8px; }
+    .role-badge { background: #059669; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; }
 
     @media (max-width: 600px) {
       .navbar { flex-direction: column; text-align: center; }
@@ -84,102 +88,6 @@
       .chat-main { width: 100%; height: 400px; }
     }
   </style>
-
-  <script>
-    var currentAuthMode = 'login';
-
-    function showTab(tabId) {
-      var tabs = document.querySelectorAll('.tab-content');
-      for (var i = 0; i < tabs.length; i++) {
-        tabs[i].classList.remove('active');
-      }
-      var links = document.querySelectorAll('.nav-links a');
-      for (var j = 0; j < links.length; j++) {
-        links[j].classList.remove('active');
-      }
-
-      var targetTab = document.getElementById('tab-' + tabId);
-      if (targetTab) {
-        targetTab.classList.add('active');
-      }
-      var targetNav = document.getElementById('nav-' + tabId);
-      if (targetNav) {
-        targetNav.classList.add('active');
-      }
-    }
-
-    function openAuthModal(mode) {
-      currentAuthMode = mode;
-      var modal = document.getElementById('authModal');
-      var title = document.getElementById('modalTitle');
-      var submitBtn = document.getElementById('modalSubmitBtn');
-      var usernameGroup = document.getElementById('usernameGroup');
-
-      if (!modal) return;
-
-      if (mode === 'login') {
-        if (title) title.innerText = 'Masuk ke NEXTYSTUDIO';
-        if (submitBtn) submitBtn.innerText = 'Masuk';
-        if (usernameGroup) usernameGroup.style.display = 'none';
-      } else {
-        if (title) title.innerText = 'Daftar Akun Baru';
-        if (submitBtn) submitBtn.innerText = 'Daftar Akun';
-        if (usernameGroup) usernameGroup.style.display = 'block';
-      }
-      modal.style.display = 'flex';
-    }
-
-    function closeAuthModal() {
-      var modal = document.getElementById('authModal');
-      if (modal) modal.style.display = 'none';
-    }
-
-    function sendMessage() {
-      var input = document.getElementById('msgInput');
-      if (!input) return;
-      var text = input.value.trim();
-      if (!text) return;
-
-      var body = document.getElementById('chatMessages');
-      var newMsg = document.createElement('div');
-      newMsg.className = 'msg seller';
-      newMsg.innerHTML = '<b>Kamu:</b> ' + text;
-      body.appendChild(newMsg);
-      input.value = '';
-      body.scrollTop = body.scrollHeight;
-    }
-
-    function handleKeyPress(e) {
-      if (e.key === 'Enter') sendMessage();
-    }
-
-    function submitSellerForm(e) {
-      e.preventDefault();
-      alert("Pengajuan Toko berhasil dikirim ke Admin/Owner!");
-    }
-
-    function createOrderDemo(prodName) {
-      alert("Pesanan untuk '" + prodName + "' dibuat!");
-      showTab('pesan');
-    }
-
-    function handleAuthSubmit(e) {
-      e.preventDefault();
-      var email = document.getElementById('authEmail').value;
-      
-      alert("Berhasil " + (currentAuthMode === 'login' ? 'Masuk' : 'Daftar') + " sebagai " + email);
-      closeAuthModal();
-
-      // Ubah tombol auth jadi email & tombol keluar
-      var container = document.getElementById('authContainer');
-      if (container) {
-        container.innerHTML = '<span style="color:#4ade80; font-size:0.85rem;">' + email + '</span><button type="button" class="btn btn-outline btn-sm" onclick="location.reload()">Keluar</button>';
-      }
-      
-      var prof = document.getElementById('profUsername');
-      if (prof) prof.innerText = email;
-    }
-  </script>
 </head>
 <body>
 
@@ -365,10 +273,15 @@
     <div id="tab-profil" class="tab-content">
       <div class="section-title"><h2>Pengaturan Profil</h2></div>
       <div class="profile-card">
-        <h3 id="profUsername" style="color:#38bdf8;">Tamu / Belum Login</h3>
-        <p style="margin-top:5px; font-size:0.85rem; color:#94a3b8;">Role Default: <strong>Buyer</strong></p>
+        <div style="display:flex; align-items:center; gap:15px; margin-bottom:15px;">
+          <i class="fa-solid fa-circle-user fa-3x" style="color:#38bdf8;"></i>
+          <div>
+            <h3 id="profUsername" style="color:#f8fafc; font-size:1.1rem;">Tamu / Belum Login</h3>
+            <span class="role-badge" id="profRole">Role: Tamu</span>
+          </div>
+        </div>
         <hr style="margin: 15px 0; border:0; border-top:1px solid #334155;">
-        <p style="font-size:0.9rem;"><strong>Database Status:</strong> Connected to Supabase (`NextyStudioMarket`)</p>
+        <p style="font-size:0.9rem;"><strong>Database Status:</strong> Terhubung ke Supabase (`NextyStudioMarket`)</p>
       </div>
     </div>
   </main>
@@ -386,4 +299,79 @@
         <div class="form-group">
           <label>Kata Sandi</label>
           <input type="password" id="authPassword" required placeholder="******">
-            
+        </div>
+        <div class="form-group" id="usernameGroup" style="display:none;">
+          <label>Username</label>
+          <input type="text" id="authUsername" placeholder="username_kamu">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="modalSubmitBtn">Masuk</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript Utama & Koneksi Supabase -->
+  <script>
+    const SUPABASE_URL = "https://weayjlimtpwhjihmmvjl.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlYXlqbGltdHB3aGppaG1tdmpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM4ODQyMjgsImV4cCI6MjEwOTQ2MDIyOH0.QZjSPfj9cT8vI0QxJvpajaHLADo6-FBY4KAOIRWhPUA";
+
+    var supabaseClient = null;
+    try {
+      if (window.supabase) {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+    } catch(e) {
+      console.log("Supabase init error:", e);
+    }
+
+    var currentAuthMode = 'login';
+
+    function showTab(tabId) {
+      var tabs = document.querySelectorAll('.tab-content');
+      for (var i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove('active');
+      }
+      var links = document.querySelectorAll('.nav-links a');
+      for (var j = 0; j < links.length; j++) {
+        links[j].classList.remove('active');
+      }
+
+      var targetTab = document.getElementById('tab-' + tabId);
+      if (targetTab) {
+        targetTab.classList.add('active');
+      }
+      var targetNav = document.getElementById('nav-' + tabId);
+      if (targetNav) {
+        targetNav.classList.add('active');
+      }
+    }
+
+    function openAuthModal(mode) {
+      currentAuthMode = mode;
+      var modal = document.getElementById('authModal');
+      var title = document.getElementById('modalTitle');
+      var submitBtn = document.getElementById('modalSubmitBtn');
+      var usernameGroup = document.getElementById('usernameGroup');
+
+      if (!modal) return;
+
+      if (mode === 'login') {
+        if (title) title.innerText = 'Masuk ke NEXTYSTUDIO';
+        if (submitBtn) submitBtn.innerText = 'Masuk';
+        if (usernameGroup) usernameGroup.style.display = 'none';
+      } else {
+        if (title) title.innerText = 'Daftar Akun Baru';
+        if (submitBtn) submitBtn.innerText = 'Daftar Akun';
+        if (usernameGroup) usernameGroup.style.display = 'block';
+      }
+      modal.style.display = 'flex';
+    }
+
+    function closeAuthModal() {
+      var modal = document.getElementById('authModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function sendMessage() {
+      var input = document.getElementById('msgInput');
+      if (!input) return;
+      v
