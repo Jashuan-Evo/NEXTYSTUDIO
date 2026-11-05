@@ -129,7 +129,9 @@
     <div id="tab-pesan" class="tab-content">
       <div class="section-title"><h2>Ruang Diskusi & Rekber Manual</h2></div>
       <div class="chat-container">
-        <div class="chat-sidebar" id="chatSidebarList"></div>
+        <div class="chat-sidebar" id="chatSidebarList">
+          <!-- Daftar kamar chat akan muncul otomatis saat pembeli klik "Beli via Rekber Manual" -->
+        </div>
         <div class="chat-main">
           <div class="chat-header">
             <span id="roomTitle" style="font-size:0.9rem; font-weight:bold;">Pilih Transaksi</span>
@@ -139,23 +141,23 @@
             <div class="msg system">Silakan pilih atau buat transaksi dari katalog marketplace untuk mulai chat rekber.</div>
           </div>
           <div class="chat-footer">
-            <input type="text" id="chatInput" placeholder="Ketik pesan atau konfirmasi..." onkeypress="if(event.key==='Enter') sendChat()">
+            <input type="text" id="chatInput" placeholder="Ketik pesan atau info transfer..." onkeypress="if(event.key==='Enter') sendChat()">
             <button class="btn btn-primary" onclick="sendChat()"><i class="fa-solid fa-paper-plane"></i></button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Tab Toko Saya (Penjual) -->
+    <!-- Tab Toko Saya -->
     <div id="tab-toko" class="tab-content">
-      <div class="section-title"><h2>Dashboard Penjual (Seller Center)</h2></div>
+      <div class="section-title"><h2>Dashboard Penjual</h2></div>
       <div class="store-box">
-        <h3 style="margin-bottom:10px;"><i class="fa-solid fa-plus-circle"></i> Pasang Iklan Produk Baru</h3>
-        <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:15px;">Daftarkan jualan kamu agar tampil di marketplace untuk dibeli user lain.</p>
+        <h3 style="margin-bottom:10px;"><i class="fa-solid fa-plus-circle"></i> Pasang Iklan Produk</h3>
+        <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:15px;">Daftarkan jualan kamu agar tampil di marketplace.</p>
         <form onsubmit="postProduct(event)">
           <div class="form-group">
             <label>Judul Produk</label>
-            <input type="text" id="pTitle" required placeholder="Contoh: Akun ML Mythic / Joki Rank">
+            <input type="text" id="pTitle" required placeholder="Contoh: Akun ML Mythic">
           </div>
           <div class="form-group">
             <label>Kategori</label>
@@ -169,7 +171,7 @@
             <label>Harga (Rp)</label>
             <input type="number" id="pPrice" required placeholder="50000">
           </div>
-          <button type="submit" class="btn btn-primary btn-block">Publish Iklan Saya</button>
+          <button type="submit" class="btn btn-primary btn-block">Publish Iklan</button>
         </form>
       </div>
     </div>
@@ -178,7 +180,7 @@
     <div id="tab-owner" class="tab-content">
       <div class="section-title"><h2><i class="fa-solid fa-crown"></i> Panel Kontrol MIDMAN Manual (Owner)</h2></div>
       <div class="owner-panel" id="ownerControlPanel">
-        <p style="color:#94a3b8; font-size:0.9rem;">Pilih salah satu ruang chat transaksi di tab "Chat Rekber" untuk mengontrol status transaksinya.</p>
+        <p style="color:#94a3b8; font-size:0.9rem;">Pilih salah satu ruang chat transaksi di tab "Chat Rekber" atau buat transaksi untuk mengontrol statusnya.</p>
       </div>
     </div>
 
@@ -214,16 +216,9 @@
   <script>
     var currentAuthMode = 'login';
     var currentUserEmail = '';
-    
-    // Ambil data produk & transaksi dari localStorage agar tidak hilang saat di-refresh
-    var products = JSON.parse(localStorage.getItem('nexty_products')) || [];
-    var transactions = JSON.parse(localStorage.getItem('nexty_txs')) || [];
+    var products = []; // Katalog bersih kosong
+    var transactions = []; // Ruang chat dinamis
     var activeTxId = null;
-
-    function saveToStorage() {
-      localStorage.setItem('nexty_products', JSON.stringify(products));
-      localStorage.setItem('nexty_txs', JSON.stringify(transactions));
-    }
 
     function showTab(tabId) {
       var tabs = document.querySelectorAll('.tab-content');
@@ -243,11 +238,11 @@
       var filtered = cat === 'Semua' ? products : products.filter(p => p.cat === cat);
       
       if(filtered.length === 0) {
-        grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-box-open" style="font-size:2rem; margin-bottom:10px;"></i><p>Belum ada produk dari penjual. Silakan pasang iklan melalui menu "Jual / Toko".</p></div>`;
+        grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-box-open" style="font-size:2rem; margin-bottom:10px;"></i><p>Belum ada produk dari penjual. Silakan pasang iklan di menu "Jual / Toko".</p></div>`;
         return;
       }
 
-      grid.innerHTML = filtered.map(p => `
+      grid.innerHTML = filtered.map((p, index) => `
         <div class="card-product">
           <span class="badge-cat">${p.cat}</span>
           <h3>${p.title}</h3>
@@ -265,6 +260,7 @@
       renderProducts(cat, 'marketGrid');
     }
 
+    // Buat transaksi baru saat pembeli klik beli produk
     function createTransaction(title, price, seller) {
       var txId = 'TX' + Math.floor(1000 + Math.random() * 9000);
       var newTx = {
@@ -278,8 +274,7 @@
         ]
       };
       transactions.unshift(newTx);
-      saveToStorage();
-      alert("Ruang chat rekber manual berhasil dibuat!");
+      alert("Ruang chat rekber berhasil dibuat!");
       showTab('pesan');
       selectRoom(txId);
     }
@@ -287,7 +282,7 @@
     function renderChatSidebar() {
       var sidebar = document.getElementById('chatSidebarList');
       if(transactions.length === 0) {
-        sidebar.innerHTML = `<p style="font-size:0.8rem; color:#94a3b8; text-align:center; padding:20px;">Belum ada transaksi. Silakan pilih produk di Marketplace.</p>`;
+        sidebar.innerHTML = `<p style="font-size:0.8rem; color:#94a3b8; text-align:center; padding:20px;">Belum ada transaksi aktif. Silakan pilih produk di Marketplace.</p>`;
         return;
       }
       sidebar.innerHTML = transactions.map(tx => `
@@ -321,7 +316,7 @@
 
     function sendChat() {
       if(!activeTxId) {
-        alert("Pilih atau buat transaksi terlebih dahulu!");
+        alert("Pilih atau buat transaksi terlebih dahulu di Marketplace!");
         return;
       }
       var input = document.getElementById('chatInput');
@@ -332,11 +327,11 @@
       var senderType = currentUserEmail.toLowerCase().includes('owner') ? 'owner' : 'buyer';
 
       tx.messages.push({ sender: senderType, name: senderName, text: input.value });
-      saveToStorage();
       input.value = '';
       renderChatMessages(tx);
     }
 
+    // Panel Kontrol Owner Dinamis
     function renderOwnerControl(tx) {
       var panel = document.getElementById('ownerControlPanel');
       panel.innerHTML = `
@@ -361,4 +356,69 @@
       }
       var tx = transactions.find(t => t.id === txId);
       tx.status = 'Telah Dikonfirmasi (Dana Masuk)';
-      tx.messages.push({ sender: 'system', text: `✅ [TELAH DIKONFIRMASI] Dana sudah masuk ke QRIS/Norek Owner. Silakan Penjual kirim data
+      tx.messages.push({ sender: 'system', text: `✅ [TELAH DIKONFIRMASI] Dana sudah masuk ke QRIS/Norek Owner. Silakan Penjual kirim data barang/akun ke Pembeli!` });
+      selectRoom(txId);
+      alert("Status transaksi diubah menjadi: Telah Dikonfirmasi.");
+    }
+
+    function ownerFinishTx(txId) {
+      if(!currentUserEmail.toLowerCase().includes('owner')) {
+        alert("Hanya Owner yang dapat menyelesaikan transaksi!");
+        return;
+      }
+      var tx = transactions.find(t => t.id === txId);
+      tx.status = 'Transaksi Selesai (Menunggu Norek Seller)';
+      tx.messages.push({ sender: 'system', text: `🎉 [TRANSAKSI SELESAI] Pembeli sudah menerima barang dengan aman. <b>Pemberitahuan untuk Penjual:</b> Silakan kirimkan nomor rekening (norek) kamu ke chat untuk pencairan dana!` });
+      selectRoom(txId);
+      alert("Transaksi selesai! Notifikasi norek penjual dikirim ke chat.");
+    }
+
+    function postProduct(e) {
+      e.preventDefault();
+      var title = document.getElementById('pTitle').value;
+      var cat = document.getElementById('pCat').value;
+      var price = Number(document.getElementById('pPrice').value);
+      products.unshift({ title, cat, price, seller: currentUserEmail ? currentUserEmail.split('@')[0] : 'Toko Penjual' });
+      alert("Produk berhasil dipublish ke marketplace!");
+      showTab('marketplace');
+    }
+
+    function openAuthModal(mode) {
+      currentAuthMode = mode;
+      document.getElementById('modalTitle').innerText = mode === 'login' ? 'Masuk ke NEXTYSTUDIO' : 'Daftar Akun Baru';
+      document.getElementById('modalSubmitBtn').innerText = mode === 'login' ? 'Masuk' : 'Daftar';
+      document.getElementById('authModal').style.display = 'flex';
+    }
+
+    function closeAuthModal() {
+      document.getElementById('authModal').style.display = 'none';
+    }
+
+    function handleAuthSubmit(e) {
+      e.preventDefault();
+      currentUserEmail = document.getElementById('authEmail').value;
+      alert("Berhasil " + (currentAuthMode === 'login' ? 'Masuk' : 'Daftar') + " sebagai " + currentUserEmail);
+      closeAuthModal();
+
+      document.getElementById('authContainer').innerHTML = `
+        <span style="color:#4ade80; font-size:0.85rem;">${currentUserEmail}</span>
+        <button class="btn btn-outline btn-sm" onclick="location.reload()">Keluar</button>
+      `;
+      document.getElementById('profEmail').innerText = currentUserEmail;
+
+      if(currentUserEmail.toLowerCase().includes('owner')) {
+        document.getElementById('profRole').innerText = 'Role: OWNER (MIDMAN)';
+        document.getElementById('profRole').className = 'role-badge owner';
+        document.getElementById('nav-owner').style.display = 'inline-flex';
+      } else {
+        document.getElementById('profRole').innerText = 'Role: BUYER / SELLER';
+        document.getElementById('nav-owner').style.display = 'none';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderProducts('Semua', 'homeGrid');
+    });
+  </script>
+</body>
+</html>
