@@ -3,159 +3,130 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXTYSTUDIO - MIDMAN Manual Escrow</title>
+  <title>NEXTYSTUDIO - Marketplace & Rekber Manual</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; padding-bottom: 50px; }
+    body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; padding-bottom: 60px; }
     
-    .navbar { display: flex; justify-content: space-between; align-items: center; background-color: #1e293b; padding: 15px 20px; border-bottom: 2px solid #334155; position: sticky; top: 0; z-index: 1000; flex-wrap: wrap; gap: 10px; }
-    .logo { font-size: 1.4rem; font-weight: 800; color: #38bdf8; text-decoration: none; cursor: pointer; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; background-color: #1e293b; padding: 12px 15px; border-bottom: 2px solid #334155; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 8px; }
+    .logo { font-size: 1.25rem; font-weight: 800; color: #38bdf8; text-decoration: none; cursor: pointer; }
     .logo span { color: #f43f5e; }
-    .nav-links { display: flex; list-style: none; gap: 6px; flex-wrap: wrap; z-index: 1001; }
-    .nav-links a { color: #94a3b8; text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 6px; font-size: 0.88rem; transition: all 0.2s; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
-    .nav-links a:hover, .nav-links a.active { color: #ffffff; background-color: #334155; }
-    .auth-buttons { display: flex; gap: 8px; align-items: center; z-index: 1001; }
+    .nav-links { display: flex; list-style: none; gap: 4px; flex-wrap: wrap; }
+    .nav-links button { background: transparent; border: none; color: #94a3b8; font-weight: 600; padding: 6px 10px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+    .nav-links button:hover, .nav-links button.active { color: #ffffff; background-color: #334155; }
     
-    .btn { padding: 10px 16px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.9rem; position: relative; z-index: 10; }
+    .btn { padding: 8px 14px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; font-size: 0.85rem; }
     .btn-primary { background-color: #2563eb; color: white; }
-    .btn-primary:hover { background-color: #1d4ed8; }
     .btn-outline { background: transparent; border: 1px solid #475569; color: #e2e8f0; }
-    .btn-outline:hover { background: #334155; }
     .btn-block { width: 100%; display: block; margin-top: 10px; }
-    .btn-sm { padding: 4px 8px; font-size: 0.8rem; }
+    .btn-sm { padding: 4px 8px; font-size: 0.75rem; }
     
-    .container { max-width: 1100px; margin: 25px auto; padding: 0 15px; position: relative; z-index: 1; }
+    .container { max-width: 1000px; margin: 20px auto; padding: 0 10px; }
     .tab-content { display: none; }
     .tab-content.active { display: block !important; }
     
-    .hero-banner { background: linear-gradient(135deg, #1e1b4b, #0f172a); border: 1px solid #312e81; border-radius: 12px; padding: 35px 20px; text-align: center; margin-bottom: 30px; position: relative; z-index: 2; }
-    .hero-banner h1 { font-size: 1.8rem; margin-bottom: 12px; }
-    .hero-banner h1 span { color: #f43f5e; }
-    .hero-banner p { color: #94a3b8; margin-bottom: 20px; font-size: 0.95rem; }
+    .hero { background: linear-gradient(135deg, #1e1b4b, #0f172a); border: 1px solid #312e81; border-radius: 10px; padding: 25px 15px; text-align: center; margin-bottom: 20px; }
+    .hero h1 { font-size: 1.5rem; margin-bottom: 8px; }
+    .hero h1 span { color: #f43f5e; }
+    .hero p { color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px; }
     
-    .section-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-left: 4px solid #2563eb; padding-left: 10px; }
-    .grid-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
-    .card-product { background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 16px; position: relative; display: flex; flex-direction: column; justify-content: space-between; z-index: 2; }
-    .badge-cat { position: absolute; top: 12px; right: 12px; background-color: #0284c7; color: white; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
-    .card-product h3 { font-size: 0.95rem; margin-top: 15px; margin-bottom: 8px; }
-    .card-product .price { color: #4ade80; font-size: 1.15rem; font-weight: bold; margin-bottom: 6px; }
-    .card-product .seller { color: #94a3b8; font-size: 0.8rem; margin-bottom: 12px; }
-    .empty-state { text-align: center; color: #94a3b8; padding: 40px; background: #1e293b; border-radius: 8px; border: 1px solid #334155; grid-column: 1 / -1; }
-    
-    .filter-tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; position: relative; z-index: 5; }
-    .filter-btn { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
-    .filter-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+    .section-title { margin-bottom: 15px; border-left: 4px solid #2563eb; padding-left: 8px; font-size: 1rem; font-weight: bold; }
+    .grid-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; }
+    .card-product { background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 14px; position: relative; }
+    .badge-cat { position: absolute; top: 10px; right: 10px; background-color: #0284c7; color: white; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+    .card-product h3 { font-size: 0.9rem; margin-top: 12px; margin-bottom: 6px; }
+    .card-product .price { color: #4ade80; font-size: 1.1rem; font-weight: bold; margin-bottom: 4px; }
+    .card-product .seller { color: #94a3b8; font-size: 0.75rem; margin-bottom: 10px; }
+    .empty-state { text-align: center; color: #94a3b8; padding: 30px; background: #1e293b; border-radius: 8px; border: 1px solid #334155; grid-column: 1 / -1; font-size: 0.85rem; }
 
-    .chat-container { display: flex; background: #1e293b; border-radius: 8px; border: 1px solid #334155; height: 440px; overflow: hidden; position: relative; z-index: 2; }
-    .chat-sidebar { width: 35%; border-right: 1px solid #334155; padding: 10px; background: #0f172a; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-    .chat-room-item { padding: 10px; border-radius: 6px; background: #1e293b; cursor: pointer; border-left: 3px solid #334155; transition: 0.2s; }
-    .chat-room-item.active-room { border-left-color: #2563eb; background: #334155; }
-    .chat-main { width: 65%; display: flex; flex-direction: column; }
-    .chat-header { padding: 12px 15px; background: #1e293b; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
-    .chat-body { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-    .msg { padding: 8px 12px; border-radius: 8px; max-width: 85%; font-size: 0.9rem; }
-    .msg.system { background: #334155; text-align: center; max-width: 100%; color: #cbd5e1; font-size: 0.8rem; }
+    .chat-container { display: flex; background: #1e293b; border-radius: 8px; border: 1px solid #334155; height: 400px; overflow: hidden; flex-direction: column; }
+    .chat-header { padding: 10px 15px; background: #0f172a; border-bottom: 1px solid #334155; font-size: 0.85rem; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+    .chat-body { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+    .msg { padding: 8px 10px; border-radius: 6px; max-width: 85%; font-size: 0.85rem; }
+    .msg.system { background: #334155; text-align: center; max-width: 100%; color: #cbd5e1; font-size: 0.75rem; }
     .msg.buyer { background: #1e3a8a; align-self: flex-start; }
     .msg.owner { background: #831843; align-self: flex-end; border: 1px solid #f43f5e; }
-    .chat-footer { padding: 10px; display: flex; gap: 8px; background: #0f172a; }
-    .chat-footer input { flex: 1; padding: 8px 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: white; font-size: 0.9rem; }
+    .chat-footer { padding: 8px; display: flex; gap: 6px; background: #0f172a; }
+    .chat-footer input { flex: 1; padding: 8px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: white; font-size: 0.85rem; }
 
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 99999; padding: 15px; }
-    .modal-box { background: #1e293b; padding: 25px; border-radius: 10px; width: 100%; max-width: 380px; border: 1px solid #334155; position: relative; z-index: 100000; }
-    .close-btn { position: absolute; top: 12px; right: 15px; font-size: 1.4rem; cursor: pointer; color: #94a3b8; }
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; color: #cbd5e1; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; background-color: #0f172a; border: 1px solid #334155; border-radius: 6px; color: white; font-size: 0.9rem; }
+    .form-group { margin-bottom: 10px; }
+    .form-group label { display: block; margin-bottom: 4px; font-size: 0.8rem; color: #cbd5e1; }
+    .form-group input, .form-group select { width: 100%; padding: 9px; background-color: #0f172a; border: 1px solid #334155; border-radius: 6px; color: white; font-size: 0.85rem; }
     
-    .profile-card, .store-box, .owner-panel { background: #1e293b; border: 1px solid #334155; padding: 20px; border-radius: 8px; margin-bottom: 15px; position: relative; z-index: 2; }
-    .role-badge { background: #059669; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; }
+    .box-card { background: #1e293b; border: 1px solid #334155; padding: 15px; border-radius: 8px; margin-bottom: 12px; }
+    .role-badge { background: #059669; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: bold; }
     .role-badge.owner { background: #f43f5e; }
 
-    @media (max-width: 600px) {
-      .navbar { flex-direction: column; text-align: center; }
-      .nav-links { justify-content: center; }
-      .chat-container { flex-direction: column; height: 480px; }
-      .chat-sidebar { width: 100%; height: 90px; }
-      .chat-main { width: 100%; height: 390px; }
-    }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 999; padding: 15px; }
+    .modal-box { background: #1e293b; padding: 20px; border-radius: 8px; width: 100%; max-width: 340px; border: 1px solid #334155; position: relative; }
+    .close-btn { position: absolute; top: 10px; right: 12px; font-size: 1.2rem; cursor: pointer; color: #94a3b8; }
   </style>
 </head>
 <body>
 
   <!-- Navbar -->
   <nav class="navbar">
-    <a class="logo" onclick="showTab('beranda')"><i class="fa-solid fa-gamepad"></i> NEXTY<span>STUDIO</span></a>
+    <a class="logo" onclick="goToTab('beranda')"><i class="fa-solid fa-gamepad"></i> NEXTY<span>STUDIO</span></a>
     <div class="nav-links">
-      <a id="nav-beranda" class="active" onclick="showTab('beranda')"><i class="fa-solid fa-house"></i> Beranda</a>
-      <a id="nav-marketplace" onclick="showTab('marketplace')"><i class="fa-solid fa-store"></i> Marketplace</a>
-      <a id="nav-pesan" onclick="showTab('pesan')"><i class="fa-solid fa-comments"></i> Chat Rekber</a>
-      <a id="nav-toko" onclick="showTab('toko')"><i class="fa-solid fa-shop"></i> Jual / Toko</a>
-      <a id="nav-owner" style="display:none; color:#f43f5e;" onclick="showTab('owner')"><i class="fa-solid fa-crown"></i> Panel Owner</a>
-      <a id="nav-profil" onclick="showTab('profil')"><i class="fa-solid fa-user"></i> Profil</a>
+      <button onclick="goToTab('beranda')"><i class="fa-solid fa-house"></i> Beranda</button>
+      <button onclick="goToTab('marketplace')"><i class="fa-solid fa-store"></i> Pasar</button>
+      <button onclick="goToTab('pesan')"><i class="fa-solid fa-comments"></i> Chat</button>
+      <button onclick="goToTab('toko')"><i class="fa-solid fa-shop"></i> Jual</button>
+      <button id="navOwnerBtn" style="display:none; color:#f43f5e;" onclick="goToTab('owner')"><i class="fa-solid fa-crown"></i> Owner</button>
+      <button onclick="goToTab('profil')"><i class="fa-solid fa-user"></i> Profil</button>
     </div>
-    <div class="auth-buttons" id="authContainer">
-      <button type="button" class="btn btn-outline btn-sm" onclick="openAuthModal('login')">Masuk</button>
-      <button type="button" class="btn btn-primary btn-sm" onclick="openAuthModal('register')">Daftar</button>
+    <div id="authArea">
+      <button class="btn btn-outline btn-sm" onclick="openAuth('login')">Masuk</button>
+      <button class="btn btn-primary btn-sm" onclick="openAuth('register')">Daftar</button>
     </div>
   </nav>
 
   <main class="container">
-    <!-- Tab Beranda -->
+    <!-- Beranda -->
     <div id="tab-beranda" class="tab-content active">
-      <div class="hero-banner">
-        <h1>Marketplace Gaming <span>NEXTYSTUDIO</span></h1>
-        <p>Jual beli Akun & Item Aman dengan Sistem Rekber Manual (TF ke QRIS/Norek Owner).</p>
-        <button type="button" class="btn btn-primary btn-lg" onclick="showTab('marketplace')">Jelajahi Katalog</button>
+      <div class="hero">
+        <h1>NEXTY<span>STUDIO</span></h1>
+        <p>Marketplace & Rekber Manual (TF ke QRIS/Norek Owner).</p>
+        <button class="btn btn-primary" onclick="goToTab('marketplace')">Buka Katalog</button>
       </div>
-      <div class="section-title"><h2>Produk Terbaru Dari Penjual</h2></div>
+      <div class="section-title">Produk Terbaru Dari Penjual</div>
       <div class="grid-products" id="homeGrid"></div>
     </div>
 
-    <!-- Tab Marketplace -->
+    <!-- Marketplace -->
     <div id="tab-marketplace" class="tab-content">
-      <div class="section-title"><h2>Katalog Marketplace</h2></div>
-      <div class="filter-tabs">
-        <button type="button" class="filter-btn active" onclick="filterCat('Semua', this)">Semua</button>
-        <button type="button" class="filter-btn" onclick="filterCat('Akun', this)">Akun Game</button>
-        <button type="button" class="filter-btn" onclick="filterCat('Diamond', this)">Top-Up Diamond</button>
-        <button type="button" class="filter-btn" onclick="filterCat('Joki', this)">Jasa Joki</button>
-      </div>
+      <div class="section-title">Katalog Marketplace</div>
       <div class="grid-products" id="marketGrid"></div>
     </div>
 
-    <!-- Tab Pesan / Chat Rekber Dinamis -->
+    <!-- Chat Rekber -->
     <div id="tab-pesan" class="tab-content">
-      <div class="section-title"><h2>Ruang Diskusi & Rekber Manual</h2></div>
+      <div class="section-title">Ruang Chat Rekber Manual</div>
       <div class="chat-container">
-        <div class="chat-sidebar" id="chatSidebarList"></div>
-        <div class="chat-main">
-          <div class="chat-header">
-            <span id="roomTitle" style="font-size:0.9rem; font-weight:bold;">Pilih Transaksi</span>
-            <span style="font-size:0.75rem; color:#4ade80;"><i class="fa-solid fa-headset"></i> Rekber Manual</span>
-          </div>
-          <div class="chat-body" id="chatBody">
-            <div class="msg system">Silakan pilih atau buat transaksi dari katalog marketplace untuk mulai chat rekber.</div>
-          </div>
-          <div class="chat-footer">
-            <input type="text" id="chatInput" placeholder="Ketik pesan atau konfirmasi..." onkeypress="if(event.key==='Enter') sendChat()">
-            <button type="button" class="btn btn-primary" onclick="sendChat()"><i class="fa-solid fa-paper-plane"></i></button>
-          </div>
+        <div class="chat-header">
+          <span id="roomTitle">#TX1029 - Rekber Manual</span>
+          <span style="color:#4ade80; font-size:0.75rem;"><i class="fa-solid fa-shield"></i> Aktif</span>
+        </div>
+        <div class="chat-body" id="chatBody">
+          <div class="msg system">📢 Silahkan TF ke QRIS / Norek Owner:<br><b>BCA: 1234567890 a.n Nexty Studio</b></div>
+        </div>
+        <div class="chat-footer">
+          <input type="text" id="chatInput" placeholder="Ketik pesan..." onkeypress="if(event.key==='Enter') sendMsg()">
+          <button class="btn btn-primary btn-sm" onclick="sendMsg()"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
       </div>
     </div>
 
-    <!-- Tab Toko Saya (Penjual) -->
+    <!-- Jual / Toko -->
     <div id="tab-toko" class="tab-content">
-      <div class="section-title"><h2>Dashboard Penjual (Seller Center)</h2></div>
-      <div class="store-box">
-        <h3 style="margin-bottom:10px;"><i class="fa-solid fa-plus-circle"></i> Pasang Iklan Produk Baru</h3>
-        <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:15px;">Daftarkan jualan kamu agar tampil di marketplace untuk dibeli user lain.</p>
-        <form onsubmit="postProduct(event)">
+      <div class="section-title">Pasang Produk Jualan</div>
+      <div class="box-card">
+        <form onsubmit="addProduct(event)">
           <div class="form-group">
             <label>Judul Produk</label>
-            <input type="text" id="pTitle" required placeholder="Contoh: Akun ML Mythic / Joki Rank">
+            <input type="text" id="pTitle" required placeholder="Contoh: Akun ML Mythic">
           </div>
           <div class="form-group">
             <label>Kategori</label>
@@ -169,188 +140,194 @@
             <label>Harga (Rp)</label>
             <input type="number" id="pPrice" required placeholder="50000">
           </div>
-          <button type="submit" class="btn btn-primary btn-block">Publish Iklan Saya</button>
+          <button type="submit" class="btn btn-primary btn-block">Publish Iklan</button>
         </form>
       </div>
     </div>
 
-    <!-- Tab Panel Owner / MIDMAN Manual -->
+    <!-- Owner Panel -->
     <div id="tab-owner" class="tab-content">
-      <div class="section-title"><h2><i class="fa-solid fa-crown"></i> Panel Kontrol MIDMAN Manual (Owner)</h2></div>
-      <div class="owner-panel" id="ownerControlPanel">
-        <p style="color:#94a3b8; font-size:0.9rem;">Pilih salah satu ruang chat transaksi di tab "Chat Rekber" untuk mengontrol status transaksinya.</p>
+      <div class="section-title">Panel Kontrol Owner (MIDMAN)</div>
+      <div class="box-card" style="border-color:#f43f5e;">
+        <h3 style="color:#f43f5e; font-size:0.95rem; margin-bottom:6px;">Kontrol Transaksi #TX1029</h3>
+        <p id="txStatusText" style="font-size:0.8rem; color:#facc15; margin-bottom:12px;">Status: Menunggu Pembeli Transfer</p>
+        <button class="btn btn-primary btn-block btn-sm" onclick="ownerConfirm()">1. Konfirmasi TF Masuk ("Telah Dikonfirmasi")</button>
+        <button class="btn btn-outline btn-block btn-sm" style="margin-top:6px;" onclick="ownerFinish()">2. Selesaikan & Minta Norek Seller</button>
       </div>
     </div>
 
-    <!-- Tab Profil -->
+    <!-- Profil -->
     <div id="tab-profil" class="tab-content">
-      <div class="section-title"><h2>Pengaturan Profil</h2></div>
-      <div class="profile-card">
-        <h3 id="profEmail" style="margin-bottom:5px;">Tamu (Belum Masuk)</h3>
+      <div class="section-title">Pengaturan Profil</div>
+      <div class="box-card">
+        <h3 id="profEmail" style="font-size:0.95rem; margin-bottom:4px;">Tamu</h3>
         <span class="role-badge" id="profRole">Role: Tamu</span>
       </div>
     </div>
   </main>
 
   <!-- Modal Auth -->
-  <div class="modal-overlay" id="authModal" onclick="if(event.target===this) closeAuthModal();">
+  <div class="modal-overlay" id="authModal" onclick="if(event.target===this) closeAuth()">
     <div class="modal-box">
-      <span class="close-btn" onclick="closeAuthModal()">&times;</span>
-      <h3 id="modalTitle" style="margin-bottom:15px;">Masuk ke NEXTYSTUDIO</h3>
-      <form onsubmit="handleAuthSubmit(event)">
+      <span class="close-btn" onclick="closeAuth()">&times;</span>
+      <h3 id="modalTitle" style="font-size:1rem; margin-bottom:12px;">Masuk</h3>
+      <form onsubmit="handleAuth(event)">
         <div class="form-group">
-          <label>Email (Ketik 'owner' untuk akses panel MIDMAN)</label>
-          <input type="email" id="authEmail" required placeholder="owner@nextystudio.com">
+          <label>Email (Ketik 'owner' untuk jadi admin)</label>
+          <input type="email" id="authEmail" required placeholder="email@mail.com">
         </div>
         <div class="form-group">
           <label>Password</label>
-          <input type="password" id="authPassword" required placeholder="******">
+          <input type="password" id="authPass" required placeholder="******">
         </div>
-        <button type="submit" class="btn btn-primary btn-block" id="modalSubmitBtn">Masuk</button>
+        <button type="submit" class="btn btn-primary btn-block" id="modalBtn">Masuk</button>
       </form>
     </div>
   </div>
 
   <script>
-    var currentAuthMode = 'login';
-    var currentUserEmail = '';
-    
+    var authMode = 'login';
+    var userEmail = '';
     var products = JSON.parse(localStorage.getItem('nexty_products')) || [];
-    var transactions = JSON.parse(localStorage.getItem('nexty_txs')) || [];
-    var activeTxId = null;
+    var chatMessages = JSON.parse(localStorage.getItem('nexty_msgs')) || [
+      { sender: 'system', text: '📢 Silahkan TF ke QRIS / Norek Owner:\nBCA: 1234567890 a.n Nexty Studio' }
+    ];
 
-    function saveToStorage() {
+    function saveData() {
       localStorage.setItem('nexty_products', JSON.stringify(products));
-      localStorage.setItem('nexty_txs', JSON.stringify(transactions));
+      localStorage.setItem('nexty_msgs', JSON.stringify(chatMessages));
     }
 
-    function showTab(tabId) {
+    function goToTab(tabId) {
       var tabs = document.querySelectorAll('.tab-content');
       for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
-      var links = document.querySelectorAll('.nav-links a');
-      for (var j = 0; j < links.length; j++) links[j].classList.remove('active');
 
-      document.getElementById('tab-' + tabId).classList.add('active');
-      var activeLink = document.getElementById('nav-' + tabId);
-      if(activeLink) activeLink.classList.add('active');
+      var target = document.getElementById('tab-' + tabId);
+      if(target) target.classList.add('active');
 
-      if(tabId === 'beranda') renderProducts('Semua', 'homeGrid');
-      if(tabId === 'marketplace') renderProducts('Semua', 'marketGrid');
-      if(tabId === 'pesan') renderChatSidebar();
+      if(tabId === 'beranda' || tabId === 'marketplace') renderMarket();
+      if(tabId === 'pesan') renderChat();
     }
 
-    function renderProducts(cat, gridId) {
-      var grid = document.getElementById(gridId);
-      if(!grid) return;
-      var filtered = cat === 'Semua' ? products : products.filter(p => p.cat === cat);
-      
-      if(filtered.length === 0) {
-        grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-box-open" style="font-size:2rem; margin-bottom:10px;"></i><p>Belum ada produk dari penjual. Silakan pasang iklan melalui menu "Jual / Toko".</p></div>`;
-        return;
+    function renderMarket() {
+      var grids = [document.getElementById('homeGrid'), document.getElementById('marketGrid')];
+      for(var g of grids) {
+        if(!g) continue;
+        if(products.length === 0) {
+          g.innerHTML = `<div class="empty-state"><p>Belum ada produk. Silakan pasang item di menu "Jual".</p></div>`;
+        } else {
+          g.innerHTML = products.map(p => `
+            <div class="card-product">
+              <span class="badge-cat">${p.cat}</span>
+              <h3>${p.title}</h3>
+              <p class="price">Rp ${p.price.toLocaleString('id-ID')}</p>
+              <p class="seller"><i class="fa-solid fa-shop"></i> ${p.seller}</p>
+              <button class="btn btn-primary btn-block btn-sm" onclick="goToTab('pesan')">Beli via Rekber Manual</button>
+            </div>
+          `).join('');
+        }
       }
-
-      grid.innerHTML = filtered.map(p => `
-        <div class="card-product">
-          <span class="badge-cat">${p.cat}</span>
-          <h3>${p.title}</h3>
-          <p class="price">Rp ${p.price.toLocaleString('id-ID')}</p>
-          <p class="seller"><i class="fa-solid fa-shop"></i> ${p.seller}</p>
-          <button type="button" class="btn btn-primary btn-block" onclick="createTransaction('${p.title.replace(/'/g, "\\'")}', ${p.price}, '${p.seller.replace(/'/g, "\\'")}')">Beli via Rekber Manual</button>
-        </div>
-      `).join('');
     }
 
-    function filterCat(cat, btn) {
-      var btns = document.querySelectorAll('.filter-btn');
-      for(var b of btns) b.classList.remove('active');
-      btn.classList.add('active');
-      renderProducts(cat, 'marketGrid');
+    function addProduct(e) {
+      e.preventDefault();
+      var title = document.getElementById('pTitle').value;
+      var cat = document.getElementById('pCat').value;
+      var price = Number(document.getElementById('pPrice').value);
+      var seller = userEmail ? userEmail.split('@')[0] : 'Penjual';
+
+      products.unshift({ title, cat, price, seller });
+      saveData();
+      alert("Produk berhasil dipublish ke marketplace!");
+      document.getElementById('pTitle').value = '';
+      document.getElementById('pPrice').value = '';
+      goToTab('marketplace');
     }
 
-    function createTransaction(title, price, seller) {
-      var txId = 'TX' + Math.floor(1000 + Math.random() * 9000);
-      var newTx = {
-        id: txId,
-        title: title,
-        price: price,
-        seller: seller,
-        status: 'Menunggu Pembeli Transfer ke QRIS/Norek',
-        messages: [
-          { sender: 'system', text: `📢 [TRANSAKSI #${txId} DIBUAT]<br>Produk: <b>${title}</b> (Rp ${price.toLocaleString('id-ID')})<br>Penjual: ${seller}<br><br>Silahkan TF ke QRIS / Norek Owner:<br><b>BCA: 1234567890 a.n Nexty Studio / QRIS Resmi Nexty</b>` }
-        ]
-      };
-      transactions.unshift(newTx);
-      saveToStorage();
-      alert("Ruang chat rekber manual berhasil dibuat!");
-      showTab('pesan');
-      selectRoom(txId);
-    }
-
-    function renderChatSidebar() {
-      var sidebar = document.getElementById('chatSidebarList');
-      if(!sidebar) return;
-      if(transactions.length === 0) {
-        sidebar.innerHTML = `<p style="font-size:0.8rem; color:#94a3b8; text-align:center; padding:20px;">Belum ada transaksi. Silakan pilih produk di Marketplace.</p>`;
-        return;
-      }
-      sidebar.innerHTML = transactions.map(tx => `
-        <div class="chat-room-item ${activeTxId === tx.id ? 'active-room' : ''}" onclick="selectRoom('${tx.id}')">
-          <strong>#${tx.id}</strong>
-          <p style="font-size:0.75rem; color:#94a3b8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${tx.title}</p>
-        </div>
-      `).join('');
-    }
-
-    function selectRoom(id) {
-      activeTxId = id;
-      var tx = transactions.find(t => t.id === id);
-      if(!tx) return;
-
-      document.getElementById('roomTitle').innerText = `#${tx.id} - ${tx.title}`;
-      renderChatMessages(tx);
-      renderChatSidebar();
-      renderOwnerControl(tx);
-    }
-
-    function renderChatMessages(tx) {
-      var chatBody = document.getElementById('chatBody');
-      if(!chatBody) return;
-      chatBody.innerHTML = tx.messages.map(m => {
-        if(m.sender === 'system') return `<div class="msg system">${m.text}</div>`;
-        if(m.sender === 'owner') return `<div class="msg owner"><b>Owner (MIDMAN):</b> ${m.text}</div>`;
+    function renderChat() {
+      var body = document.getElementById('chatBody');
+      if(!body) return;
+      body.innerHTML = chatMessages.map(m => {
+        if(m.sender === 'system') return `<div class="msg system" style="white-space: pre-line;">${m.text}</div>`;
+        if(m.sender === 'owner') return `<div class="msg owner"><b>Owner:</b> ${m.text}</div>`;
         return `<div class="msg buyer"><b>${m.name}:</b> ${m.text}</div>`;
       }).join('');
-      chatBody.scrollTop = chatBody.scrollHeight;
+      body.scrollTop = body.scrollHeight;
     }
 
-    function sendChat() {
-      if(!activeTxId) {
-        alert("Pilih atau buat transaksi terlebih dahulu!");
-        return;
-      }
+    function sendMsg() {
       var input = document.getElementById('chatInput');
       if(!input || !input.value.trim()) return;
 
-      var tx = transactions.find(t => t.id === activeTxId);
-      var senderName = currentUserEmail ? currentUserEmail.split('@')[0] : 'Pembeli';
-      var senderType = currentUserEmail.toLowerCase().includes('owner') ? 'owner' : 'buyer';
+      var name = userEmail ? userEmail.split('@')[0] : 'Pembeli';
+      var type = userEmail.toLowerCase().includes('owner') ? 'owner' : 'buyer';
 
-      tx.messages.push({ sender: senderType, name: senderName, text: input.value });
-      saveToStorage();
+      chatMessages.push({ sender: type, name: name, text: input.value });
+      saveData();
       input.value = '';
-      renderChatMessages(tx);
+      renderChat();
     }
 
-    function renderOwnerControl(tx) {
-      var panel = document.getElementById('ownerControlPanel');
-      if(!panel) return;
-      panel.innerHTML = `
-        <h3 style="margin-bottom: 10px; color: #f43f5e;">Kontrol Transaksi #${tx.id}</h3>
-        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Produk: <b>${tx.title}</b> | Harga: Rp ${tx.price.toLocaleString('id-ID')}</p>
-        
-        <div style="background:#0f172a; padding:15px; border-radius:6px; margin-bottom:12px; border-left:4px solid #f43f5e;">
-          <strong>Status Saat Ini:</strong><br>
-          <span style="font-size:0.85rem; color:#facc15;">${tx.status}</span>
-          <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
-            <button type="button" class="btn btn-primary btn-sm" onclick="ownerConfirmTF('${tx.id}')">1. Telah Dikonfirmasi (TF Masuk)</button>
-            <button type="button" class="btn btn-outline btn-sm" onclick="ownerFinishTx('${tx.id}')">2. 
+    function ownerConfirm() {
+      if(!userEmail.toLowerCase().includes('owner')) {
+        alert("Hanya Owner yang dapat mengkonfirmasi!");
+        return;
+      }
+      document.getElementById('txStatusText').innerHTML = 'Status: <span style="color:#4ade80;">Telah Dikonfirmasi (Dana Masuk)</span>';
+      chatMessages.push({ sender: 'system', text: '✅ [TELAH DIKONFIRMASI] Dana sudah masuk ke rekening Owner. Penjual silakan kirim barang ke Pembeli!' });
+      saveData();
+      renderChat();
+      alert("Status diubah: Telah Dikonfirmasi.");
+    }
+
+    function ownerFinish() {
+      if(!userEmail.toLowerCase().includes('owner')) {
+        alert("Hanya Owner yang dapat menyelesaikan transaksi!");
+        return;
+      }
+      document.getElementById('txStatusText').innerHTML = 'Status: <span style="color:#38bdf8;">Selesai (Menunggu Norek Penjual)</span>';
+      chatMessages.push({ sender: 'system', text: '🎉 [TRANSAKSI SELESAI] Pembeli sudah menerima barang. Pemberitahuan untuk Penjual: Silakan kirimkan nomor rekening (norek) kamu ke chat untuk pencairan dana!' });
+      saveData();
+      renderChat();
+      alert("Transaksi selesai! Notifikasi norek dikirim ke chat.");
+    }
+
+    function openAuth(m) {
+      authMode = m;
+      document.getElementById('modalTitle').innerText = m === 'login' ? 'Masuk' : 'Daftar';
+      document.getElementById('modalBtn').innerText = m === 'login' ? 'Masuk' : 'Daftar';
+      document.getElementById('authModal').style.display = 'flex';
+    }
+
+    function closeAuth() {
+      document.getElementById('authModal').style.display = 'none';
+    }
+
+    function handleAuth(e) {
+      e.preventDefault();
+      userEmail = document.getElementById('authEmail').value;
+      alert("Berhasil " + (authMode === 'login' ? 'Masuk' : 'Daftar') + " sebagai " + userEmail);
+      closeAuth();
+
+      document.getElementById('authArea').innerHTML = `
+        <span style="color:#4ade80; font-size:0.75rem; margin-right:4px;">${userEmail}</span>
+        <button class="btn btn-outline btn-sm" onclick="location.reload()">Keluar</button>
+      `;
+      document.getElementById('profEmail').innerText = userEmail;
+
+      if(userEmail.toLowerCase().includes('owner')) {
+        document.getElementById('profRole').innerText = 'Role: OWNER (MIDMAN)';
+        document.getElementById('profRole').className = 'role-badge owner';
+        document.getElementById('navOwnerBtn').style.display = 'inline-block';
+      } else {
+        document.getElementById('profRole').innerText = 'Role: BUYER / SELLER';
+        document.getElementById('navOwnerBtn').style.display = 'none';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      goToTab('beranda');
+    });
+  </script>
+</body>
+</html>
