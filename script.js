@@ -1,5 +1,5 @@
 // NEXTYSTUDIO store settings — edit these values for your real shop.
-const WHATSAPP_NUMBER = "628316522486"; // WhatsApp NEXTYSTUDIO
+const WHATSAPP_NUMBER = "6283165222486"; // WhatsApp NEXTYSTUDIO
 
 const products = [
   {id:"acc-level-5",category:"account",type:"ACCOUNT",name:"Pixel Worlds Account Level 5",description:"Level 5 account • Gmail included.",price:"Rp10.000",badge:"AVAILABLE",icon:"◈"},
